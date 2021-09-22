@@ -38,6 +38,7 @@
 # %% [markdown]
 # ## Train slices
 # Example of the command line for train slices.
+# %%
 ! clinicadl train -h 
 
 # %%
