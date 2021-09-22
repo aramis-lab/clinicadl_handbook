@@ -19,7 +19,7 @@ To convert from python files to notebooks install the packages in the
 requirements file.
 
 ```bash
-conda create --name tutoCDL  python=3.8
+conda create --name tutoCDL  python=3.7
 conda activate tutoCDL
 pip install -r requirements.txt
 ```
