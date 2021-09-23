@@ -1,47 +1,75 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*
+# ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.5'
+#       jupytext_version: 1.7.1
+#   kernelspec:
+#     display_name: Python 3
+#     name: python3
+# ---
+# %% [markdown]
 # # How to use `tsvtools`
-
-# In this tutorial, we rely on the wonderful ADNI data set, as every preprocessing step needed by ClinicaDL was already performed. The goal will be to try to differentiate men from women on the cognitively normal population from t1w-MRI, and then infer the results on other 
+# In this tutorial, we rely on the wonderful ADNI data set, as every
+# preprocessing step needed by ClinicaDL was already performed. The goal will be
+# to try to differentiate men from women on the cognitively normal population
+# from t1w-MRI, and then infer the results on other. 
 #
 # BIDS data can be found at: `/network/lustre/dtlake01/aramis/datasets/adni/bids/BIDS`
 #
 # Corresponding CAPS is at: `/network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021`
-
+# ```{note}
+# To run this notebook without editing the path to the data, create symbolic links to the BIDS
+# and the CAPS:
+# ln -s /network/lustre/dtlake01/aramis/datasets/adni/bids ./bids
+# ln -s /network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021/ ./caps_v202
+# ```
+# %% [markdown]
 # ## Find diagnosis labels
 #
-# First, we will use the `getlabels` function of ClinicaDL to identify which participants are cognitively normal or demented.
-# For this we need clinical information stored in the BIDS, and already preprocessed by Clinica:
+# First, we will use the `getlabels` function of ClinicaDL to identify which
+# participants are cognitively normal or demented.
+# For this we need clinical information stored in the BIDS, and already
+# preprocessed by Clinica:
 # - summary TSV file merging all information of the BIDS (`clinica iotools merge-tsv`)
 # - missing imaging modalities (`clinica iotools check-missing-modalities`)
 #
-# Fortunately these two steps were already completed on ADNI, then we can directly apply `clinicadl tsvtool getlabels`.
+# Fortunately these two steps were already completed on ADNI, then we can
+# directly apply `clinicadl tsvtool getlabels`.
 #
 # ```{note}
 # If you have other labels, you can skip this step and directly go to the next one!
 # ```
+# %%
+!clinicadl tsvtool getlabels \
+    "../data/bids/ADNI_BIDS_clean.tsv" \
+    "../data/bids/missing_mods" \
+    "../data/labels_list/"
 
-# !clinicadl tsvtool getlabels \
-#     "/Volumes/dtlake01.aramis/datasets/adni/bids/ADNI_BIDS_clean.tsv" \
-#     "/Volumes/dtlake01.aramis/datasets/adni/bids/missing_mods" \
-#     "../data/labels_list/"
+# %% [markdown]
+# One TSV file will be created for each diagnosis label: CN (cognitively normal)
+# and AD (Alzheimer's disease). You can find the options used to create these
+# files in the JSON file `getlabels.json`
+# %%
+!tree ../data/labels_list/
 
-# One TSV file will be created for each diagnosis label: CN (cognitively normal) and AD (Alzheimer's disease). You can find the options used to create these files in the JSON file `getlabels.json`
-
-# !tree ../data/labels_list/
-
-# Then we can analyse our populations with the analysis tool
-
-# !clinicadl tsvtool analysis \
-#     "/Volumes/dtlake01.aramis/datasets/adni/bids/ADNI_BIDS_clean.tsv" \
-#     "../data/labels_list" \
-#     "../data/analysis.tsv"
-
+# %% [markdown]
+# Then we can analyse our populations with the analysis tool:
+# %%
+!clinicadl tsvtool analysis \
+    "../data/bids/ADNI_BIDS_clean.tsv" \
+    "../data/labels_list" \
+    "../data/analysis.tsv"
+# %%
 import pandas as pd
 df = pd.read_csv("../data/analysis.tsv", sep="\t")
 display(df)
 
-
-# To display more nicely the output we implemented in this notebook `display_table`:
+# To display more nicely the output we implemented in this notebook
+# `display_table`:
 
 def display_table(table_path):
     """Custom function to display the clinicadl tsvtool analysis output"""
@@ -69,22 +97,29 @@ def display_table(table_path):
 
 display_table("../data/analysis.tsv")
 
+# %%[markdown]
 # ## Create the test set
 #
-# We put 100 participants in the test set with the split `function` of ClinicaDL.
-# This function ensures that there is no significant difference in the age and sex distributions between the train and test sets.
+# We put 100 participants in the test set with the split `function` of
+# ClinicaDL.
+# This function ensures that there is no significant difference in the age and
+# sex distributions between the train and test sets.
 #
+# %%
 # ![split](../images/test_split.png)
 
 # !clinicadl tsvtool split ../data/labels_list --subset_name test --n_test 100
 
 # !tree ../data/labels_list
 
+# %%[markdown]
 # ## Create the cross-validation
 #
-# We choose to use a 2-fold validation (to avoid spending too much time on training).
+# We choose to use a 2-fold validation (to avoid spending too much time on
+# training).
 # We use the sex as stratification variable.
 
+# %%
 # !clinicadl tsvtool kfold ../data/labels_list/train --n_splits 2 --stratification sex
 
 # !tree ../data/labels_list
