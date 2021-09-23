@@ -1,0 +1,13 @@
+{
+    "merged_tsv": "/Volumes/dtlake01.aramis/datasets/adni/bids/ADNI_BIDS_clean.tsv",
+    "missing_mods": "/Volumes/dtlake01.aramis/datasets/adni/bids/missing_mods",
+    "diagnoses": [
+        "AD",
+        "CN"
+    ],
+    "modality": "t1w",
+    "restriction_path": null,
+    "time_horizon": 36,
+    "variables_of_interest": null,
+    "remove_smc": true
+}
