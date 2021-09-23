@@ -24,8 +24,8 @@
 # ```{note}
 # To run this notebook without editing the path to the data, create symbolic links to the BIDS
 # and the CAPS:
-# ln -s /network/lustre/dtlake01/aramis/datasets/adni/bids ./bids
-# ln -s /network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021/ ./caps_v202
+# ln -s /network/lustre/dtlake01/aramis/datasets/adni/bids ./data/bids
+# ln -s /network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021/ ./data/caps_v202
 # ```
 # %% [markdown]
 # ## Find diagnosis labels
@@ -97,7 +97,7 @@ def display_table(table_path):
 
 display_table("../data/analysis.tsv")
 
-# %%[markdown]
+# %% [markdown]
 # ## Create the test set
 #
 # We put 100 participants in the test set with the split `function` of
@@ -112,7 +112,7 @@ display_table("../data/analysis.tsv")
 
 # !tree ../data/labels_list
 
-# %%[markdown]
+# %% [markdown]
 # ## Create the cross-validation
 #
 # We choose to use a 2-fold validation (to avoid spending too much time on
