@@ -1,7 +1,14 @@
-# CONFIG FILE FOR TESTS
+# Config file for tutotiel
 [Cross_validation]
 n_splits = 2
-split = [0]
+split = []
+
+[Classification]
+label = "sex"
 
 [Optimization]
 epochs = 1
+
+[Data]
+multi_cohort = false
+diagnoses = ["CN"]
