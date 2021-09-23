@@ -53,13 +53,34 @@
 # slices.
 # Our images comes from a synthetic dataset containing images with random noise,
 # obtained with `clinicadl generate`. 
-
+# %% [markdown]
+# The configuration file `train_cnofig.toml`
+# ```[toml]
+# # Config file for tutotiel
+# [Cross_validation]
+# n_splits = 2
+# split = []
+#
+# [Classification]
+# label = "sex"
+# 
+# [Optimization]
+# epochs = 1
+#
+# [Data]
+# multi_cohort = false
+# diagnoses = ["CN"]
+# ```
+# Mani other variables can be configured, [see the
+# documentation](https://clinicadl.readthedocs.io/en/stable/Train/Introduction/).
 # %%
-! clinicadl train classification ../data/random_example extract_image.json ../data/labels_list ../data/out -c ../data/train_config.toml 
+! clinicadl train classification ../data/caps_v2021 extract_image_t1_linear.json ../data/labels_list/train ../data/out -c ../data/train_config.toml 
+
 
 # %% [markdown]
 # ## Example 2: training using only slices of the image
-! clinicadl train classification ../data/random_example extract_slice.json ../data/labels_list ../data/out -c ../data/train_config.toml 
+# %%
+! clinicadl train classification ../data/random_example extract_slice.json ../data/labels_list/train ../data/out -c ../data/train_config.toml 
 # %% [markdown]
 # ## Visualization of the `MAPS`:
 # %%
