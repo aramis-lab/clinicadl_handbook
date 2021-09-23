@@ -45,14 +45,24 @@
 
 # %%
 # Download the data
-! wget --no-check-certificate --progress=bar:force -O ../data/RandomCaps.tar.gz https://aramislab.paris.inria.fr/files/data/databases/tuto2/RandomCaps.tar.gz
+#! wget --no-check-certificate --progress=bar:force -O ../data/RandomCaps.tar.gz https://aramislab.paris.inria.fr/files/data/databases/tuto2/RandomCaps.tar.gz
 ! tar xf ../data/RandomCaps.tar.gz -C ../data/
 # %% [markdown]
-# ## Example 1: training uning the whole image
-# Lets suposse that we want to train a network of preprocessed images using slices:
-#  
+# ## Example 1: training using the whole image
+# Lets suposse that we want to train a network of preprocessed images using
+# slices.
+# Our images comes from a synthetic dataset containing images with random noise,
+# obtained with `clinicadl generate`. 
+
 # %%
-! clinicadl train classification ../data/random_example extract_slice.json ../data/labels_list ../data/out -c ../data/train_config.toml 
+! clinicadl train classification ../data/random_example extract_image.json ../data/labels_list ../data/out -c ../data/train_config.toml 
 
 # %% [markdown]
 # ## Example 2: training using only slices of the image
+! clinicadl train classification ../data/random_example extract_slice.json ../data/labels_list ../data/out -c ../data/train_config.toml 
+# %% [markdown]
+# ## Visualization of the `MAPS`:
+# %%
+! tree -L 4 ../data/out
+
+# %%
