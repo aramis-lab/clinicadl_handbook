@@ -1,0 +1,54 @@
+!clinicadl tsvtool getlabels \
+    "../data/bids/ADNI_BIDS_clean.tsv" \
+    "../data/bids/missing_mods" \
+    "../data/labels_list/"
+
+!tree ../data/labels_list/
+
+!clinicadl tsvtool analysis \
+    "../data/bids/ADNI_BIDS_clean.tsv" \
+    "../data/labels_list" \
+    "../data/analysis.tsv"
+
+import pandas as pd
+df = pd.read_csv("../data/analysis.tsv", sep="\t")
+display(df)
+
+# To display more nicely the output we implemented in this notebook
+# `display_table`:
+
+def display_table(table_path):
+    """Custom function to display the clinicadl tsvtool analysis output"""
+    import pandas as pd
+
+    OASIS_analysis_df = pd.read_csv(table_path, sep='\t')
+    OASIS_analysis_df.set_index("diagnosis", drop=True, inplace=True)
+    columns = ["n_subjects", "n_scans",
+               "mean_age", "std_age", "min_age", "max_age",
+               "sexF", "sexM",
+               "mean_MMSE", "std_MMSE", "min_MMSE", "max_MMSE",
+               "CDR_0", "CDR_0.5", "CDR_1", "CDR_2", "CDR_3"]
+
+    # Print formatted table
+    format_columns = ["subjects", "scans", "age", "sex", "MMSE", "CDR"]
+    format_df = pd.DataFrame(index=OASIS_analysis_df.index, columns=format_columns)
+    for idx in OASIS_analysis_df.index.values:    
+        row_str = "%i; %i; %.1f ± %.1f [%.1f, %.1f]; %iF / %iM; %.1f ± %.1f [%.1f, %.1f]; 0: %i, 0.5: %i, 1: %i, 2:%i, 3:%i" % tuple([OASIS_analysis_df.loc[idx, col] for col in columns])
+        row_list = row_str.split(';')
+        format_df.loc[idx] = row_list
+
+    format_df.index.name = None
+    display(format_df)
+
+
+display_table("../data/analysis.tsv")
+
+# ![split](../images/test_split.png)
+
+!clinicadl tsvtool split ../data/labels_list --subset_name test --n_test 100
+
+!tree ../data/labels_list
+
+!clinicadl tsvtool kfold ../data/labels_list/train --n_splits 2 --stratification sex
+
+!tree ../data/labels_list

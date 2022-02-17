@@ -1,0 +1,4 @@
+# Uncomment this cell if running in Google Colab
+!pip install clinicadl==0.2.1
+!curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
+!tar xf dataOasis.tar.gz

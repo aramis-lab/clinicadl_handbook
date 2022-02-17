@@ -1,0 +1,65 @@
+# Book settings
+title: Deep Learning Classification from brain MRI
+author: The Aramis Team
+copyright: "2020-2022"
+logo: "images/logoAramis.png"
+description: Tutorial for deep learning classification from brain MRIs
+
+exclude_patterns:
+  - _build
+  - Thumbs.db
+  - .DS_Store
+  - "**.ipynb_checkpoints"
+  - "figures"
+  - "datasets"
+  - "README.md"
+
+repository:
+  url: https://github.com/aramis-lab/tuto_clinicadl
+  path_to_book: jupyter-book/
+  branch: main
+
+launch_buttons:
+  colab_url: https://colab.research.google.com
+  # jupyterhub_url: "localhost:8080"  # The URL for your JupyterHub. (e.g., https://datahub.berkeley.edu)
+
+######################################################################################
+# Execution settings
+execute:
+  execute_notebooks: off # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
+  #cache: "_build/.jupyter_cache/" # A path to the jupyter cache that will be used to store execution artifacs. Defaults to `_build/.jupyter_cache/`
+  exclude_patterns:
+    - "background"
+  timeout: 240
+
+html:
+  #favicon: _static/favicon.ico
+  google_analytics_id: UA-173464732-1
+  home_page_in_navbar: false
+  use_edit_page_button: true
+  use_repository_button: true
+  use_issues_button: true
+  baseurl: https://aramislab.paris.inria.fr/clinicadl/tuto/
+
+sphinx:
+  config:
+    #html_theme: pydata_sphinx_theme
+    nb_custom_formats:
+      .py:
+        - jupytext.reads
+        - fmt: py:percent
+    mathjax3_config:
+      TeX:
+        Macros:
+          "N": "\\mathbb{N}"
+          "floor": ["\\lfloor#1\\rfloor", 1]
+          "bmat": ["\\left[\\begin{array}"]
+          "emat": ["\\end{array}\\right]"]
+  extra_extensions:
+    - sphinx_click.ext
+    - sphinx_tabs.tabs
+
+latex:
+  latex_engine: "xelatex"
+  latex_documents:
+    targetname: book.tex

@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinical context: Alzheimer’s disease &#8212; Deep Learning Classification from brain MRI</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://aramislab.paris.inria.fr/clinicadl/tuto/clinical.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deep learning classification: application to neuroimaging" href="deep_learning.html" />
+    <link rel="prev" title="Deep learning classification from brain MRI: Application to Alzheimer’s disease" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-173464732-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logoAramis.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Deep Learning Classification from brain MRI</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Background
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Clinical context
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="deep_learning.html">
+   Deep learning classification
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/preprocessing.html">
+   Prepare your neuroimaging data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/inference.html">
+   Perform classification using pretrained models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Going further
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/tsvtools.html">
+   Define your population
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/training.html">
+   Train your own models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/interpretability.html">
+   Interpret trained models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Architecture search
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/generate.html">
+   Debug non-automated search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/random_search.html">
+   Random search
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/clinical.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/aramis-lab/tuto_clinicadl"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/aramis-lab/tuto_clinicadl/issues/new?title=Issue%20on%20page%20%2Fclinical.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/aramis-lab/tuto_clinicadl/edit/main/jupyter-book/clinical.md"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#publicly-available-alzheimer-s-disease-datasets">
+   Publicly available Alzheimer’s disease datasets
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adni">
+     ADNI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#aibl">
+     AIBL
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#oasis">
+     OASIS
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#labels-of-interest-in-the-context-of-alzheimer-s-disease">
+   Labels of interest in the context of Alzheimer’s disease
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-word-on-the-oasis-dataset">
+   A word on the OASIS dataset
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Clinical context: Alzheimer’s disease</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#publicly-available-alzheimer-s-disease-datasets">
+   Publicly available Alzheimer’s disease datasets
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adni">
+     ADNI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#aibl">
+     AIBL
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#oasis">
+     OASIS
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#labels-of-interest-in-the-context-of-alzheimer-s-disease">
+   Labels of interest in the context of Alzheimer’s disease
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-word-on-the-oasis-dataset">
+   A word on the OASIS dataset
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="clinical-context-alzheimer-s-disease">
+<h1>Clinical context: Alzheimer’s disease<a class="headerlink" href="#clinical-context-alzheimer-s-disease" title="Permalink to this headline">¶</a></h1>
+<p>Alzheimer’s disease (AD) is the main type of dementia, which are diseases characterised by memory troubles, behavioural changes and cognitive issues. Given that the processes causing AD start many years before the symptoms appear, it is of great importance to find a way to identify, as early as possible, if a certain subject will develop AD dementia. This is important to provide adequate care to the patient and information to the family. Moreover, this is vital in order to provide an effective treatment in the future, as therapies are more likely to be effective if administered early. It is thus important to identify which patients should be included in clinical trials and/or could benefit of the treatment.</p>
+<p>The diagnosis of AD mainly relies on clinical evaluation and cognitive assessment using neuropsychological tests. However, diagnosis has evolved thanks to advances in neuroimaging. Neuroimaging provides useful information such as atrophy due to gray matter loss with anatomical magnetic resonance imaging (MRI) or hypometabolism with <sup>18</sup>F-fluorodeoxyglucose positron emission tomography (FDG PET). A major interest is then to analyse those markers to identify dementia at an early stage.</p>
+<div class="section" id="publicly-available-alzheimer-s-disease-datasets">
+<h2>Publicly available Alzheimer’s disease datasets<a class="headerlink" href="#publicly-available-alzheimer-s-disease-datasets" title="Permalink to this headline">¶</a></h2>
+<p>The first thing that we need to start working on MRI classification is a dataset. Three publicly available datasets have been mainly used for the study of AD: the Alzheimer’s Disease Neuroimaging Initiative (ADNI), the Australian Imaging, Biomarkers and Lifestyle (AIBL) and the Open Access Series of Imaging Studies (OASIS).</p>
+<img src="./images/logo_datasets.png" style="width: 500px;" alt="logos of the different databases" class="center">
+<div class="section" id="adni">
+<h3>ADNI<a class="headerlink" href="#adni" title="Permalink to this headline">¶</a></h3>
+<p>The primary goal of <a class="reference external" href="http://adni.loni.usc.edu/">ADNI</a> has been to test whether MRI, PET, other biological markers, and clinical and neuropsychological assessment can be combined to measure the progression of mild cognitive impairment and early AD. The ADNI study is composed of 4 cohorts: ADNI-1, ADNI-GO, ADNI-2 and ADNI-3. These cohorts are dependant and longitudinal, meaning that one cohort may include the same patient more than once and that different cohorts may include the same patients.</p>
+</div>
+<div class="section" id="aibl">
+<h3>AIBL<a class="headerlink" href="#aibl" title="Permalink to this headline">¶</a></h3>
+<p>Similarly to ADNI, <a class="reference external" href="https://aibl.csiro.au/adni/index.html">AIBL</a> seeks to discover which biomarkers, cognitive characteristics, and health and lifestyle factors determine the development of AD. The AIBL project includes a longitudinal cohort of patients. Several modalities are present in the dataset, such as clinical and imaging (MRI and PET) data, as well as the analysis of blood and CSF samples.</p>
+</div>
+<div class="section" id="oasis">
+<h3>OASIS<a class="headerlink" href="#oasis" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://www.oasis-brains.org/">OASIS</a> project includes three cohorts, OASIS- 1, OASIS-2 and OASIS-3. The first cohort is only cross-sectional, whereas the other two are longitudinal. Available data is more limited than in ADNI with only few clinical tests and imaging data (MRI, and PET only in OASIS-3).</p>
+<p><em>Data  used  in this  tutorial  were  obtained  from  the  ADNI  database (<a class="reference external" href="http://adni.loni.usc.edu/">adni.loni.usc.edu</a>) and the OASIS project (<a class="reference external" href="https://www.oasis-brains.org/">www.oasis-brains.org</a>).</em></p>
+</div>
+</div>
+<div class="section" id="labels-of-interest-in-the-context-of-alzheimer-s-disease">
+<h2>Labels of interest in the context of Alzheimer’s disease<a class="headerlink" href="#labels-of-interest-in-the-context-of-alzheimer-s-disease" title="Permalink to this headline">¶</a></h2>
+<p>During the evolution of the disease, the diagnostic status of the participants may progress from cognitively normal, then to mild cognitive impairment, and finally to AD dementia. This diagnostic status is established by clinicians based on cognitive scores such as the Mini-Mental State Evaluation (MMSE) and the Clinical Dementia Rating (CDR). Even though assessment protocols are standardized, these scores can be highly variable based on the examiner and the physical/psychological condition of the patient during the test.</p>
+<blockquote>
+<div><p>The goal of ADNI neuropsychological testing is to use standardized procedures to objectively and reliably assess a subject’s cognitive abilities.  However, <strong>neuropsychological testing is not a mechanical process</strong>. The examiner encounters a wide range of emotional and physical problems that can interfere with testing, and the skill and judgment of the examiner often affect the subject’s willingness to be tested and the effort he/she invests.</p>
+</div></blockquote>
+<p><i><div style="text-align: right"> Excerpt from the <a href="http://adni.loni.usc.edu/wp-content/uploads/2010/09/ADNI_GeneralProceduresManual.pdf">ADNI general procedure manual</a>, p.76 </div></i></p>
+<p>To limit the influence of the variabilities in the results of neuropsychological tests, diagnostic labels can be defined based on the stability of the diagnostic status over time:</p>
+<ul class="simple">
+<li><p><strong>CN</strong> (cognitively normal): corresponds to subjects who were diagnosed as <em>cognitively normal</em> during all their follow-up;</p></li>
+<li><p><strong>AD</strong> (Alzheimer’s disease): corresponds to subjects who were diagnosed as <em>demented</em> during all their follow-up;</p></li>
+<li><p><strong>MCI</strong> (mild cognitive impairment): corresponds to subjects who were diagnosed as <em>mild cognitive impairment</em> at baseline, who did not encounter multiple reversions and conversions and who did not convert back to cognitively normal;</p></li>
+<li><p><strong>pMCI</strong> (progressive MCI): corresponds to sessions of subjects who were diagnosed as <em>mild cognitive impairment</em> at baseline, and <em>progressed to dementia</em> during the <font color='blue'> 36 months (time horizon)</font> following the current visit;</p></li>
+<li><p><strong>sMCI</strong> (stable MCI): correspond to sessions of subjects who were diagnosed as <em>mild cognitive impairment</em> at baseline, <em>remained stable</em> during the <font color='blue'> 36 months (time horizon)</font> following the current visit and <em>never progressed to dementia</em>.</p></li>
+</ul>
+<div class="alert alert-block alert-info">
+<b>Time horizon:</b><p>
+    In this notebook, we set the time horizon to 36 months.
+    The time horizon allows us to study the stability of MCI patients and to sort them between sMCI and pMCI classes.</p>
+    <img src="./images/MCI_stability.png">
+</div>
+</div>
+<div class="section" id="a-word-on-the-oasis-dataset">
+<h2>A word on the OASIS dataset<a class="headerlink" href="#a-word-on-the-oasis-dataset" title="Permalink to this headline">¶</a></h2>
+<p>For this tutorial we have chosen to use <a class="reference external" href="https://www.oasis-brains.org/">OASIS-1</a> because of its easy access, however it is quite different from other commonly used datasets ADNI and AIBL.</p>
+<p>In OASIS-1, only two diagnostic status are given:</p>
+<ul class="simple">
+<li><p>CN (corresponding to a null CDR),</p></li>
+<li><p>AD (corresponding to a non-null CDR).</p></li>
+</ul>
+<p>This definition of the diagnostic status does not correspond to the one of ADNI for which it is based on other neuropsychological scores corrected by the level of education of participants. Moreover, in ADNI, a CDR of 0.5 leads to the MCI status whereas in OASIS it corresponds to “probable AD” as for all patients with a non-null CDR.</p>
+<p>Finally, be aware that the OASIS-1 dataset is cross-sectional and not longitudinal, meaning that there is only one asssessment per participant. This also means that the stability of the diagnostic status cannot be assessed.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Deep learning classification from brain MRI: Application to Alzheimer’s disease</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="deep_learning.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Deep learning classification: application to neuroimaging</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By The Aramis Team<br/>
+    
+        &copy; Copyright 2020-2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

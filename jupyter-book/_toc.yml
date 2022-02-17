@@ -1,0 +1,30 @@
+format: jb-book
+root: index
+title: Deep Learning classification from brain MRI
+parts:
+  - caption: Background
+    chapters:
+      - file: clinical
+        title: Clinical context
+      - file: deep_learning
+        title: Deep learning classification
+  - caption: The basics
+    chapters:
+      - file: notebooks/preprocessing
+        title: Prepare your neuroimaging data
+      - file: notebooks/inference
+        title: Perform classification using pretrained models
+  - caption: Going further
+    chapters:
+      - file: notebooks/tsvtools
+        title: Define your population
+      - file: notebooks/training
+        title: Train your own models
+      - file: notebooks/interpretability
+        title: Interpret trained models
+  - caption: Architecture search
+    chapters:
+      - file: notebooks/generate
+        title: Debug non-automated search
+      - file: notebooks/random_search
+        title: Random search

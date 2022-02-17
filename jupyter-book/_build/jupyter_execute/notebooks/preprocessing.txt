@@ -1,0 +1,54 @@
+# Uncomment the next lines if running in Google Colab
+!pip install clinicadl==0.2.1
+!/bin/bash -c "$(curl -k https://aramislab.paris.inria.fr/files/software/scripts/install_conda_ants.sh)"
+# from os import environ
+# environ['ANTSPATH']="/usr/local/bin"
+
+# Download the example dataset of 4 images
+!curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisDatabase.tar.gz -o OasisDatabase.tar.gz
+!tar xf OasisDatabase.tar.gz
+
+# Convert the example dataset to BIDS
+!clinica convert oasis-to-bids OasisDatabase/RawData OasisDatabase/ClinicalData OasisBids_example
+
+!clinica run t1-linear ./OasisBids_example ./OasisCaps_example --n_procs 2
+
+from nilearn import plotting
+
+suffix = '_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
+
+sub1 = 'OasisCaps_example/subjects/sub-OASIS10016/ses-M00/t1_linear/sub-OASIS10016_ses-M00' + suffix 
+sub2 = 'OasisCaps_example/subjects/sub-OASIS10109/ses-M00/t1_linear/sub-OASIS10109_ses-M00' + suffix
+sub3 = 'OasisCaps_example/subjects/sub-OASIS10304/ses-M00/t1_linear/sub-OASIS10304_ses-M00' + suffix
+sub4 = 'OasisCaps_example/subjects/sub-OASIS10363/ses-M00/t1_linear/sub-OASIS10363_ses-M00' + suffix
+
+plotting.plot_anat(sub1, title="sub-OASIS10016")
+plotting.plot_anat(sub2, title="sub-OASIS10109")
+plotting.plot_anat(sub3, title="sub-OASIS10304")
+plotting.plot_anat(sub4, title="sub-OASIS10363")
+plotting.show()
+
+!clinicadl preprocessing quality-check t1-linear OasisCaps_example QC_result.tsv
+
+# After execution of the quality check procedure, the `QC_result.tsv` file will
+# look like this:
+
+# | participant_id | session_id | pass_probability   | pass  |
+# |----------------| -----------|--------------------|-------|
+# | sub-OASIS10016 | ses-M00    | 0.9936990737915039 | True  |
+# | sub-OASIS10109 | ses-M00    | 0.9772214889526367 | True  |
+# | sub-OASIS10363 | ses-M00    | 0.7292165160179138 | True  |
+# | sub-OASIS10304 | ses-M00    | 0.1549495905637741 | <font color="red">False</font> |
+
+# Based on this TSV file, participant `OASIS10304` should be discarded for the
+# rest of your anlysis. If you compare its registration with [MNI152NLin2009cSym
+# template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html),
+# you will see that temporal regions are misaligned as well as occipital regions
+# and cerebellum leading to this low probabilty value. ;-)
+
+!curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
+!tar xf OasisCaps1.tar.gz
+
+!clinica run deeplearning-prepare-data ./OasisCaps_example t1-linear image
+
+!tree -L 3 ./OasisCaps_example/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/

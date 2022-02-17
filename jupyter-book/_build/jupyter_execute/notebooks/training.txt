@@ -1,0 +1,27 @@
+# Uncomment this cell if running in Google Colab
+!pip install clinicadl==0.2.1
+
+import torch
+
+# Check if a GPU is available
+print('GPU is available', torch.cuda.is_available())
+
+# <div class="alert alert-block alert-warning">
+# <b>Data used for training:</b><p>
+#     Because they are time-costly, the preprocessing steps presented in the beginning of this tutorial were only executed on a subset of OASIS-1, but obviously two participants are insufficient to train a network! To obtain more meaningful results, you should retrieve the whole <a href="https://www.oasis-brains.org/">OASIS-1</a> dataset and run the training based on the labels and splits performed in the previous section.</p>
+#     <p>Of course, you can use another dataset, but then you will have to perform again <a href="./label_extraction.ipynb">the extraction of labels and data splits</a> on this dataset.</p>
+# </div>
+
+! clinicadl train -h
+
+# Download the data
+! wget --no-check-certificate --progress=bar:force -O ../data/RandomCaps.tar.gz https://aramislab.paris.inria.fr/files/data/databases/tuto2/RandomCaps.tar.gz
+! tar xf ../data/RandomCaps.tar.gz -C ../data/
+
+! clinicadl train classification ../data/caps_v2021 extract_image_t1_linear.json ../data/labels_list/train ../data/out -c ../data/train_config.toml 
+
+! clinicadl train classification ../data/random_example extract_slice.json ../data/labels_list/train ../data/out -c ../data/train_config.toml 
+
+! tree -L 4 ../data/out
+
+
