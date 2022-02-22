@@ -16,7 +16,7 @@ parts:
         title: Perform classification using pretrained models
   - caption: Going further
     chapters:
-      - file: notebooks/tsvtools
+      - file: notebooks/label_extraction
         title: Define your population
       - file: notebooks/training
         title: Train your own models
