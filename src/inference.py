@@ -58,15 +58,16 @@
 #     href="https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs">ClinicaDL
 #     documentation</a>) for further info.</p>
 # </div>
+
 # ```{tip}
-#     You can use your own previuolsy trained model (if you have used PyTorch
-#     for that). Indeed, PyTorch stores model weights in a file with extension
-#     `pth.tar`. You can place this file into the `models`` folder and try to
-#     follow the same structure that is described above. You also need to fill a
-#     `commandline.json` file with all the parameters used during the training
-#     (see <a [ClinicaDL
-#     documentation](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs)
-#     for further info.
+# You can use your own previuolsy trained model (if you have used PyTorch for
+# that). Indeed, PyTorch stores model weights in a file with extension
+# `pth.tar`. You can place this file into the `models` folder and try to follow
+# the same structure that is described above. You also need to fill a
+# `commandline.json` file with all the parameters used during the training (see
+# [ClinicaDL
+# documentation](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs)
+# for further info.
 # ```
 
 # <div class="alert alert-block alert-info">
