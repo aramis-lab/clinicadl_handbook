@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.5'
-#       jupytext_version: 1.11.5
+#       jupytext_version: 1.13.3
 #   kernelspec:
 #     display_name: Python 3
 #     name: python3
@@ -49,10 +49,25 @@
 
 # <div class="alert alert-block alert-success">
 # <b>Tip:</b><p>
-#     You can use your own previuolsy trained model (if you have used PyTorch for that). Indeed, PyTorch stores model weights in a file with extension <i>pth.tar</i>. You can place this file into the <i>models</i> folder and try to follow the same structure that is described above. You also need to fill a <i>commandline.json</i> file with all the parameters used during the training (see <a href="https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs">ClinicaDL documentation</a>) for further info.</p>
-    
+#     You can use your own previuolsy trained model (if you have used PyTorch
+#     for that). Indeed, PyTorch stores model weights in a file with extension
+#     <i>pth.tar</i>. You can place this file into the <i>models</i> folder and
+#     try to follow the same structure that is described above. You also need to
+#     fill a <i>commandline.json</i> file with all the parameters used during
+#     the training (see <a
+#     href="https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs">ClinicaDL
+#     documentation</a>) for further info.</p>
 # </div>
-
+# ```{tip}
+#     You can use your own previuolsy trained model (if you have used PyTorch
+#     for that). Indeed, PyTorch stores model weights in a file with extension
+#     `pth.tar`. You can place this file into the `models`` folder and try to
+#     follow the same structure that is described above. You also need to fill a
+#     `commandline.json` file with all the parameters used during the training
+#     (see <a [ClinicaDL
+#     documentation](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs)
+#     for further info.
+# ```
 
 # <div class="alert alert-block alert-info">
 # <b>Soft voting:</b><p>
@@ -65,14 +80,13 @@
 #     <li> <i>p<sub>i</sub><sup>AD</sup></i> is the probability of AD for patch <i>i</i></li>
 #     <li> <i>bacc<sub>i</sub></i> is the validation balanced accuracy for patch <i>i</i></li>
 #     </ul>
-
 # </div>
 # %% [markdown]
 # ## Download the pretrained models
 
-
 # ```{warning} 
-# **Warning:** For the sake of the demonstration, this tutorial uses truncated versions of the models, containing only the first fold.
+# For the sake of the demonstration, this tutorial uses truncated versions of
+# the models, containing only the first fold.
 # ```
 
 # In this notebook, we propose to use 4 specific models , all of them where trained to predict the classification task AD vs CN. (The experiment corresponding to the pretrained model in eTable 4 of the paper mentioned above is shown below):

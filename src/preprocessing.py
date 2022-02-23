@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.5'
-#       jupytext_version: 1.11.5
+#       jupytext_version: 1.13.3
 #   kernelspec:
 #     display_name: Python 3
 #     name: python3
@@ -14,12 +14,12 @@
 
 # %%
 # Uncomment the next lines if running in Google Colab
-# !pip install clinicadl==0.2.1
-# !/bin/bash -c "$(curl -k https://aramislab.paris.inria.fr/files/software/scripts/install_conda_ants.sh)"
-# from os import environ
-# environ['ANTSPATH']="/usr/local/bin"
+# # !pip install clinicadl==0.2.1
+# # !/bin/bash -c "$(curl -k https://aramislab.paris.inria.fr/files/software/scripts/install_conda_ants.sh)"
+# # from os import environ
+# # environ['ANTSPATH']="/usr/local/bin"
 # %% [markdown]
-# Prepare your neuroimaging data
+# # Prepare your neuroimaging data
 
 # Different steps to perform before training your model or performing classification. In this notebook, we will see how to:
 
@@ -29,11 +29,24 @@
 # 4. **Extract tensors** from your preprocessed data.
 
 # %% [markdown]
-## Organization of neuroimaging data: the Brain Imaging Data Structure (BIDS)
+# # Organization of neuroimaging data: the Brain Imaging Data Structure (BIDS)
 
-# Before processing your neuroimaging data, several steps may be needed. These steps can include converting the images to a format readable by neuroimaging software tools (e.g. converting to NIfTI) and organizing your files in a specific way. Several tools will require that your clinical and imaging data follow the **Brain Imaging Data Structure (BIDS)** [(Gorgolewski et al., 2016)](https://doi.org/10.1038/sdata.2016.44). The BIDS standard is based on a file hierarchy rather than on a database management system, thus facilitating its deployment. Thanks to its clear and simple way to describe neuroimaging and behavioral data, it has been easily adopted by the neuroimaging community. Organizing a dataset following the BIDS hierarchy simplifies the execution of neuroimaging software tools. 
+# Before processing your neuroimaging data, several steps may be needed. These
+# steps can include converting the images to a format readable by neuroimaging
+# software tools (e.g. converting to NIfTI) and organizing your files in a
+# specific way. Several tools will require that your clinical and imaging data
+# follow the **Brain Imaging Data Structure (BIDS)** [(Gorgolewski et al.,
+# 2016)](https://doi.org/10.1038/sdata.2016.44). The BIDS standard is based on a
+# file hierarchy rather than on a database management system, thus facilitating
+# its deployment. Thanks to its clear and simple way to describe neuroimaging
+# and behavioral data, it has been easily adopted by the neuroimaging community.
+# Organizing a dataset following the BIDS hierarchy simplifies the execution of
+# neuroimaging software tools. 
 
-# Here is a general overview of the BIDS structure. If you need more details, please check the [documentation](https://bids-specification.readthedocs.io/en/latest/) on the [website](http://bids.neuroimaging.io/).
+# Here is a general overview of the BIDS structure. If you need more details,
+# please check the
+# [documentation](https://bids-specification.readthedocs.io/en/latest/) on the
+# [website](http://bids.neuroimaging.io/).
 
 # <pre>
 # BIDS_Dataset/
@@ -52,7 +65,10 @@
 # </pre>
 
 
-# The OASIS dataset contains imaging data in ANALYZE format and does not provide a BIDS version of the data. To solve this issue, [Clinica provides a converter](http://www.clinica.run/doc/Converters/OASIS2BIDS/) to automatically convert ANALYZE files into NIfTI following the BIDS standard.
+# The OASIS dataset contains imaging data in ANALYZE format and does not provide
+# a BIDS version of the data. To solve this issue, [Clinica provides a
+# converter](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Converters/OASIS2BIDS/)
+# to automatically convert ANALYZE files into NIfTI following the BIDS standard.
 
 # A command line instruction is enough to get the data in BIDS format:
 
@@ -172,7 +188,7 @@ plotting.show()
 
 # The quality check can be run with the following command line:
 # ```
-# clinicadl quality-check <preprocessing> <caps_directory> <output_path>
+# !clinicadl quality-check <preprocessing> <caps_directory> <output_path>
 # ```
 # where:
 
@@ -181,7 +197,7 @@ plotting.show()
 # - `output_path` is the path to the output TSV file containing QC results.
 # %%
 !clinicadl preprocessing quality-check t1-linear OasisCaps_example QC_result.tsv
-# %%
+# %% [markdown]
 # After execution of the quality check procedure, the `QC_result.tsv` file will
 # look like this:
 
@@ -220,8 +236,12 @@ plotting.show()
 # ```
 # where:
 
-# - `caps_directory` is the folder containing the results of the [`t1-linear` pipeline](#Preprocess-raw-images-with-t1-linear-pipeline) and the output of the present command, both in a CAPS hierarchy.
-# - `tensor_format` is the format of the extracted tensors. You can choose between `image` to convert to PyTorch tensor the whole 3D image, `patch` to extract 3D patches and `slice` to extract 2D slices from the image.
+# - `caps_directory` is the folder containing the results of the [`t1-linear`
+# pipeline](#Preprocess-raw-images-with-t1-linear-pipeline) and the output of
+# the present command, both in a CAPS hierarchy.
+# - `tensor_format` is the format of the extracted tensors. You can choose
+# between `image` to convert to PyTorch tensor the whole 3D image, `patch` to
+# extract 3D patches and `slice` to extract 2D slices from the image.
 
 # Output files are stored into a new folder (inside the CAPS) and follows a struture like this:
 
