@@ -59,7 +59,7 @@
 #     documentation</a>) for further info.</p>
 # </div>
 
-# ```{tip}
+# :::{tip}
 # You can use your own previuolsy trained model (if you have used PyTorch for
 # that). Indeed, PyTorch stores model weights in a file with extension
 # `pth.tar`. You can place this file into the `models` folder and try to follow
@@ -68,27 +68,35 @@
 # [ClinicaDL
 # documentation](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs)
 # for further info.
-# ```
+# :::
 
 # <div class="alert alert-block alert-info">
 # <b>Soft voting:</b><p>
-#     For classification tasks that take as input a part of the MRI volume (<i>patch, roi or slice</i>), an ensemble operation is needed to obtain the label at the image level.</p>
-#     <p>For example, size and stride of 50 voxels on linear preprocessing leads to the classification of 36 patches, but they are not all equally meaningful. Patches that are in the corners of the image are mainly composed of background and skull and may be misleading, whereas patches within the brain may be more useful.</p>
-#     <img src="./images/patches.png">
-#     <p>Then the image-level probability of AD <i>p<sup>AD</sup></i> will be:</p>
-#     $$ p^{AD} = {\sum_{i=0}^{35} bacc_i * p_i^{AD}}.$$
-#     where:<ul>
-#     <li> <i>p<sub>i</sub><sup>AD</sup></i> is the probability of AD for patch <i>i</i></li>
-#     <li> <i>bacc<sub>i</sub></i> is the validation balanced accuracy for patch <i>i</i></li>
-#     </ul>
+# For classification tasks that take as input a part of the MRI volume
+# (<i>patch, roi or slice</i>), an ensemble operation is needed to obtain the
+# label at the image level.</p>
+# <p>For example, size and stride of 50 voxels on linear preprocessing leads to
+# the classification of 36 patches, but they are not all equally meaningful.
+# Patches that are in the corners of the image are mainly composed of background
+# and skull and may be misleading, whereas patches within the brain may be more
+# useful.</p>
+# <img src="./images/patches.png">
+# <p>Then the image-level probability of AD <i>p<sup>AD</sup></i> will be:</p>
+#
+# $$ p^{AD} = {\sum_{i=0}^{35} bacc_i * p_i^{AD}}.$$
+#
+# where:<ul>
+# <li> <i>p<sub>i</sub><sup>AD</sup></i> is the probability of AD for patch <i>i</i></li>
+# <li> <i>bacc<sub>i</sub></i> is the validation balanced accuracy for patch <i>i</i></li>
+# </ul>
 # </div>
 # %% [markdown]
 # ## Download the pretrained models
 
-# ```{warning} 
+# :::{warning} 
 # For the sake of the demonstration, this tutorial uses truncated versions of
 # the models, containing only the first fold.
-# ```
+# :::
 
 # In this notebook, we propose to use 4 specific models , all of them where trained to predict the classification task AD vs CN. (The experiment corresponding to the pretrained model in eTable 4 of the paper mentioned above is shown below):
 

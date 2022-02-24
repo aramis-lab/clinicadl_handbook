@@ -124,7 +124,7 @@ per subject and one column per modality).
 
 # ### Get the labels
 
-# The 5 labels described in the [first part of the course](./clinical) can be
+# The 5 labels described in the [first part of the course](../clinical) can be
 # extracted with clinicadl using the command:
 
 # ```bash
