@@ -47,7 +47,7 @@
 # </ul>
 
 
-# <div class="admonition note" name="html-admonition" style="background: lightgreen; padding: 10px">
+# <div class="admonition tip" name="html-admonition" style="background: lightgreen; padding: 10px">
 # <p class="title">Tip</p>
 #     You can use your own previuolsy trained model (if you have used PyTorch
 #     for that). Indeed, PyTorch stores model weights in a file with extension
@@ -59,19 +59,8 @@
 #     documentation</a>) for further info.</p>
 # </div>
 
-# :::{tip}
-# You can use your own previuolsy trained model (if you have used PyTorch for
-# that). Indeed, PyTorch stores model weights in a file with extension
-# `pth.tar`. You can place this file into the `models` folder and try to follow
-# the same structure that is described above. You also need to fill a
-# `commandline.json` file with all the parameters used during the training (see
-# [ClinicaDL
-# documentation](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs)
-# for further info.
-# :::
-
-# <div class="alert alert-block alert-info">
-# <b>Soft voting:</b><p>
+# <div class="admonition note" name="html-admonition" style="background: lightgreen; padding: 10px">
+# <p class="title">Soft voting</p>
 # For classification tasks that take as input a part of the MRI volume
 # (<i>patch, roi or slice</i>), an ensemble operation is needed to obtain the
 # label at the image level.</p>
@@ -93,10 +82,11 @@
 # %% [markdown]
 # ## Download the pretrained models
 
-# :::{warning} 
+# <div class="admonition warning" name="html-admonition" style="background: lightgreen; padding: 10px">
+# <p class="title">Warning</p>
 # For the sake of the demonstration, this tutorial uses truncated versions of
 # the models, containing only the first fold.
-# :::
+# </div>
 
 # In this notebook, we propose to use 4 specific models , all of them where trained to predict the classification task AD vs CN. (The experiment corresponding to the pretrained model in eTable 4 of the paper mentioned above is shown below):
 
