@@ -48,6 +48,7 @@ sphinx:
       .py:
         - jupytext.reads
         - fmt: py:percent
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     mathjax3_config:
       TeX:
         Macros:
@@ -64,6 +65,7 @@ parse:
     # don't forget to list any other extensions you want enabled,
     # including those that are enabled by default!
     - html_admonition
+    - amsmath
 
 latex:
   latex_engine: "xelatex"

@@ -45,8 +45,7 @@
 #     <li> <code>model_best.pth.tar</code> corresponds to the model selected when the best validation balanced accuracy was obtained.</li>
 #     <li> <code>validation_{patch|roi|slice}_level_prediction.tsv</code> is specific to patch, roi and slice frameworks and is necessary to perform <b>soft-voting</b>  and find the label at the image level in unbiased way. Weighting the patches based on their performance of input data would bias the result as the classification framework would exploit knowledge of the test data.</li>
 # </ul>
-
-
+#
 # <div class="admonition tip" name="html-admonition" style="background: lightgreen; padding: 10px">
 # <p class="title">Tip</p>
 #     You can use your own previuolsy trained model (if you have used PyTorch
@@ -58,7 +57,7 @@
 #     href="https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#outputs">ClinicaDL
 #     documentation</a>) for further info.</p>
 # </div>
-
+#
 # <div class="admonition note" name="html-admonition" style="background: lightgreen; padding: 10px">
 # <p class="title">Soft voting</p>
 # For classification tasks that take as input a part of the MRI volume
@@ -71,13 +70,30 @@
 # useful.</p>
 # <img src="./images/patches.png">
 # <p>Then the image-level probability of AD <i>p<sup>AD</sup></i> will be:</p>
-#
 # $$ p^{AD} = {\sum_{i=0}^{35} bacc_i * p_i^{AD}}.$$
-#
 # where:<ul>
 # <li> <i>p<sub>i</sub><sup>AD</sup></i> is the probability of AD for patch <i>i</i></li>
 # <li> <i>bacc<sub>i</sub></i> is the validation balanced accuracy for patch <i>i</i></li>
 # </ul>
+# </div>
+#
+# <div class="alert alert-block alert-info">
+# <p class="title">Soft voting</p>
+#    For classification tasks that take as input a part of the MRI volume
+#    (<i>patch, roi or slice</i>), an ensemble operation is needed to obtain the
+#    label at the image level.</p>
+#    <p>For example, size and stride of 50 voxels on linear preprocessing leads to
+#    the classification of 36 patches, but they are not all equally meaningful.
+#    Patches that are in the corners of the image are mainly composed of background
+#    and skull and may be misleading, whereas patches within the brain may be more
+#    useful.</p>
+#    <img src="./images/patches.png">
+#    <p>Then the image-level probability of AD <i>p<sup>AD</sup></i> will be:</p>
+#    $$ p^{AD} = {\sum_{i=0}^{35} bacc_i * p_i^{AD}}. $$
+#    where:<ul>
+#    <li> <i>p<sub>i</sub><sup>AD</sup></i> is the probability of AD for patch <i>i</i></li>
+#    <li> <i>bacc<sub>i</sub></i> is the validation balanced accuracy for patch <i>i</i></li>
+#    </ul>
 # </div>
 # %% [markdown]
 # ## Download the pretrained models
