@@ -59,6 +59,12 @@ sphinx:
     - sphinx_click.ext
     - sphinx_tabs.tabs
 
+parse:
+  myst_enable_extensions:
+    # don't forget to list any other extensions you want enabled,
+    # including those that are enabled by default!
+    - html_admonition
+
 latex:
   latex_engine: "xelatex"
   latex_documents:

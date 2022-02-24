@@ -47,8 +47,8 @@
 # </ul>
 
 
-# <div class="alert alert-block alert-success">
-# <b>Tip:</b><p>
+# <div class="admonition note" name="html-admonition" style="background: lightgreen; padding: 10px">
+# <p class="title">Tip</p>
 #     You can use your own previuolsy trained model (if you have used PyTorch
 #     for that). Indeed, PyTorch stores model weights in a file with extension
 #     <i>pth.tar</i>. You can place this file into the <i>models</i> folder and
