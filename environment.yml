@@ -1,0 +1,6 @@
+name: clinicadl_handbook
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - poetry  
