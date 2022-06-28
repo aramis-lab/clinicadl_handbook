@@ -11,7 +11,7 @@ help: Makefile
 	@echo "Commands to use ClinicaDL Makefile:"
 	@sed -n 's/^##//p' $<
 
-## env.dev         : Bootstrap an environment
+## env             : Bootstrap an environment
 .PHONY: env
 env: env.dev
 
