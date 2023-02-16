@@ -14,10 +14,11 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==0.2.1
+# !pip install clinicadl==1.2.0
 # !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
 # !tar xf dataOasis.tar.gz
 # %% [markdown]
+
 # # Launch a random search
 # The previous section focused on a way to debug non-automated architecture
 # search. However, if you have enough computational power, you may want to launch
@@ -46,32 +47,36 @@ import os
 # For example, you may want your random network to have maximum 3
 # fully-convolutional layers as you don't have enough memory to tackle more.
 
-# This hyperparameter space is defined in a JSON file that must be written in your
-# random search directory: `random_search.json`.
+# This hyperparameter space is defined in a TOML file that must be written in your
+# random search directory: `random_search.toml`.
 
 # The following function `generate_dict` generates a dictionnary that will be used
-# to  `random_search.json` for this tutorial. To accelerate the training task we
+# to  `random_search.toml` for this tutorial. To accelerate the training task we
 # will use a single CNN on the default region of interet, the hippocampi.
 # %%
-def generate_dict(mode, caps_dir, tsv_path, preprocessing):
+def generate_dict(gpu_avail, caps_dir, tsv_path, preprocessing_json):
     return {
-        "caps_dir": caps_dir,
-        "tsv_path": tsv_path,
-        "diagnoses": ["AD", "CN"],
-        "preprocessing": preprocessing,
-        "mode": mode,
-        "network_type": "cnn",
-        
-        "epochs": 30,
-        "learning_rate": [4, 6],
-        
-        "n_convblocks": [1, 5],               # Number of convolutional blocks
-        "first_conv_width": [8, 16, 32, 64],  # Number of channels in the first convolutional block
-        "n_fcblocks": [1, 3],                 # Number of (fully-connected + activation) layers
-        
-        "selection_threshold": [0.5, 1]       # Threshold at which a region is selected if its corresponding
-                                              # balanced accuracy is higher.
-    }
+        "Random_Search":{
+            "caps_directory": caps_dir,
+            "tsv_path": tsv_path,
+            "diagnoses": ['AD', 'CN'],
+            "preprocessing_json": preprocessing_json,
+            "network_task": "classification",
+            "n_convblocks": [1, 5],   # Number of convolutional blocks
+            "first_conv_width": [8, 16, 32, 64],  # Number of channels in the first convolutional block
+            "n_fcblocks": [1, 3]
+            },                # Number of (fully-connected + activation) layers
+        "Computational":{
+            "gpu": gpu_avail
+            },
+        "Optimization":{
+            "epochs": 30,
+            "learning_rate": [4, 6]     # Threshold at which a region is selected if its corresponding balanced accuracy is higher.
+            },         
+        "Cross_validation":{
+            "n_splits":3
+            }                            
+        }
 # %% [markdown]
 # In this default dictionnary we set all the arguments that are mandatory for the
 # random search. Hyperparameters for which a space is not defined will
@@ -83,69 +88,118 @@ def generate_dict(mode, caps_dir, tsv_path, preprocessing):
 # - exponent draws x from a uniform distribution over the interval [min, max] and return $10^{-x}$ (ex: `learning_rate`),
 # - randint returns an integer in [min, max] (ex: `n_conv_blocks`).
 
+
+#The values of some variables are also fixed, meaning that they cannot be sampled and that they should be given a unique value.
+
+#The values of the variables that can be set in random_search.toml correspond to the options of the train function. 
+# Values of the Computational resources section can also be redefined using the command line. Some variables were also 
+# added to sample the architecture of the network.
+
 # In the default dictionnary, the learning rate will be sampled between $10^{-4}$
 # and $10^{-6}$.
 
-# This dictionnary is written as a JSON file in the `launch_dir` of the
+# This dictionnary is written as a TOML  file in the `launch_dir` of the
 # random-search.
 # You can define differently other hyperparameters by looking at the
 # [documentation](https://clinicadl.readthedocs.io/).
 # %%
 import os
-import json
+import torch
+
+# Check if a GPU is available
+gpu_avail = torch.cuda.is_available()
 
 mode = "image"
 caps_dir = "data/synthetic"
-tsv_path = "data/synthetic/labels_list/train"
-preprocessing = "t1-linear"
+tsv_path = "data/split/3_fold"
+preprocessing_json = "extract_T1linear_image.json"
 
 os.makedirs("random_search", exist_ok=True)
-default_dict = generate_dict(mode, caps_dir, tsv_path, preprocessing)
+default_dict = generate_dict(gpu_avail, caps_dir, tsv_path, preprocessing_json)
 # Add some changes here
+import toml
 
-json = json.dumps(default_dict, skipkeys=True, indent=4)
-with open(os.path.join("random_search", "random_search.json"), "w") as f:
-    f.write(json)
+toml_string = toml.dumps(default_dict)  # Output to a string
+
+output_file_name = "random_search/random_search.toml"
+with open(output_file_name, "w") as toml_file:
+    toml.dump(default_dict, toml_file)
+
 # %% [markdown]
+## Prerequisites
+
+# You need to execute the [`clinicadl tsvtool getlabels`](TSVTools.md#getlabels---extract-labels-specific-to-alzheimers-disease) 
+# and [`clinicadl tsvtool {split|kfold}`](TSVTools.md#split---single-split-observing-similar-age-and-sex-distributions) commands
+# prior to running this task to have the correct TSV file organization.
+# Moreover, there should be a CAPS, obtained running the `t1-linear` pipeline of ClinicaDL.
+
+# %%[markdown]
+## Running the task
+
+# This task can be run with the following command line:
+# ```Text
+# clinicadl random-search [OPTIONS] LAUNCH_DIRECTORY NAME
+# ```
+# where:
+
+# - `LAUNCH_DIRECTORY` (Path) is the parent directory of output folder containing the file `random_search.toml`.
+# - `NAME` (str) is the name of the output folder containing the experiment.
+
+# ## Content of `random_search.toml`
+
+# `random_search.toml` must be present in `launch_dir` before running the command. 
+
+# Mandatory variables:
+
+# - `network_task` (str) is the task learnt by the network. 
+#   Must be chosen between `classification` and `regression`
+#   (random sampling for`reconstruction` is not implemented yet).
+#   Sampling function: `fixed`.
+# - `caps_directory` (str) is the input folder containing the neuroimaging data in a [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy.
+# Sampling function: `fixed`.
+# - `preprocessing_json` (str) corresponds to the JSON file produced by `clinicadl extract` used for the search. 
+# Sampling function: `fixed`.
+# - `tsv_path` (str) is the input folder of a TSV file tree generated by `clinicadl tsvtool {split|kfold}`.
+# Sampling function: `fixed`.
+# - `diagnoses` (list of str) is the list of the labels that will be used for training. 
+# Sampling function: `fixed`.
+# - `epochs` (int) is the [maximum number of epochs](Train/Details.md#stopping-criterion).
+# Sampling function: `fixed`.
+# - `n_convblocks` (int) is the number of convolutional blocks in CNN.
+# Sampling function: `randint`.
+# - `first_conv_width` (int) is the number of kernels in the first convolutional layer.
+# Sampling function: `choice`.
+# - `n_fcblocks` (int) is the number of fully-connected layers at the end of the CNN.
+# Sampling function: `randint`.
 # ## Train & evaluate a random network
 # Based on the hyperparameter space described in `random_search.json`, you will
 # now be able to train a random network. To do so the following command can be
 # run:
 
-# ```Text
-# clinicadl random-search <launch_dir> <name> --n_splits <n_splits>
-# ```
-# where:
 
-# - `launch_dir` is the folder in which is located `random_search.json` and your future output jobs.
-# - `output_directory` is the name of the folder of the job launched.
-# - `n_splits` is the number of splits in the cross-validation procedure.
-
-# Other arguments, linked to computational resources can be specified when
-# launching the random training.
 # %%
-!clinicadl random-search "random_search" "test" --n_splits 3 --split 0 -cpu -np 0 -v
+!clinicadl random-search random_search maps_random_search2
 # %% [markdown]
 # A new folder `test` has been created in `launch_dir`. As for any network trained
 # with ClinicaDL it is possible to evaluate its performance on a test set:
 # %%
 # Evaluate the network performance on the 2 test images
-!clinicadl classify ./data/synthetic ./data/synthetic/labels_list/test ./random_search/test 'test' --selection_metrics "loss" -cpu
+!clinicadl predict random_search/maps_random_search2 test --participant_tsv data/split/test.tsv --caps_directory data/synthetic --selection_metrics "loss" --no-gpu
 # %%
 import pandas as pd
 
-fold = 0
+split = 0
 
-predictions = pd.read_csv("./random_search/test/fold-%i/cnn_classification/best_loss/test_image_level_prediction.tsv" % fold, sep="\t")
+predictions = pd.read_csv("./random_search/maps_random_search/split-%i/best-loss/test_image_level_prediction.tsv" % split, sep="\t")
 display(predictions)
 
 
-metrics = pd.read_csv("./random_search/test/fold-%i/cnn_classification/best_loss/test_image_level_metrics.tsv" % fold, sep="\t")
+metrics = pd.read_csv("./random_search/maps_random_search/split-%i/best-loss/test_image_level_metrics.tsv" % split, sep="\t")
 display(metrics)
 # %% [markdown]
 # ## Analysis of the random network
 
-# The architecture of the network can be retrieved from the `commandline.json`
+# The architecture of the network can be retrieved from the `maps.json`
 # file in the folder corresponding to a random job.
 
 # The architecture can be fully retrieved with 4 keys:
@@ -203,13 +257,37 @@ display(metrics)
 # %%
 # !pip install torchsummary
 
-from clinicadl.tools.deep_learning.iotools import read_json
-from clinicadl.tools.deep_learning.models import create_model
-from clinicadl.tools.deep_learning.data import return_dataset, get_transforms
+from clinicadl.utils.maps_manager.maps_manager_utils import read_json
+from clinicadl.utils.caps_dataset.data import return_dataset, get_transforms
 
 from torchsummary import summary
 import argparse
 import warnings
+
+def create_model(options, initial_shape):
+    """
+    Creates model object from the model_name.
+    :param options: (Namespace) arguments needed to create the model.
+    :param initial_shape: (array-like) shape of the input data.
+    :return: (Module) the model object
+    """
+    from clinicadl.utils.network.cnn.random import RandomArchitecture
+    if not hasattr(options, "model"):
+        model = RandomArchitecture(options.convolutions, options.n_fcblocks, initial_shape,
+                                   options.dropout, options.network_normalization, n_classes=2)
+    else:
+        try:
+            model = eval(options.model)(dropout=options.dropout)
+        except NameError:
+            raise NotImplementedError(
+                'The model wanted %s has not been implemented.' % options.model)
+
+    if options.gpu:
+        model.cuda()
+    else:
+        model.cpu()
+
+    return model
 
 warnings.filterwarnings('ignore')
 
@@ -220,8 +298,8 @@ model_options.gpu = True
 
 # Find data input size
 _, transformations = get_transforms(mode, not model_options.unnormalize)
-dataset = return_dataset(mode, caps_dir, os.path.join(tsv_path, "AD.tsv"),
-                         preprocessing, transformations, model_options)
+dataset = return_dataset(mode, caps_dir, tsv_path,
+                         preprocessing_json, transformations, model_options)
 input_size = dataset.size
 
 # Create model and print summary
