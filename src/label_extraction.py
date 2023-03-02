@@ -13,19 +13,29 @@
 # ---
 # %%
 # Uncomment the next lines if running in Google Colab
-# !pip install clinicadl==0.2.1
+# !pip install clinicadl==1.2.0
+
+# %%
 # !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
 # !tar xf dataOasis.tar.gz
 # %% [markdown]
 # # Define your population
 
-# This notebook is an introduction to tools that can be used to identify relevant samples and split them between training, validation and test cohorts. **This step is mandatory preliminary to training to avoid issues such as lack of clinical meaning or data leakage**. 
+# This notebook is an introduction to tools that can be used to identify relevant samples and split them between training, validation and test cohorts. 
+# **This step is mandatory preliminary to training to avoid issues such as lack of clinical meaning or data leakage**. 
 
-# In the following, we will see how to
-# - extract samples corresponding to labels of interest from a BIDS hierarchy,
-# - split these samples between training, validation and test sets
-
+# In the following, we will see how to split these samples between training, validation and test sets
 # using tools available in `clinica` and `clinicadl`.
+
+# In this section we will work on a subset of 100 subjects of the OASIS dataset (and a subset of 100 subjects 
+# of the ADNI dataset). You can find the list of participants that have passed the quality check in the data folder (oasis_after_qc.tsv and adni_after_qc.tsv).
+
+
+# You can also download these files by uncomment the next cell:
+# %%
+# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisBids.tar.gz -o OasisBids.tar.gz
+# !tar xf OasisBids.tar.gz 
+
 # %% [markdown]
 # ## Merge metadata from a BIDS hierarchy with `clinica iotools`
 
@@ -45,18 +55,22 @@
 # instead of a file name, the default name for the file created will be
 # `merge-tsv.tsv`.
 
+# %% [markdown]
 # In the [preprocessing section](./preprocessing.ipynb) an example BIDS of 4
 # subjects from OASIS-1 was generated (if you did not run interactively that
-# section, download the dataset by uncomment the next cell):
-# %%
+# section, download the dataset by uncomment the next cell):# %%
 # !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisBids.tar.gz -o OasisBids.tar.gz
 # !tar xf OasisBids.tar.gz
 # %% [markdown]
 # Execute the following command to gather metadata included in this BIDS:
 # %%
 # Merge meta-data information
-!clinica iotools merge-tsv OasisBids_example example_merged.tsv
+!clinica iotools merge-tsv data_oasis/BIDS data_oasis/merged.tsv -tsv data_oasis/after_qc.tsv
+
+#%%
+# !clinica iotools merge-tsv data_adni/BIDS data_adni/merged.tsv -tsv data_adni/after_qc.tsv
 # %% [markdown]
+# ## Check missing modalities for each subject
 # We want to restrict the list of the sessions used to those including a T1-MR
 # image. Then the following command is needed to identify which modalities are
 # present for each session:
@@ -67,86 +81,59 @@
 # - `bids_directory` is the input folder of a BIDS compliant dataset.
 # - `output_directory` is the output folder.
 
+# This pipelie does not have an option to give a list of subject/session so you will 
+# check the missing modalities of all the datasets
 # Execute the following command to find which sessions include a T1-MR image on
 # the example BIDS of OASIS:
 # %%
 # Find missing modalities
-!clinica iotools check-missing-modalities OasisBids_example example_missing_mods
+!clinica iotools check-missing-modalities data_oasis/BIDS data_oasis/missing_mods
+#%%
+# !clinica iotools check-missing-modalities data_adni/BIDS data_adni/missing_mods
 # %% [markdown]
-The output of this command, `data/example_missing_mods`, is a folder in which a
-series of tsv files is written (one file per session label containing one row
-per subject and one column per modality).
+#The output of this command, `data/<dataset>_missing_mods`, is a folder in which a
+#series of tsv files is written (one file per session label containing one row
+#per subject and one column per modality).
 # %% [markdown]
-# ## Get labels with `clinicadl tsvtool` on OASIS
+# ## Get labels with `clinicadl tsvtools` 
 
-# In this section we will now get the labels from **the whole OASIS dataset** on
-# which `clinica iotools merge-tsv` and `clinica iotools check-missing-modalities`
-# were already performed. 
-
-# The outputs of the corresponding pipelines can be found respectively in
-# `data/OASIS_BIDS.tsv` and `data/OASIS_missing_mods`, and are provided on GitHub
-# with the notebooks.
-
-# ### Restrict the OASIS dataset to older adults
-
-# OASIS-1 consists of 416 subjects aged 18 to 96: 
-
-# |      | subjects   | age                      | sex         | MMSE                | CDR                        |
-# |------|------------|--------------------------|-------------|---------------------|----------------------------|
-# |  AD  | 100        | 76.8 ± 7.1 [62.0, 96.0]  | 59F / 41M   | 24.3 ± 4.1 [14, 30] | 0: 0, 0.5: 70, 1: 28, 2: 2 |
-# |  CN  | 316        | <font color="red">45.1 ± 23.9 [18.0, 94.0] </font>| 197F / 119M | 29.6 ± 0.9 [25, 30] | 0: 316                     |
-
-# As you can see, CN participants are on average younger than AD participants,
-# which makes sense as AD mainly affects older adults. However, this is an issue
-# as aging also causes brain atrophy. The classifier may mix the signal due to
-# healthy brain aging and Alzheimer's disease on such dataset, which could lead to
-# an over-estimation of the performance. 
-
-# To avoid this bias, CN participants younger than the youngest AD patient were
-# removed. This restriction can be run with the following command line:
-
-# ```bash
-# clinicadl tsvtool restrict <dataset> <merged_tsv> <results_path>
-# ```
-# where:
-
-# - `dataset` (str) is the name of the dataset. Choices are `OASIS` or `AIBL`.
-# - `merged_tsv` (str) is the output file of the `clinica iotools merge-tsv` command.
-# - `results_path` (str) is the path to the output tsv file (filename included). This tsv file comprises the same columns as `merged_tsv`.
-
-# Execute the following cell to apply the restriction to OASIS-1:
-# %%
-!clinicadl tsvtool restrict OASIS data/OASIS_BIDS.tsv data/OASIS_restricted_BIDS.tsv
 # %% [markdown]
-# Some other sessions were also excluded because the preprocessing operations
-# failed. The list of the images that were kept after the preprocessing is stored
-# in `data/OASIS_qc_output.tsv`.
-
 # ### Get the labels
 
-# The 5 labels described in the [first part of the course](../clinical) can be
+# The 3 labels described in the [first part of the course](../clinical) (AD, CN, MCI) can be
 # extracted with clinicadl using the command:
 
 # ```bash
-# clinicadl tsvtool getlabels merged_tsv missing_mods results_path
+# clinicadl tsvtools get-labels bids_directory results_tsv
 # ```
 # where:
-# - `merged_tsv` is the output file of the `clinica iotools merge-tsv` or `clinicadl tsvtool restrict` commands.
-# - `missing_mods` is the folder containing the outputs of the `clinica iotools missing-mods` command.
-# - `results_path` is the path to the folder where output tsv files will be written.
+# - `bids_directory` the input folder containing the dataset in a BIDS hierarchy.
+# - `results_path` is the path to the tsv file.
 
 # ```{tip}
 # You can increase the verbosity of the command by adding -v flag(s).
 # ```
 
+# The bids directory is mandatory to run the `clinica iotools merge-tsv` and `clinica iotools
+# check-missing-modalities` inside this pipelines if it has'nt been done before. 
+# However if you already have run these pipelines, the path is not mandatory anymore so you can put anything and 
+# add the options `--merged_tsv` and `--missing_mods`. It will avoid the pipeline to re-run them.
+
+# %% [markdown]
+# If you failed running the `clinica iotools` command you can download the output by running the following cell:
+# %%
+#TO DOWNLOAD
+# %% [markdown]
 # By default the pipeline only extracts the AD and CN labels, which corresponds to
 # the only available labels in OASIS. Run the following cell to extract them in a
-# new folder `labels_lists` from the restricted version of OASIS:
+# new file `labels.tsv` from the restricted version of OASIS:
 # %%
-!clinicadl tsvtool getlabels data/OASIS_restricted_BIDS.tsv data/OASIS_missing_mods data/labels_lists --restriction_path data/OASIS_after_qc.tsv
+!clinicadl tsvtools get-labels data_oasis/BIDS  --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/after_qc.tsv
+# %%
+# !clinicadl tsvtools get-labels data_adni/BIDS --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_path data_adni/after_qc.tsv
 # %% [markdown]
-# For each diagnostic label, a file has been created comprising all the sessions
-# that can be included in the classification task.
+# This tool writes a unique TSV file containing the labels asked by the user. They are 
+# stored in the column named diagnosis.
 
 # <div class="alert alert-block alert-info">
 # <b>Restriction path:</b><p>
@@ -158,6 +145,7 @@ per subject and one column per modality).
 #     preprocessing: here it concerns a run of <code>t1-linear</code>.</p>
 # </div>
 
+# %% [markdown]
 # ### Analyze the population
 
 # The age bias in OASIS is well known and this is why the youngest CN participants
@@ -169,11 +157,11 @@ per subject and one column per modality).
 # `clinicadl` implements a tool to perform a demographic and clinical analysis of
 # the population:
 # ```bash
-# clinicadl tsvtool analysis <merged_tsv> <formatted_data_path> <results_path>
+# clinicadl tsvtool analysis <merged_tsv> <data_tsv> <results_path>
 # ```
 # where:
-# - `merged_tsv` is the output file of the `clinica iotools merge-tsv` or `clinicadl tsvtool restrict` commands.
-# - `formatted_data_path` is a folder containing one tsv file per label (output of `clinicadl tsvtool getlabels|split|kfold`).
+# - `merged_tsv` is the output file of the `clinica iotools merge-tsv`command.
+# - `data_tsv` is the output file of `clinicadl tsvtool getlabels|split|kfold`).
 # - `results_path` is the path to the tsv file that will be written (filename included).
 
 
@@ -181,15 +169,18 @@ per subject and one column per modality).
 # each diagnostic label. Based on those it is possible to check that the dataset
 # is suitable for the classification task.
 # %%
-# Run the analysis
-!clinicadl tsvtool analysis data/OASIS_BIDS.tsv data/labels_lists data/OASIS_analysis.tsv
+# Run the analysis on OASIS
+!clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/labels.tsv data_oasis/analysis.tsv
+# %%
+# Run the analysis on ADNI
+#!clinicadl tsvtool analysis data_adni/merged.tsv data_adni/labels.tsv data_adni/analysis.tsv
 # %%
 def display_table(table_path):
     """Custom function to display the clinicadl tsvtool analysis output"""
     import pandas as pd
 
     OASIS_analysis_df = pd.read_csv(table_path, sep='\t')
-    OASIS_analysis_df.set_index("diagnosis", drop=True, inplace=True)
+    OASIS_analysis_df.set_index("group", drop=True, inplace=True)
     columns = ["n_subjects", "n_scans",
                "mean_age", "std_age", "min_age", "max_age",
                "sexF", "sexM",
@@ -207,7 +198,7 @@ def display_table(table_path):
     format_df.index.name = None
     display(format_df)
 # %%
-display_table("data/OASIS_analysis.tsv")
+display_table("analysis.tsv")
 # %% [markdown]
 # There is no significant bias on age anymore, but do you notice any other
 # problems? 
@@ -223,6 +214,39 @@ display_table("data/OASIS_analysis.tsv")
 # regression after training between sex and the predicted label to check if they
 # are correlated.</p>
 # </div>
+
+# %% [markdown]
+# ### Get the progression of the Alzheimer's disease
+# For ADNI dataset, because the dataset is longitudinal, the stability of the diagnostic status can be calculated.
+# The progression label corresponds to the following description: 
+# - s (stable): diagnosis remains identical during the time_horizon period following the current visit, 
+# - p (progressive): diagnosis progresses to the following state during the time_horizon period following the current visit (eg. MCI --> AD), 
+# - r (regressive): diagnosis regresses to the previous state during the time_horizon period following the current visit (eg. MCI --> CN), 
+# - uk (unknown): there are not enough sessions to assess the reliability of the label but no changes were spotted, 
+# - us (unstable): otherwise (multiple conversions / regressions). 
+
+# `clinicadl` implements a tool to get the progression label for each couple [subject, session] and add a new column progression to the TSV file given.
+
+# ```bash
+#   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
+# ``` 
+# with :
+#  - `<data_tsv>` (str) is the TSV file containing the data (output of clinicadl tsvtools get-labels|split|kfold).
+#  - `--time_horizon` (int) can be added: It is the time horizon in months that is used to assess the stability of the MCI subjects. Default value: 36.
+
+# ```{tip}
+# The diagnosis column do not need to be part of the columns, the pipeline will go back to the labels.tsv to calculate the progression
+# ``` 
+
+# %% [markdown]
+# #### Run the pipeline on ADNI dataset
+# %%
+!clinicadl tsvtools get-progression data_adni/labels.tsv 
+
+#%%
+df_labels = pd.read_csv("data/Adni_labels.tsv ", sep ="\t")
+print(df_labels["ADNIOOSO266"])
+
 # %% [markdown]
 # ## Split the data samples into training, validation and test sets
 
@@ -239,7 +263,7 @@ display_table("data/OASIS_analysis.tsv")
 #     <li> The <b>validation set</b> is used to stop the training process and select the best model, </li>
 #     <li> The <b>test set</b> is used after the end of the training process to perform an unbiased evaluation of the performance. </li>
 # </ul>
-#     <img src="./images/split.png">
+#     <img src="../../../images/split.png">
 #     <p>Due to the k-fold validation procedure, k trainings are conducted
 #     according to the k training/validation pairs generated. This leads to k
 #     different models that are evaluated on the test set at the end. The final
@@ -254,16 +278,14 @@ display_table("data/OASIS_analysis.tsv")
 # The test set is obtained by performing a single split obtained with `clinicadl
 # tsvtool split`:
 # ```bash
-# clinicadl tsvtool split <merged_tsv> <formatted_data_path>
+# clinicadl tsvtool split <data_tsv>
 # ```
 # where:
-# - `merged_tsv` is the output file of the `clinica iotools merge-tsv` or `clinicadl tsvtool restrict` commands.
-# - `formatted_data_path` is a folder containing one tsv file per label (output of `clinicadl tsvtool getlabels|split|kfold`).
+# - `data_tsv` is the he TSV file with the data that are going to be split (output of clinicadl tsvtools getlabels|split|kfold).
 
 # Each diagnostic label is split independently. Random splits are generated until
 # there are non-significant differences between age and sex distributions between
-# the test set and the train + validation set. Then three TSV files are written
-# per label:
+# the test set and the train + validation set. Then three TSV files are written:
 
 # - the baseline sessions of the test set,
 # - the baseline sessions of the train + validation set,
@@ -272,15 +294,20 @@ display_table("data/OASIS_analysis.tsv")
 # In OASIS there is no longitudinal follow-up, hence the last two TSV files are
 # identical.
 
-# Let's create a test set including 20 subjects per label:
-# %% !clinicadl tsvtool split data/labels_lists --n_test 20
+# Let's create a test set including 20 subjects:
+# %% 
+!clinicadl tsvtools split data_oasis/labels.tsv --n_test 20 --subset_name test 
+
+# %% 
+# for Adni dataset
+# !clinicadl tsvtools split data_adni/labels.tsv --n_test 20 --subset_name test 
 # %% [markdown]
 # The differences between populations of the train + validation and test sets can
 # be assessed to check that there is no discrepancies between the two sets.
 # %%
-!clinicadl tsvtool analysis data/OASIS_BIDS.tsv data/labels_lists/train data/OASIS_trainval_analysis.tsv
+!clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/split/train.tsv data_oasis/analysis_trainval.tsv
 # %%
-!clinicadl tsvtool analysis data/OASIS_BIDS.tsv data/labels_lists/test data/OASIS_test_analysis.tsv
+!clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/split/test_baseline.tsv data_oasis/analysis_test.tsv
 # %%
 print("Train + validation set")
 display_table("data/OASIS_trainval_analysis.tsv")
@@ -312,10 +339,9 @@ display_table("data/OASIS_test_analysis.tsv")
 # clinicadl tsvtool kfold <formatted_data_path>
 # ```
 
-# where `formatted_data_path` is a folder containing one tsv file per label
-# (output of `clinicadl tsvtool getlabels|split|kfold`).
+# where `formatted_data_path` is the output tsv file of `clinicadl tsvtool getlabels|split|kfold`.
 
-# In a similar way than for the test split, three tsv files are written per label
+# In a similar way than for the test split, three tsv files are written
 # **per split** for each set:
 
 # - the baseline sessions of the validation set,
@@ -327,7 +353,11 @@ display_table("data/OASIS_test_analysis.tsv")
 # across the results of the 5 folds already reduces bias compared to a single data
 # split.
 # %%
-!clinicadl tsvtool kfold data/labels_lists/train --n_splits 5
+!clinicadl tsvtools kfold data_oasis/split/train.tsv --n_splits 4 --subset_name validation
+
+# %%
+# for ADNI dataset
+# !clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 4 --subset_name validation
 # %% [markdown]
 # ### Check the absence of data leakage
 
@@ -371,3 +401,4 @@ run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation"
 #     data leakage.</p>
 #     <img src="./images/data_leakage.png">
 # </div>
+# %%

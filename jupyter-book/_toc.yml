@@ -7,24 +7,28 @@ parts:
       - file: clinical
         title: Clinical context
       - file: deep_learning
-        title: Deep learning classification
-  - caption: The basics
+        title: Deep learning
+  - caption: Preprocessing
     chapters:
       - file: notebooks/preprocessing
-        title: Prepare your neuroimaging data
-      - file: notebooks/inference
-        title: Perform classification using pretrained models
-  - caption: Going further
-    chapters:
+        title: Prepare neurimaging data
       - file: notebooks/label_extraction
         title: Define your population
-      - file: notebooks/training
-        title: Train your own models
-      - file: notebooks/interpretability
-        title: Interpret trained models
-  - caption: Architecture search
+  - caption: Deep learning
     chapters:
-      - file: notebooks/generate
-        title: Debug non-automated search
+      - file: notebooks/training_classification
+        title: classification on 2D slices
+      - file: notebooks/training_reconstruction
+        title: Reconstruction on 3D patch / ROI
+      - file: notebooks/training_regression
+        title: Regression on 3D images
+      - file: notebooks/training_custom
+        title: Custom training
+  - caption: Going further
+    chapters:
       - file: notebooks/random_search
         title: Random search
+      - file: notebooks/inference
+        title: Perform classification using pretrained models
+      - file: notebooks/interpretability
+        title: Interpret trained models

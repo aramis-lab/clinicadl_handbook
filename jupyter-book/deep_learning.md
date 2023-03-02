@@ -1,4 +1,4 @@
-# Deep learning classification: application to neuroimaging
+# Deep learning: application to neuroimaging
 
 Deep learning is an ill-defined term that may refer to many different concepts. In this notebook, 
 deep learning designate methods used to optimize a **network** that executes a task whose success 
@@ -27,6 +27,7 @@ from those with two layers are more. Today the distinction is not really useful 
 have way more than two layers!
 </details>
 
+
 ## Common network layers
 
 In a deep learning network every function is called a layer though the operations layers perform are very different. 
@@ -37,7 +38,7 @@ You will find below a summary of the layers composing the architectures used in 
 The aim of a convolution layer is to learn a set of filters (or kernels) which capture useful 
 patterns in the data distribution. These filters parse the input feature map using translations:
 
-<img src="https://drive.google.com/uc?id=166EuqiwIZkKPMOlVzA-v5WemJE2tDCES" style="height: 200px;">
+<img src="https://drive.google.com/uc?id=166EuqiwIZkKPMOlVzA-v5WemJE2tDCES" style="height: 200px; center;">
 
 A convolution layer captures local patterns that are limited to the size of its filters. 
 However, a succession of several convolutions allows increasing the **receptive field**, 
@@ -60,7 +61,7 @@ and fully-connected layers. Without activation functions, the network would only
 Many activation functions have been proposed to solve deep learning problems. 
 In the architectures implemented in `clinicadl` the activation function is Leaky ReLU:
 
-<img src="https://sefiks.com/wp-content/uploads/2018/02/prelu.jpg?w=600" style="height: 200px;">
+<img src="https://sefiks.com/wp-content/uploads/2018/02/prelu.jpg?w=600" style="height: 200px;center;">
 
 
 ### Pooling function
@@ -72,13 +73,13 @@ the kernel outputting the maximum value of the part of the feature map it covers
 
 Here is an example in 2D of the standard layer of pytorch `nn.MaxPool2d`:
 
-<img src="https://drive.google.com/uc?id=1qh9M9r9mfpZeSD1VjOGQAl8zWqBLmcKz" style="height: 200px;">
+<img src="https://drive.google.com/uc?id=1qh9M9r9mfpZeSD1VjOGQAl8zWqBLmcKz" style="height: 200px;center;">
 
 The last column may not be used depending on the size of the kernel/input and stride value. 
 To avoid this, pooling layers with adaptative padding were implemented in `clinicadl` 
 to exploit information from the whole feature map.
 
-<img src="https://drive.google.com/uc?id=14R_LCTiV0N6ZXm-3wQCj_Gtc1LsXdQq_" style="height: 200px;">
+<img src="https://drive.google.com/uc?id=14R_LCTiV0N6ZXm-3wQCj_Gtc1LsXdQq_" style="height: 200px;center;">
 
 
 ### Dropout
@@ -88,6 +89,8 @@ dropout layers literally drop out a fixed proportion of the input values (i.e. r
 This behavior is enabled during training to limit overfitting, then it is disabled during evaluation to obtain 
 the best possible prediction.
 
+<img src="../../images/dropout_layer.png" alt="Dropout layer" style="height: 200px; margin: 10px; text-align: center;">
+
 ### Fully-connected
 
 Contrary to convolutions in which relationships between values are studied locally, 
@@ -96,81 +99,30 @@ fully-connected layers look for a global linear combination between all the inpu
 In convolutional neural networks they are often used at the end of the architecture 
 to reduce the final feature maps to a number of nodes equal to the number of classes in the dataset.
 
+<img src="../../images/FC_layer.jpeg" alt="Fully connected layer" style="height: 200px; margin: 10px; text-align: center;">
+
+
 ## Tasks & architectures
 
 Deep learning methods have been used to learn many different tasks such as classification, dimension reduction, 
-data synthesis... In this notebook we focus on the **classification of images** using 
-**convolutional neural networks** (CNN).
+data synthesis... In this notebook we focus on the three tasks that we can do with clinicaDL : 
+-	**classification** of 2D slices using convolutional neural networks ([notebook](notebooks/training_classification.ipynb)); 
+-	**regression** on 3D images using convolutional neural network ([notebook](notebooks/training_regression.ipynb));
+-	**reconstruction** of 3D patches or region of interest using autoencoder ([notebook](notebooks/training_reconstruction.ipynb)). 
 
-To successfully learn a task, a network needs to analyze a large number of labeled samples. 
-In neuroimaging, these samples are costly to acquire and thus their number is limited. 
-As deep learning models tend to easily overfit when trained on small samples due to the large number of learnt 
-parameters, different strategies have been developed to alleviate overfitting. These strategies include dropout, 
-data augmentation or adding a weight decay in the optimizer. Another technique seen in this notebook consists 
-in transferring weights learnt by an **autoencoder**. Indeed this network can learn patterns representative of 
-the dataset in a self-supervised manner, hence it does not need labels and can be trained on all samples available.
+To successfully learn a task, a network needs to analyze a large number of labeled samples. In neuroimaging, these samples are costly 
+to acquire and thus their number is limited. However, when trained on small samples, due to the large number of learnt parameters, deep 
+learning models tend to easily overfit. 
 
-### Classification with a CNN
+### Overfitting
+Overfitting in neuroimaging refers to a situation where a neural network model is trained too well on the training data, resulting in 
+**poor performance** on new, unseen data. In other words, the model has memorized the training data instead of learning the underlying 
+patterns and relationships and it can result in poor generalization of the model, where it performs well on the training data but poorly 
+on new data.
 
-A CNN takes as input an image and outputs a vector of size `C`, 
-corresponding to the number of different labels existing in the dataset. 
-More precisely, this vector contains a value for each class that is often interpreted (after some processing) 
-as the probability that the input image belongs to the corresponding class. 
-Then, the prediction of the CNN for a given image corresponds to the class with the highest probability 
-in the output vector.
-
-The cross-entropy loss is used to quantify the error made by the network during the training process, 
-which becomes null if the network outputs 100% probability for the true class.
-
-There are no rules regarding the architectures of CNNs, except that they contain convolution and activation layers. 
-In `clinicadl`, other layers such as pooling, batch normalization, dropout and fully-connected layers are also used.
-
-<figure>
-  <img src="images/CNN_architecture.png" alt="CNN architecture" style="height: 300px; margin: 10px; text-align: center;">
-    <figcaption><i>Example of a CNN architecture</i></figcaption>
-</figure>
-
-### Autoencoder pretraining
-
-An autoencoder learns to reconstruct data given as input. It is composed of two parts:
-- the `encoder` which reduces the dimensionality of the input to a smaller feature map: the code,
-- the `decoder` which reconstructs the input based on the code.
-
-The mean squared error is used to evaluate the difference between the input and its reconstruction.
-
-There are many paradigms associated to autoencoders, but here we will only focus on a specific case 
-that allows the obtention of weights that can be transferred to a CNN. In `clinicadl`, 
-autoencoders are designed based on a CNN:
-- the `encoder` corresponds to the convolutional layers of the CNN,
-- the `decoder` is composed of the transposed version of the operations used in the encoder.
-
-After training the autoencoder, the weights in its encoder can be copied in the convolutional layers 
-of a CNN to initialize it. This can improve its performance as the autoencoder has already learnt 
-patterns characterizing the data distribution.
-
-
-<figure>
-  <img src="images/autoencoder_architecture.png" alt="CNN architecture" style="height: 350px; margin: 10px; text-align: center;">
-    <figcaption><i>Autoencoder derived from the previous CNN architecture</i></figcaption>
-</figure>
-
-## Neuroimaging inputs
-
-A CNN takes as input an image and learns to associate a label to it. 
-However, most deep learning methods were originally developed for natural images which are two dimensional, 
-whereas brain images are volumes...
-
-The layers seen before (convolutions, pooling) were adapted to work on 3D feature maps making 
-possible the classification of MR volumes. However, it is also possible to use as inputs subparts of the image:
-- 2D slices extracted from the volume along a particular axis,
-- 3D patches, i.e. smaller 3D volumes extracted from the full image with a given size and stride,
-- Regions of Interest (ROI) defined by a neuroanatomical atlas. They can be given as volumes, 
-using a bounding box that covers the ROI or by segmenting the ROI and setting the voxels that do not belong 
-to it to 0. It is also possible to give slices of these regions.
-
-While the aim of 2D slices and 3D patches is to cover the whole brain, 
-selecting a particular ROI requires prior knowledge of the disease studied. 
-In the case of Alzheimer's disease, the most affected region for most patients is the hippocampus, 
-thus this region has been used in several studies.
-
-<img src="images/neuroimaging_inputs.png" alt="Neuroimaging inputs" style="height: 350px; margin: 10px; text-align: center;">
+Overfitting can be detected by **monitoring** the training and validation accuracy of the model. If the training accuracy continues to 
+improve while the validation accuracy remains stagnant or decreases, it is a sign of overfitting.
+Different strategies have been developed to alleviate overfitting. These strategies include dropout, data augmentation or adding a weight 
+decay in the optimizer. Another technique seen in this notebook consists in transferring weights learnt by an **autoencoder**. Indeed this 
+network can learn patterns representative of the dataset in a self-supervised manner, hence it does not need labels and can be trained on 
+all samples available.
