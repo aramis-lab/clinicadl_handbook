@@ -1,11 +1,10 @@
 FROM registry.gitlab.inria.fr/sed-paris/mpp/containers/mpp-python-minimal:latest-gpu
 
+USER root 
 
 RUN apt-get update -yq \
     && apt-get install make -yq \
-    && apt-get clean -y
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN conda install poetry
-
-RUN cd clinicadl_handbook
-RUN make env.dev
+RUN micromamba install --yes --name base poetry -c conda-forge 
