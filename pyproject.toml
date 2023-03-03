@@ -6,18 +6,19 @@ authors = ["The Aramis Lab"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-jupyter-book = "^0.8.3"
-torchsummary = "^1.5.1"
-clinicadl = "^1.1.0"
+jupyter-book = "^0.13.1"
+torch-summary = "^1.4.0"
+clinicadl = ">=1.1.1"
+clinica = "^0.7.2"
+python = ">=3.8,<3.11"
 
-[tool.poetry.dev-dependencies]
-jupyterlab = "^1.2.21"
-jupytext = "^1.7.1"
-sphinxcontrib-bibtex = "^1.0.0"
-sphinx-tabs = "^1.3.0"
-sphinx-click = "^2.5.0"
-markupsafe = "2.0.1"
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^3.5.3"
+jupytext = "^1.14.4"
+sphinxcontrib-bibtex = "^2.5.0"
+sphinx-tabs = "^3.4.0"
+sphinx-click = "^4.4.0"
+markupsafe = "^2.1.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
