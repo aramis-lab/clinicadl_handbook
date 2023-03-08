@@ -1,6 +1,6 @@
 FROM registry.gitlab.inria.fr/sed-paris/mpp/containers/mpp-python-minimal:latest-gpu
 
-USER ci 
+USER root 
 
 RUN apt-get update -yq \
     && apt-get install make -yq \
