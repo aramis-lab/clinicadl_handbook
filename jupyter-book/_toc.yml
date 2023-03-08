@@ -8,6 +8,9 @@ parts:
         title: Clinical context
       - file: deep_learning
         title: Deep learning
+      - file: background
+        title: External ressources
+
   - caption: Preprocessing
     chapters:
       - file: notebooks/preprocessing
@@ -26,9 +29,9 @@ parts:
         title: Custom training
   - caption: Going further
     chapters:
+      - file: notebooks/generate
+        title: Debug non-automated search
       - file: notebooks/random_search
         title: Random search
-      - file: notebooks/inference
-        title: Perform classification using pretrained models
       - file: notebooks/interpretability
         title: Interpret trained models

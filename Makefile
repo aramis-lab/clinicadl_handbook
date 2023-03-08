@@ -18,7 +18,7 @@ env: env.dev
 ## env.conda       : Create a Conda environment
 .PHONY: env.conda
 env.conda:
-	@$(CONDA) env create -p $(CONDA_ENV)
+	@$(CONDA) env create -f environment.yml -p $(CONDA_ENV)
 
 ## env.dev         : Install with Poetry
 .PHONY: env.dev

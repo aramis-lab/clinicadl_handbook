@@ -83,7 +83,7 @@
 #   - `bids_directory` is the path to the output directory, where the BIDS-converted version of OASIS will be stored.
 
 # %% [markdown]
-# #### Run the pipeline
+# ### Run the pipeline
 # %%
 # Download the example dataset of 4 images
 # !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisDatabase.tar.gz -o OasisDatabase.tar.gz
@@ -91,7 +91,7 @@
 
 # %%
 # Convert the example dataset to BIDS
-!clinica convert oasis-to-bids OasisDatabase/RawData OasisDatabase/ClinicalData OasisBids_example
+!clinica convert oasis-to-bids data_oasis/database/RawData data_oasis/database/ClinicalData data_oasis/BIDS
 
 # %% [markdown]
 
@@ -175,7 +175,7 @@
 # %% [markdown]
 # ### Run the pipeline
 # %%
-!clinica run t1-linear ./OasisBids_example ./OasisCaps_example --n_procs 2
+!clinica run t1-linear data_oasis/BIDS data_oasis/CAPS --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are saved using a specific suffix: `_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz`. 
 # %% [markdown]
@@ -199,11 +199,11 @@ from nilearn import plotting
 
 suffix_caps = '_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
 suffix_bids = '_T1w.nii.gz'
-sub1 = 'OasisBids_example/sub-OASIS10016/ses-M00/anat/sub-OASIS10016_ses-M00' + suffix_bids 
-sub2 = 'OasisCaps_example/subjects/sub-OASIS10016/ses-M00/t1_linear/sub-OASIS10016_ses-M00' + suffix_caps
+sub1 = 'data_oasis/BIDS/sub-OASIS10016/ses-M00/anat/sub-OASIS10016_ses-M00' + suffix_bids 
+sub2 = 'data_oasis/CAPS/subjects/sub-OASIS10016/ses-M00/t1_linear/sub-OASIS10016_ses-M00' + suffix_caps
 
-sub3 = 'OasisBids_example/sub-OASIS10304/ses-M00/anat/sub-OASIS10304_ses-M00' + suffix_bids
-sub4 = 'OasisCaps_example/subjects/sub-OASIS10304/ses-M00/t1_linear/sub-OASIS10304_ses-M00' + suffix_caps
+sub3 = 'data_oasis/BIDS/sub-OASIS10304/ses-M00/anat/sub-OASIS10304_ses-M00' + suffix_bids
+sub4 = 'data_oasis/CAPS/subjects/sub-OASIS10304/ses-M00/t1_linear/sub-OASIS10304_ses-M00' + suffix_caps
 
 plotting.plot_anat(sub3, title="raw data: sub-OASIS10304")
 plotting.plot_anat(sub4, title="preprocessed data: sub-OASIS10304")
@@ -261,7 +261,7 @@ plotting.show()
 # #!curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
 # #!tar xf OasisCaps1.tar.gz
 # %%
-!clinica run pet-linear ./AdniBids_example ./AdniCaps_example --n_procs 2
+!clinica run pet-linear data_adni/BIDS data_adni/CAPS --n_procs 2
 # %% [markdown]
 #Once the pipeline has been run, the necessary outputs for the next steps are saved using a specific suffix: `_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-<ref-region>_pet.nii.gz`. 
 
@@ -272,17 +272,17 @@ from nilearn import plotting
 
 suffix_caps = '_pet_trc-18FFDG_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-cerebellulPons2_pet.nii.gz'
 suffix_bids = '_pet.nii.gz'
-sub1 = 'OasisBids_example/sub-OASIS10016/ses-M00/pet/sub-OASIS10016_ses-M00' + suffix_bids 
-sub2 = 'OasisCaps_example/subjects/sub-OASIS10016/ses-M00/pet_linear/sub-OASIS10016_ses-M00' + suffix_caps
+sub1 = 'data_adni/BIDS/sub-ADNI002S0685/ses-M72/pet/sub-ADNI002S0685_ses-M72' + suffix_bids 
+sub2 = 'data_adni/CAPS/subjects/sub-ADNI002S0685/ses-M72/pet_linear/sub-ADNI002S0685_ses-M72' + suffix_caps
 
-sub3 = 'OasisBids_example/sub-OASIS10304/ses-M00/pet/sub-OASIS10304_ses-M00' + suffix_bids
-sub4 = 'OasisCaps_example/subjects/sub-OASIS10304/ses-M00/pet_linear/sub-OASIS10304_ses-M00' + suffix_caps
+sub3 = 'data_adni/BIDS/sub-ADNI126S4896/ses-M00/pet/sub-ADNI126S4896_ses-M00' + suffix_bids
+sub4 = 'data_adni/CAPS/subjects/sub-ADNI126S4896/ses-M00/pet_linear/sub-ADNI126S4896_ses-M00' + suffix_caps
 
-plotting.plot_anat(sub3, title="raw data: sub-OASIS10304")
-plotting.plot_anat(sub4, title="preprocessed data: sub-OASIS10304")
+plotting.plot_anat(sub3, title="raw data: sub-ADNI002S0685")
+plotting.plot_anat(sub4, title="preprocessed data: sub-ADNI002S0685")
 
-plotting.plot_anat(sub1, title="raw data: sub-OASIS10016")
-plotting.plot_anat(sub2, title="preprocessed data: sub-OASIS10016")
+plotting.plot_anat(sub1, title="raw data: sub-ADNI126S4896")
+plotting.plot_anat(sub2, title="preprocessed data: sub-ADNI126S4896")
 
 plotting.show()
 
@@ -335,9 +335,9 @@ plotting.show()
 
 # %% [markdown]
 # ### Run the pipeline
-# You can run this pipeline on the OasisBids_example and save the ouptput in the same CAPS as with the `clinica run t1-linear` pipeline. 
+# You can run this pipeline on the data_oasis and save the ouptput in the same CAPS as with the `clinica run t1-linear` pipeline. 
 # %%
-!clinica run t1-volume ./OasisBids_example ./OasisCaps_example OasisT1Volume --n_procs 2
+!clinica run t1-volume data_oasis/BIDS data_oasis/CAPS OasisT1Volume --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are saved in the CAPS directory.
 # If you want more information about the outputs of this pipeline, please check the [clinica documentaiton](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Pipelines/T1_Volume/).
@@ -355,11 +355,11 @@ from nilearn import plotting
 
 suffix_caps = '_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
 suffix_bids = '_T1w.nii.gz'
-sub1 = 'OasisBids_example/sub-OASIS10016/ses-M00/anat/sub-OASIS10016_ses-M00' + suffix_bids 
-sub2 = 'OasisCaps_example/subjects/sub-OASIS10016/ses-M00/t1_linear/sub-OASIS10016_ses-M00' + suffix_caps
+sub1 = 'data_oasis/BIDS/sub-OASIS10016/ses-M00/anat/sub-OASIS10016_ses-M00' + suffix_bids 
+sub2 = 'data_oasis/CAPS/subjects/sub-OASIS10016/ses-M00/t1_linear/sub-OASIS10016_ses-M00' + suffix_caps
 
-sub3 = 'OasisBids_example/sub-OASIS10304/ses-M00/anat/sub-OASIS10304_ses-M00' + suffix_bids
-sub4 = 'OasisCaps_example/subjects/sub-OASIS10304/ses-M00/t1_linear/sub-OASIS10304_ses-M00' + suffix_caps
+sub3 = 'data_oasis/BIDS/sub-OASIS10304/ses-M00/anat/sub-OASIS10304_ses-M00' + suffix_bids
+sub4 = 'data_oasis/CAPS/subjects/sub-OASIS10304/ses-M00/t1_linear/sub-OASIS10304_ses-M00' + suffix_caps
 
 plotting.plot_anat(sub3, title="raw data: sub-OASIS10304")
 plotting.plot_anat(sub4, title="preprocessed data: sub-OASIS10304")
@@ -432,15 +432,15 @@ plotting.show()
 # ### Run the pipeline
 # %%
 # quality-check for t1-linear preprocessing
-!clinicadl quality-check t1-linear OasisCaps_example QC_result_t1.tsv --no-gpu --threshold 0.8
+!clinicadl quality-check t1-linear data_oasis/CAPS data_oasis/QC_result_t1.tsv --no-gpu --threshold 0.8
 
 # %%
-# quality-check for pet-linear preprocessing
-!clinicadl quality-check pet-linear AdniCaps_example QC_result_pet.tsv 18FFDG cerebellumPons2 --no-gpu
+# quality-check for pet-linear preprocessing (comming soon)
+!clinicadl quality-check pet-linear data_adni/CAPS data_adni/QC_result_pet.tsv 18FFDG cerebellumPons2 --no-gpu
 
 # %%
 # quality-check for t1-volume preprocessing
-!clinicadl quality-check t1-volume OasisCaps_example QC_result_t1V.tsv OasisT1Volume --no-gpu
+!clinicadl quality-check t1-volume data_oasis/CAPS data_oasis/QC_result_t1V.tsv OasisT1Volume --no-gpu
 
 # %% [markdown]
 # ```{warning}
@@ -449,7 +449,7 @@ plotting.show()
 
 # %%
 import pandas as pd
-df_T1 = pd.read_csv("QC_results_t1.tsv", sep="\t")
+df_T1 = pd.read_csv("data_oasis/QC_results_t1.tsv", sep="\t")
 #%%
 print(df_T1)
 
@@ -462,7 +462,7 @@ print(df_T1)
 # and cerebellum leading to this low probabilty value. ;-)
 
 #%%
-df_pet = pd.read_csv("QC_results_pet.tsv", sep="\t")
+df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
 print(df_pet)
 
 # %% [markdown]
@@ -473,7 +473,7 @@ print(df_pet)
 # and cerebellum leading to this low probabilty value. ;-)
 
 #%%
-df_t1V = pd.read_csv("QC_results_t1V/f", sep="\t")
+df_t1V = pd.read_csv("data_adni/QC_results_t1V/f", sep="\t")
 print(df_t1V)
 
 # To display more nicely the output we implemented in this notebook

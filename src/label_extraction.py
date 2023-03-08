@@ -37,8 +37,15 @@
 # !tar xf OasisBids.tar.gz 
 
 # %% [markdown]
-# ## Merge metadata from a BIDS hierarchy with `clinica iotools`
+# These tsv files allow to prepare the set of data to train a neural network, you can follow this notebook even without having access to these data but
+# if you want to do the rest of the notebooks, you will have to download the data from [ADNI](https://adni.loni.usc.edu/) or [OASIS](https://oasis-brains.org/) 
+# because it is not possible to separate a set of 4 
+# images without data leakage.
 
+
+# %% [markdown]
+# ## Get metadata from a BIDS hierarchy with `clinica iotools`
+# ### Gather BIDS and CAPS data into a single TSV file
 # In a BIDS hierarchy, demographic, clinical and imaging metadata are stored in
 # TSV files located at different levels of the hierarchy depending on whether they
 # are specific to a subject (e.g. gender), a session (e.g. diagnosis) or a scan
@@ -70,7 +77,7 @@
 #%%
 # !clinica iotools merge-tsv data_adni/BIDS data_adni/merged.tsv -tsv data_adni/after_qc.tsv
 # %% [markdown]
-# ## Check missing modalities for each subject
+# ### Check missing modalities for each subject
 # We want to restrict the list of the sessions used to those including a T1-MR
 # image. Then the following command is needed to identify which modalities are
 # present for each session:
@@ -87,7 +94,7 @@
 # the example BIDS of OASIS:
 # %%
 # Find missing modalities
-!clinica iotools check-missing-modalities data_oasis/BIDS data_oasis/missing_mods
+!clinica iotools check-missing-modalities <bids_directory> data_oasis/missing_mods
 #%%
 # !clinica iotools check-missing-modalities data_adni/BIDS data_adni/missing_mods
 # %% [markdown]
@@ -95,7 +102,7 @@
 #series of tsv files is written (one file per session label containing one row
 #per subject and one column per modality).
 # %% [markdown]
-# ## Get labels with `clinicadl tsvtools` 
+# ## Prepare metadata with `clinicadl tsvtools` 
 
 # %% [markdown]
 # ### Get the labels

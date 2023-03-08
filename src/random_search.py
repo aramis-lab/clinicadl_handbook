@@ -229,7 +229,7 @@ display(metrics)
 
 # Corresponding architecture drawing:
 # <br>
-# <img src="./images/convBlock1.png" width="700">
+# <img src="../../../images/convBlock1.png" width="700">
 # <br>
 
 
@@ -248,7 +248,7 @@ display(metrics)
 
 # Corresponding architecture drawing:
 # <br>
-# <img src="./images/convBlock2.png" width="700">
+# <img src="../../../images/convBlock2.png" width="700">
 # <br>
 
 # A simple way to better visualize your random architecture is to construct it
