@@ -20,7 +20,7 @@ pipeline {
               sh 'echo "My branch name is ${BRANCH_NAME}"'
               sh 'echo "Agent name: ${NODE_NAME}"'
               sh 'pwd'
-              sh "echo $myCustomEnvVar"
+              sh "echo ${myCustomEnvVar}"
               sh '''
                 poetry about
                 make build.book
