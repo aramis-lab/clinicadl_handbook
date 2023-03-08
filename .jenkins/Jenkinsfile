@@ -8,27 +8,22 @@ pipeline {
     stages {
       stage('Build the docs') {
         agent {
-          label 'gpu'
           dockerfile {
               filename 'Dockerfile'
               reuseNode true
           }
         }
-        stages {
-          stage('Build') {
-            steps {
-              echo 'My branch name is ${BRANCH_NAME}'
-              sh 'echo "My branch name is ${BRANCH_NAME}"'
-              sh 'echo "Agent name: ${NODE_NAME}"'
-              sh 'pwd'
-              sh "echo ${myCustomEnvVar}"
-              sh '''
-                poetry about
-                make build.book
-              '''
-              stash(name: 'doc_html', includes: 'jupyter-book/_build/**')
-            }
-          }
+        steps {
+          echo 'My branch name is ${BRANCH_NAME}'
+          sh 'echo "My branch name is ${BRANCH_NAME}"'
+          sh 'echo "Agent name: ${NODE_NAME}"'
+          sh 'pwd'
+          sh "echo ${myCustomEnvVar}"
+          sh '''
+            poetry about
+            make build.book
+          '''
+          stash(name: 'doc_html', includes: 'jupyter-book/_build/**')
         }
       }
       stage('Deploy') {
