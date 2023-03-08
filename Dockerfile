@@ -7,4 +7,5 @@ RUN apt-get update -yq \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+USER ci
 RUN micromamba install --yes --name base poetry -c conda-forge 
