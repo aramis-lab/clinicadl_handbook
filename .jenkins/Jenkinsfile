@@ -4,10 +4,11 @@
 // Author: mauricio.diaz@inria.fr
 
 pipeline {
-  agent { label 'gpu' }
+  agent none
     stages {
       stage('Build the docs') {
         agent {
+          label 'gpu'
           dockerfile {
               filename 'Dockerfile'
               reuseNode true
