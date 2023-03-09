@@ -31,13 +31,13 @@ pipeline {
             poetry install
             make build.book
           '''
-          stash(name: 'doc_html', includes: 'jupyter-book/_build/**')
+          stash(name: 'doc_html', includes: 'jupyter-book/_build/html/**')
         }
       }
       stage('Deploy') {
         parallel {
           stage('Deploy site') {
-            agent { label 'ubuntu' }
+            agent none
             when {
                 branch 'main'
             }
@@ -61,7 +61,7 @@ pipeline {
                         remoteDirectory: 'clinicadl_tuto_2023',
                         remoteDirectorySDF: false,
                         removePrefix: '',
-                        sourceFiles: 'jupyter-book/_build/**')
+                        sourceFiles: 'jupyter-book/_build/html/**')
                         ],
                       usePromotionTimestamp: false,
                       useWorkspaceInPromotion: false,
