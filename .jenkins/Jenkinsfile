@@ -22,12 +22,13 @@ pipeline {
           sh 'echo "My branch name is ${BRANCH_NAME}"'
           sh 'echo "Agent name: ${NODE_NAME}"'
           sh 'pwd'
-          sh '. $HOME/.bashrc'
+          sh '$MAMBA_EXE info'
           sh 'echo $SHELL'
           sh 'printenv'
           //sh '. /usr/local/bin/_activate_current_env.sh'
           sh 'echo ${myCustomEnvVar}'
           sh '''
+            $MAMBA_EXE shell init
             poetry about
             make build.book
           '''
