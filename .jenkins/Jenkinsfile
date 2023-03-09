@@ -58,9 +58,9 @@ pipeline {
                         makeEmptyDirs: false,
                         noDefaultExcludes: false,
                         patternSeparator: '[, ]+',
-                        remoteDirectory: 'clinicadl_tuto_2023',
+                        remoteDirectory: 'clinicadl/tutoriel/2023',
                         remoteDirectorySDF: false,
-                        removePrefix: '',
+                        removePrefix: 'jupyter-book/_build',
                         sourceFiles: 'jupyter-book/_build/html/**')
                         ],
                       usePromotionTimestamp: false,
