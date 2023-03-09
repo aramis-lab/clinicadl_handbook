@@ -26,6 +26,7 @@ pipeline {
           sh 'printenv'
           //sh '. /usr/local/bin/_activate_current_env.sh'
           sh '''
+            $MAMBA_EXE shell init --shell=bash --prefix=/opt/conda
             $MAMBA_EXE activate base
             poetry about
             make build.book
