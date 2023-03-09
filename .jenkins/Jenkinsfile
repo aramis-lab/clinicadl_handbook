@@ -15,7 +15,7 @@ pipeline {
         }
         environment {
           CONDA_HOME = '/opt/conda'
-          PATH = "${CONDA_HOME}/bin:${CONDA_HOME}/condabin:$PATH"
+          PATH = "/opt/conda/bin:/opt/conda/condabin:$PATH"
         }
         steps {
           echo 'My branch name is ${BRANCH_NAME}'
