@@ -24,7 +24,7 @@ pipeline {
           sh 'pwd'
           sh 'echo $SHELL'
           sh 'env'
-          sh '. /usr/local/bin/_activate_current_env.sh'
+          //sh '. /usr/local/bin/_activate_current_env.sh'
           sh 'echo ${myCustomEnvVar}'
           sh '''
             poetry about
