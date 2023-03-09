@@ -13,6 +13,10 @@ pipeline {
               reuseNode true
           }
         }
+        environment {
+          CONDA_HOME = '/opt/conda'
+          PATH = "${CONDA_HOME}/bin:${CONDA_HOME}/condabin:$PATH"
+        }
         steps {
           echo 'My branch name is ${BRANCH_NAME}'
           sh 'echo "My branch name is ${BRANCH_NAME}"'
@@ -20,7 +24,7 @@ pipeline {
           sh 'pwd'
           sh 'echo $SHELL'
           sh 'env'
-          sh 'source /usr/local/bin/_activate_current_env.sh'
+          sh '. /usr/local/bin/_activate_current_env.sh'
           sh 'echo ${myCustomEnvVar}'
           sh '''
             poetry about
