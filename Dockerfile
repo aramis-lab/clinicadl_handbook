@@ -10,4 +10,3 @@ RUN apt-get update -yq \
 ENV myCustomEnvVar="This is a custom env variable"
 USER mpp-user
 RUN micromamba install --yes --name base poetry -c conda-forge 
-ENTRYPOINT ["/bin/bash"]

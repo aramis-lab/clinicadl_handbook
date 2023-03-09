@@ -18,6 +18,7 @@ pipeline {
           sh 'echo "My branch name is ${BRANCH_NAME}"'
           sh 'echo "Agent name: ${NODE_NAME}"'
           sh 'pwd'
+          sh 'source /usr/local/bin/_activate_current_env.sh'
           sh 'echo ${myCustomEnvVar}'
           sh '''
             poetry about
