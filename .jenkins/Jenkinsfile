@@ -27,8 +27,6 @@ pipeline {
           //sh '. /usr/local/bin/_activate_current_env.sh'
           sh '''#!/bin/bash
             source /usr/local/bin/_activate_current_env.sh
-            //eval "$(/bin/micromamba shell hook --shell=bash)"
-            //$MAMBA_EXE activate base
             poetry about
             make build.book
           '''
