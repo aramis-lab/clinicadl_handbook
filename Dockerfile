@@ -7,7 +7,6 @@ RUN apt-get update -yq \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-ENV myCustomEnvVar="This is a custom env variable"
 USER mpp-user
 RUN micromamba install --yes --name base poetry -c conda-forge 
 CMD ["/bin/bash"]

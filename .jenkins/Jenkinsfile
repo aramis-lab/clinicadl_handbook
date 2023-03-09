@@ -23,12 +23,10 @@ pipeline {
           sh 'echo "Agent name: ${NODE_NAME}"'
           sh 'pwd'
           sh '$MAMBA_EXE info'
-          sh 'echo $SHELL'
           sh 'printenv'
           //sh '. /usr/local/bin/_activate_current_env.sh'
-          sh 'echo ${myCustomEnvVar}'
           sh '''
-            $MAMBA_EXE shell init
+            eval "$(${MAMBA_EXE} shell hook --shell=bash)"
             poetry about
             make build.book
           '''
