@@ -25,7 +25,7 @@ pipeline {
           sh '$MAMBA_EXE info'
           sh 'printenv'
           //sh '. /usr/local/bin/_activate_current_env.sh'
-          sh '''
+          sh '''#!/bin/bash
             eval "$(/bin/micromamba shell hook --shell=bash)"
             //$MAMBA_EXE activate base
             poetry about
