@@ -37,7 +37,7 @@ pipeline {
       stage('Deploy') {
         parallel {
           stage('Deploy site') {
-            agent none
+            agent { label 'gpu' }
             when {
                 branch 'main'
             }
