@@ -26,7 +26,7 @@ pipeline {
           sh 'printenv'
           //sh '. /usr/local/bin/_activate_current_env.sh'
           sh '''
-            eval "$(${MAMBA_EXE} shell hook --shell=bash)"
+            $MAMBA_EXE shell init --shell=basename($SHELL) --prefix=/opt/conda
             poetry about
             make build.book
           '''
