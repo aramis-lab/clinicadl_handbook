@@ -77,9 +77,9 @@ Finally, be aware that the OASIS-1 dataset is cross-sectional and not longitudin
 
 ## A word on the ADNI dataset
 
-For this tutorial we have also chosen to use [ADNI](http://adni.loni.usc.edu/) because it is the most know and used dataset in neuroimaging and contain a big amount of data, moreover it conatins PET images that OASIS 1 doesn't contain (but OASIS3 does).
+For this tutorial we have also chosen to use [ADNI](http://adni.loni.usc.edu/) because it is one of the most well-know dataset in neuroimaging. It contains a large variety of MRI modalities, notably PET images.
 
-In ADNI, all the diagnoses are presents:
+In ADNI, the subjects have labels for their diagnostic :
 - CN (corresponding to a null CDR),
 - MCI (corresponding to a CDR of 0.5),
 - AD (corresponding to a CDR of 1).

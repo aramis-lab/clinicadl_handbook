@@ -15,7 +15,7 @@ procedures.  In a recently published article ([Wen et al.
 limitations by proposing an open-source framework for AD classification using
 convolutional neural networks and structural MRI.
 
-The `clinicadl` library was developed from the [AD-DL](https://github.com/aramis-lab/AD-DL) project, a GitHub repository hosting the source code of a scientific publication on the deep learning classification of brain images in the context of Alzheimer's disease. This framework comprises tools to automatically convert publicly available AD datasets into the BIDS standard, and a modular set of image
+The `clinicadl` library was initially developed from the [AD-DL](https://github.com/aramis-lab/AD-DL) project, a GitHub repository hosting the source code of a scientific publication on the deep learning classification of brain images in the context of Alzheimer's disease. This framework comprises tools to automatically convert publicly available AD datasets into the BIDS standard, and a modular set of image
 preprocessing procedures, classification architectures and evaluation procedures
 dedicated to deep learning. This framework can be used to provide a baseline
 performance against which new methods can easily be compared. Researchers working
@@ -30,9 +30,9 @@ This tutorial will guide you through the steps necessary to carry out an
 analysis aiming to differentiate patients with Alzheimer's disease from healthy
 controls using structural MR images and convolutional neural networks. It will
 particularly highlight traps to avoid when carrying out this type of analysis.
-The tutorial will rely on [`clinica`](http://www.clinica.run), a software
+The tutorial will rely on [`Clinica`](http://www.clinica.run), a software
 platform for clinical neuroimaging studies, and
-[`clinicadl`](https://github.com/aramis-lab/clinicadl), a tool dedicated to the deep
+[`ClinicaDL`](https://github.com/aramis-lab/clinicadl), a tool dedicated to the deep
 learning-based classification of AD using structural MRI. Even though we will
 focus on Alzheimer's disease, the principles explained are general enough to be
 applicable to the analysis of other neurological diseases.
