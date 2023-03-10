@@ -7,6 +7,9 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
+jupyter-book = "^0.13.1"
+torchsummary = "^1.4.0"
+clinicadl = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.5.3"
