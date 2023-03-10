@@ -15,7 +15,7 @@ procedures.  In a recently published article ([Wen et al.
 limitations by proposing an open-source framework for AD classification using
 convolutional neural networks and structural MRI.
 
-The `clinicadl` library was developed from the [AD-DL](https://github.com/aramis-lab/AD-DL) project, a GitHub repository hosting the source code of a scientific publication on the deep learning classification of brain images in the context of Alzheimer's disease. This framework comprises tools to automatically convert publicly available AD datasets into the BIDS standard, and a modular set of image
+The `clinicadl` library was initially developed from the [AD-DL](https://github.com/aramis-lab/AD-DL) project, a GitHub repository hosting the source code of a scientific publication on the deep learning classification of brain images in the context of Alzheimer's disease. This framework comprises tools to automatically convert publicly available AD datasets into the BIDS standard, and a modular set of image
 preprocessing procedures, classification architectures and evaluation procedures
 dedicated to deep learning. This framework can be used to provide a baseline
 performance against which new methods can easily be compared. Researchers working
