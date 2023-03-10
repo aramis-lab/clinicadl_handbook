@@ -32,7 +32,7 @@ controls using structural MR images and convolutional neural networks. It will
 particularly highlight traps to avoid when carrying out this type of analysis.
 The tutorial will rely on [`Clinica`](http://www.clinica.run), a software
 platform for clinical neuroimaging studies, and
-[`clinicadl`](https://github.com/aramis-lab/clinicadl), a tool dedicated to the deep
+[`ClinicaDL`](https://github.com/aramis-lab/clinicadl), a tool dedicated to the deep
 learning-based classification of AD using structural MRI. Even though we will
 focus on Alzheimer's disease, the principles explained are general enough to be
 applicable to the analysis of other neurological diseases.
