@@ -103,17 +103,14 @@ os.makedirs("data", exist_ok=True)
 
 
 #%%
-# AD Target CN
-!clinicadl interpret individual "model_trivial" "individual-AD_target-CN" \
-    -np 0 --tsv_path "data/synthetic/data.tsv" --caps_dir "data/synthetic" \
-    -d "AD" --target_diagnosis "CN" --nifti_template "AAL2/mask-1.nii"
+# grad-cam diagnosis AD
+!clinicadl interpret interpret/maps_trivial test-adni-gc gc_AD grad-cam --save_individual -d AD --save_nifti
+
 
 
 #%%
-# CN Target AD
-!clinicadl interpret individual "model_trivial" "individual-CN_target-AD" \
-    -np 0 --tsv_path "data/synthetic/data.tsv" --caps_dir "data/synthetic" \
-    -d "CN" --target_diagnosis "AD" --nifti_template "AAL2/mask-1.nii"
+# gradients diagnosis CN
+!clinicadl interpret interpret/maps_trivial test-gd gd_CN gradients -d CN --caps_directory interpret/caps_trivial --participants_tsv interpret/caps_trivial/split/test_baseline.tsv --save_nifti --save_individual
 
 
 #%% [markdown]
@@ -126,10 +123,13 @@ os.makedirs("data", exist_ok=True)
 # structure:
 
 #%%
-!tree model_trivial/fold-0/gradients/best_loss/individual-AD_target-CN
+!tree interpret/maps_trivial/fold-0/gradients/best_loss/individual-AD_target-CN
+
 
 #%%[markdown]
-# Then we can plot the individual saliency maps to check which regions the CNN is focusing on.
+# Because we add the --save_individual option, we can plot the individual saliency maps to check which regions the CNN is focusing on.
+# We can also plot the group saliency maps in the same way than for the individual ones.
+
 
 
 #%%
@@ -152,59 +152,28 @@ plot_individual_maps("AD", "CN")
 print("Saliency maps of CN images based on AD nodes")
 plot_individual_maps("CN", "AD")
 
-#%% [markdown]
-#These saliency maps are very noisy and may be difficult to interpret. This is why 
-
-????????
-
-#%% [markdown]
-# ## Generate group saliency maps
-
-# Saliency maps on corresponding to a group of images can be computed with the following command:
-# ```bash
-# clinicadl interpret group <model_path> <name>
-# ```
-# where:
-# - `model_path` is the path to the pretrained model folder,
-# - `name` is the name of the interpretability job.
-
-# Default will try to load the data used for training (which is not possible here). Then you will need to set the following options:
-# - `--tsv_path`, the path the TSV file with the subjects and sessions to use,
-# - `--caps_dir`, the path to the CAPS in which the images defined in `tsv_path` are present.
 
 #%%
-# AD Target CN
-!clinicadl interpret group "model_trivial" "group-AD_target-CN" \
-    -np 0 --tsv_path "data/synthetic/data.tsv" --caps_dir "data/synthetic" \
-    -d "AD" --target_diagnosis "CN" --nifti_template "AAL2/mask-1.nii"
-
-#%%
-
-# CN Target AD
-!clinicadl interpret group "model_trivial" "group-CN_target-AD" \
-    -np 0 --tsv_path "data/synthetic/data.tsv" --caps_dir "data/synthetic" \
-    -d "CN" --target_diagnosis "AD" --nifti_template "AAL2/mask-1.nii"
-
-#%% [markdown]
-# This time the `gradients/<name>` folder will only contain one image corresponding to the mean 
-# of individual saliency maps of the group.
-
-#%%
-!tree model_trivial/fold-0/gradients/best_loss/group-AD_target-CN
-
-#%% [markdown]
-# We can now plot the group saliency maps in the same way than for the individual ones.
-
-#%%
-
-def plot_group_maps(diagnosis, target):    
-    map_path = f"model_trivial/fold-0/gradients/best_loss/group-{diagnosis}_target-{target}/map.nii.gz"
-    plotting.plot_stat_map(map_path, title=f"Group saliency maps of {diagnosis} images",
-                           cut_coords=(-50, 14), display_mode="yz", threshold=10**-3)
+def plot_individual_maps(diagnosis, target):
+    import os
+    from os import path
+    
+    subjects_path = f"/Users/camille.brianceau/aramis/clinicadl_handbook/src/models/maps_bis/split-0/best-loss/maps_bis_OASIS_interpret/interpret-test/mean_roi-0_map.pt"
+    subjects_list = [subject for subject in os.listdir(subjects_path) 
+                     if path.isdir(path.join(subjects_path, subject))]
+    subjects_list.sort()
+    for subject in subjects_list:
+        map_path = path.join(subjects_path, subject, "ses-M00", "map.nii.gz")
+        plotting.plot_stat_map(map_path, title=f"Saliency map of {subject}",
+                               cut_coords=(-50, 14), display_mode="yz", threshold=10**-3)
     plotting.show()
 
-plot_group_maps("AD", "CN")
-plot_group_maps("CN", "AD")
+print("Saliency maps of AD images based on CN nodes")
+plot_individual_maps("AD", "CN")
+print("Saliency maps of CN images based on AD nodes")
+plot_individual_maps("CN", "AD")
+
 
 #%% [markdown]
-# These maps are less noisy as the individual differences are less present and we can see more easily the main pattern.
+# The group saliency maps are very noisy and may be difficult to interpret
+# but individual maps are less noisy as the individual differences are less present and we can see more easily the main pattern.

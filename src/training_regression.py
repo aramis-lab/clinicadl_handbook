@@ -180,7 +180,7 @@ print('GPU is available', torch.cuda.is_available())
 # %%
 # Training for regression on the age 
 !clinicadl train regression -h
-!clinicadl train regression <caps_directory> age_regression_t1_image data_adni/split/4_fold maps_regression_image --n_splits 4 --epochs 3
+!clinicadl train regression <caps_directory> image_regression_t1 data_adni/split/4_fold data_adni/maps_regression_image --n_splits 4 
 
 
 
@@ -284,7 +284,5 @@ print('GPU is available', torch.cuda.is_available())
 # the next cell:
 # %%
 import pandas as pd
-metrics = pd.read_csv("data_oasis/maps_classification_2D_slice_resnet18/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
+metrics = pd.read_csv("data_adni/maps_regression_image/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
 metrics.head()
-# %% [markdown]
-display(predictions)

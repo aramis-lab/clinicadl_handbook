@@ -137,12 +137,12 @@
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
-!clinicadl prepare-data patch <caps_directory> pet-linear --subjects_sessions_tsv pet_after_qc.tsv --extract_json pet_reconstruction --acq_label 18FFDG --suvr_reference_region cerebellumPons2
+!clinicadl prepare-data patch <caps_directory> pet-linear --subjects_sessions_tsv data_adni/after_qc.tsv --extract_json pet_reconstruction --acq_label 18FFDG --suvr_reference_region cerebellumPons2
 # %% [markdown]
 # At the end of this command, a new directory named `deeplearning_prepare_data` is
 # created inside each subject/session of the CAPS structure. We can easily verify:
 # %%
-!tree -L 3 ./OasisCaps_example/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
+!tree -L 3 ./<caps_directory>/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
 
 # %%
 # We can also do the same things with region of interest. 
@@ -262,7 +262,8 @@ print('GPU is available', torch.cuda.is_available())
 # %%
 # 3D-patch autoencoder pretraining
 !clinicadl train reconstruction -h
-#!clinicadl train reconstruction <caps_directory> pet_reconstruction data_adni/split/4_fold/  data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3
+# clinicadl train reconstruction <caps_directory> pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstrcution_3D_patch --n_splits 4 
+
 
 # %% [markdown]
 # <div class="alert alert-block alert-success">
@@ -296,14 +297,14 @@ print('GPU is available', torch.cuda.is_available())
 # ```
 
 # With autoencoder pretraining
-#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3
+#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_3D_patch --n_splits 4 --epochs 3
 
 # %%
 # 3D-patch multi-CNN training
 !clinicadl train classification -h 
 
 # With autoencoder pretraining
-#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
+#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch_multi --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
 
 
 
@@ -393,7 +394,7 @@ print('GPU is available', torch.cuda.is_available())
 
 # %%
 !clinicadl predict -h
-!clinicadl predict data_adni/maps_reconstrcution_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv --save_tensor
+!clinicadl predict data_adni/maps_reconstrcution_3D_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv --save_tensor
 
 #%%
 clinicadl predict data_adni/maps_classification_transfer_AE_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv 
@@ -418,7 +419,5 @@ clinicadl predict data_adni/maps_classification_transfer_AE_patch 'test-adni' --
 # the next cell:
 # %%
 import pandas as pd
-metrics = pd.read_csv("data_oasis/maps_classification_2D_slice_resnet18/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
+metrics = pd.read_csv("data_adni/maps_reconstrcution_3D_patch/split-0/best-loss/test-adni/test-adni_patch_level_metrics.tsv", sep="\t")
 metrics.head()
-# %% [markdown]
-display(predictions)

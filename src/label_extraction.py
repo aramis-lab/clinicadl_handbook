@@ -72,10 +72,10 @@
 # Execute the following command to gather metadata included in this BIDS:
 # %%
 # Merge meta-data information
-!clinica iotools merge-tsv data_oasis/BIDS data_oasis/merged.tsv -tsv data_oasis/after_qc.tsv
+!clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv -tsv data_oasis/after_qc.tsv
 
 #%%
-# !clinica iotools merge-tsv data_adni/BIDS data_adni/merged.tsv -tsv data_adni/after_qc.tsv
+# !clinica iotools merge-tsv data_adni/BIDS_example data_adni/merged.tsv -tsv data_adni/after_qc.tsv
 # %% [markdown]
 # ### Check missing modalities for each subject
 # We want to restrict the list of the sessions used to those including a T1-MR
@@ -94,7 +94,7 @@
 # the example BIDS of OASIS:
 # %%
 # Find missing modalities
-!clinica iotools check-missing-modalities <bids_directory> data_oasis/missing_mods
+!clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
 #%%
 # !clinica iotools check-missing-modalities data_adni/BIDS data_adni/missing_mods
 # %% [markdown]
@@ -135,9 +135,9 @@
 # the only available labels in OASIS. Run the following cell to extract them in a
 # new file `labels.tsv` from the restricted version of OASIS:
 # %%
-!clinicadl tsvtools get-labels data_oasis/BIDS  --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/after_qc.tsv
+!clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/after_qc.tsv
 # %%
-# !clinicadl tsvtools get-labels data_adni/BIDS --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_path data_adni/after_qc.tsv
+# !clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_path data_adni/after_qc.tsv
 # %% [markdown]
 # This tool writes a unique TSV file containing the labels asked by the user. They are 
 # stored in the column named diagnosis.

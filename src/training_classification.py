@@ -338,10 +338,10 @@ print('GPU is available', torch.cuda.is_available())
 
 # %%
 !clinicadl predict -h
-!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis' --participants_tsv ./data_oasis/split/5_fold/validation_baseline.tsv --caps_directory <caps_directory>
+!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory <caps_directory>
 
 #%%
-!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18_multi 'test-Oasis' --participants_tsv ./data_oasis/split/5_fold/validation_baseline.tsv --caps_directory <caps_directory>
+!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18_multi 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory <caps_directory>
 
 # %% [markdown]
 # Results are stored in the MAPS of path `model_path`, according to the following file system:
@@ -366,5 +366,3 @@ print('GPU is available', torch.cuda.is_available())
 import pandas as pd
 metrics = pd.read_csv("data_oasis/maps_classification_2D_slice_resnet18/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
 metrics.head()
-# %% [markdown]
-display(predictions)
