@@ -6,13 +6,9 @@ authors = ["The Aramis Lab"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-jupyter-book = "^0.13.1"
-torch-summary = "^1.4.0"
-clinicadl = ">=1.1.1"
-clinica = "^0.7.2"
 python = ">=3.8,<3.11"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.group.dev-dependencies]
 jupyterlab = "^3.5.3"
 jupytext = "^1.14.4"
 sphinxcontrib-bibtex = "^2.5.0"
