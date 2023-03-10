@@ -8,7 +8,7 @@ The diagnosis of AD mainly relies on clinical evaluation and cognitive assessmen
 
 The first thing that we need to start working on MRI classification is a dataset. Three publicly available datasets have been mainly used for the study of AD: the Alzheimer’s Disease Neuroimaging Initiative (ADNI), the Australian Imaging, Biomarkers and Lifestyle (AIBL) and the Open Access Series of Imaging Studies (OASIS).
 
-<img src="./images/logo_datasets.png" style="width: 500px;" alt="logos of the different databases" class="center">
+<img src="../../images/logo_datasets.png" style="width: 500px;" alt="logos of the different databases" class="center">
 
 
 ### ADNI
@@ -22,6 +22,22 @@ Similarly to ADNI, [AIBL](https://aibl.csiro.au/adni/index.html) seeks to discov
 The [OASIS](https://www.oasis-brains.org/) project includes three cohorts, OASIS- 1, OASIS-2 and OASIS-3. The first cohort is only cross-sectional, whereas the other two are longitudinal. Available data is more limited than in ADNI with only few clinical tests and imaging data (MRI, and PET only in OASIS-3).
 
 *Data  used  in this  tutorial  were  obtained  from  the  ADNI  database ([adni.loni.usc.edu](http://adni.loni.usc.edu/)) and the OASIS project ([www.oasis-brains.org](https://www.oasis-brains.org/)).*
+
+## Neuroimaging techniques
+
+Neuroimaging refers to a range of techniques used to visualize and study the structure and function of the brain. These techniques can be broadly categorized into structural imaging, which provides information about the physical structure of the brain, and functional imaging, which reveals how different regions of the brain are active during particular tasks or at rest.
+
+
+### MRI 
+Magnetic Resonance Imaging (MRI) uses a strong magnetic field and radio waves to produce detailed images of the brain's anatomy. MRI can reveal structural abnormalities, such as tumors or lesions.
+
+### PET 
+Positron Emission Tomography (PET) uses a radioactive tracer that is injected into the bloodstream to visualize metabolic activity in the brain. The tracer emits positrons, which are detected by a scanner to create a 3D image of the brain. 
+
+### Others
+There is others neuroimaging techniques such as functional Magnetic Resonance Imaging (fMRI), diffusion Tensor Imaging (DTI) or electroencephalography (EEG) but `clinicadl` only take PET and MRI.
+
+
 
 ## Labels of interest in the context of Alzheimer's disease
 
@@ -42,7 +58,7 @@ To limit the influence of the variabilities in the results of neuropsychological
 <b>Time horizon:</b><p>
     In this notebook, we set the time horizon to 36 months.
     The time horizon allows us to study the stability of MCI patients and to sort them between sMCI and pMCI classes.</p>
-    <img src="./images/MCI_stability.png">
+    <img src="../../images/MCI_stability.png">
 </div>
 
 ## A word on the OASIS dataset
@@ -53,6 +69,23 @@ In OASIS-1, only two diagnostic status are given:
 - CN (corresponding to a null CDR),
 - AD (corresponding to a non-null CDR).
 
-This definition of the diagnostic status does not correspond to the one of ADNI for which it is based on other neuropsychological scores corrected by the level of education of participants. Moreover, in ADNI, a CDR of 0.5 leads to the MCI status whereas in OASIS it corresponds to "probable AD" as for all patients with a non-null CDR.
+Here, a CDR of 0.5 corresponds to "probable AD" as for all patients with a non-null CDR.
 
 Finally, be aware that the OASIS-1 dataset is cross-sectional and not longitudinal, meaning that there is only one asssessment per participant. This also means that the stability of the diagnostic status cannot be assessed.
+
+
+
+## A word on the ADNI dataset
+
+For this tutorial we have also chosen to use [ADNI](http://adni.loni.usc.edu/) because it is one of the most well-know dataset in neuroimaging. It contains a large variety of MRI modalities, notably PET images.
+
+In ADNI, the subjects have labels for their diagnostic :
+- CN (corresponding to a null CDR),
+- MCI (corresponding to a CDR of 0.5),
+- AD (corresponding to a CDR of 1).
+
+This definition of the diagnostic status is based on other neuropsychological scores corrected by the level of education of participants. 
+
+Finally, be aware that the ADNI dataset is longitudinal, meaning that there can be more than one asssessment per participant. This also means that the stability of the diagnostic status can be calculated.
+
+This dataset is bigger than OASIS1 and will be needed for some notebooks in order to work with progressive diagnoses and pet images. 

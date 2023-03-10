@@ -1,5 +1,6 @@
 name: clinicadl_handbook
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python=3.10
