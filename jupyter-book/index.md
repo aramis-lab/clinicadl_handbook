@@ -30,7 +30,7 @@ This tutorial will guide you through the steps necessary to carry out an
 analysis aiming to differentiate patients with Alzheimer's disease from healthy
 controls using structural MR images and convolutional neural networks. It will
 particularly highlight traps to avoid when carrying out this type of analysis.
-The tutorial will rely on [`clinica`](http://www.clinica.run), a software
+The tutorial will rely on [`Clinica`](http://www.clinica.run), a software
 platform for clinical neuroimaging studies, and
 [`clinicadl`](https://github.com/aramis-lab/clinicadl), a tool dedicated to the deep
 learning-based classification of AD using structural MRI. Even though we will
