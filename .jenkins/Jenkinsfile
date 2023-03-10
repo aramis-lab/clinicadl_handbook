@@ -29,6 +29,7 @@ pipeline {
             source /usr/local/bin/_activate_current_env.sh
             poetry about
             poetry install
+            make build.notebooks
             make build.book
           '''
           stash(name: 'doc_html', includes: 'jupyter-book/_build/html/**')
