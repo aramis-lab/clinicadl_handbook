@@ -20,16 +20,18 @@
 # %% [markdown]
 
 # # Launch a random search
+#
 # The previous section focused on a way to debug non-automated architecture
-# search. However, if you have enough computational power, you may want to launch
-# an automated architecture search to save your time. This is the point of the
-# random search method of clinicadl.
+# search. However, if you have enough computational power, you may want to
+# launch an automated architecture search to save your time. This is the point
+# of the random search method of ClinicaDL.
 
-# <div class="alert alert-block alert-info">
-# <b>Non-optimal result:</b><p>
-#     A random search may allow to find a better performing network, however there is no guarantee that this is the best performing network.
-# </div>
-
+# ```{warning}
+# **Non-optimal result:**
+#     A random search may allow to find a better performing network, however
+#     there is no guarantee that this is the best performing network.
+# ```
+#
 # This notebook relies on the synthetic data generated in the previous notebook.
 # If you did not run it, uncomment the following cell to generate the
 # corresponding dataset.
@@ -43,16 +45,17 @@ import os
 # ## Define the hyperparameter space
 
 # A random search is performed according to hyperparameters of the network that
-# are sampled from a pre-defined space.
-# For example, you may want your random network to have maximum 3
-# fully-convolutional layers as you don't have enough memory to tackle more.
+# are sampled from a pre-defined space.  For example, you may want your random
+# network to have maximum 3 fully-convolutional layers as you don't have enough
+# memory to tackle more.
 
-# This hyperparameter space is defined in a TOML file that must be written in your
-# random search directory: `random_search.toml`.
+# This hyperparameter space is defined in a TOML file that must be written in
+# your random search directory: `random_search.toml`.
 
-# The following function `generate_dict` generates a dictionnary that will be used
-# to  `random_search.toml` for this tutorial. To accelerate the training task we
-# will use a single CNN on the default region of interet, the hippocampi.
+# The following function `generate_dict` generates a dictionary that will be
+# used to  `random_search.toml` for this tutorial. To accelerate the training
+# task we will use a single CNN on the default region of interest, the
+# hippocampi.
 # %%
 def generate_dict(gpu_avail, caps_dir, tsv_path, preprocessing_json):
     return {
@@ -78,27 +81,30 @@ def generate_dict(gpu_avail, caps_dir, tsv_path, preprocessing_json):
             }                            
         }
 # %% [markdown]
-# In this default dictionnary we set all the arguments that are mandatory for the
+# In this default dictionary we set all the arguments that are mandatory for the
 # random search. Hyperparameters for which a space is not defined will
 # automatically have their default value in all cases.
 
 # Hyperparameters can be sampled in 4 different ways:
 # - choice samples one element from a list (ex: `first_conv_width`),
-# - uniform draws samples from a uniform distribution over the interval [min, max] (ex: `selection_threshold`),
-# - exponent draws x from a uniform distribution over the interval [min, max] and return $10^{-x}$ (ex: `learning_rate`),
+# - uniform draws samples from a uniform distribution over the interval [min,
+# max] (ex: `selection_threshold`),
+# - exponent draws x from a uniform distribution over the interval [min, max]
+# and return $10^{-x}$ (ex: `learning_rate`),
 # - randint returns an integer in [min, max] (ex: `n_conv_blocks`).
 
+#The values of some variables are also fixed, meaning that they cannot be
+#sampled and that they should be given a unique value.
 
-#The values of some variables are also fixed, meaning that they cannot be sampled and that they should be given a unique value.
-
-#The values of the variables that can be set in random_search.toml correspond to the options of the train function. 
-# Values of the Computational resources section can also be redefined using the command line. Some variables were also 
+# The values of the variables that can be set in random_search.toml correspond
+# to the options of the train function.  Values of the Computational resources
+# section can also be redefined using the command line. Some variables were also
 # added to sample the architecture of the network.
 
-# In the default dictionnary, the learning rate will be sampled between $10^{-4}$
+# In the default dictionary, the learning rate will be sampled between $10^{-4}$
 # and $10^{-6}$.
 
-# This dictionnary is written as a TOML  file in the `launch_dir` of the
+# This dictionary is written as a TOML  file in the `launch_dir` of the
 # random-search.
 # You can define differently other hyperparameters by looking at the
 # [documentation](https://clinicadl.readthedocs.io/).
@@ -128,10 +134,13 @@ with open(output_file_name, "w") as toml_file:
 # %% [markdown]
 ## Prerequisites
 
-# You need to execute the [`clinicadl tsvtool getlabels`](TSVTools.md#getlabels---extract-labels-specific-to-alzheimers-disease) 
-# and [`clinicadl tsvtool {split|kfold}`](TSVTools.md#split---single-split-observing-similar-age-and-sex-distributions) commands
-# prior to running this task to have the correct TSV file organization.
-# Moreover, there should be a CAPS, obtained running the `t1-linear` pipeline of ClinicaDL.
+# You need to execute the [`clinicadl tsvtool
+# getlabels`](TSVTools.md#getlabels---extract-labels-specific-to-alzheimers-disease)
+# and [`clinicadl tsvtool
+# {split|kfold}`](TSVTools.md#split---single-split-observing-similar-age-and-sex-distributions)
+# commands prior to running this task to have the correct TSV file organization.
+# Moreover, there should be a CAPS, obtained running the `t1-linear` pipeline of
+# ClinicaDL.
 
 # %%[markdown]
 ## Running the task
@@ -142,12 +151,14 @@ with open(output_file_name, "w") as toml_file:
 # ```
 # where:
 
-# - `LAUNCH_DIRECTORY` (Path) is the parent directory of output folder containing the file `random_search.toml`.
-# - `NAME` (str) is the name of the output folder containing the experiment.
+# - `launch_directory` (Path) is the parent directory of output folder
+# containing the file `random_search.toml`.
+# - `name` (str) is the name of the output folder containing the experiment.
 
 # ## Content of `random_search.toml`
 
-# `random_search.toml` must be present in `launch_dir` before running the command. 
+# `random_search.toml` must be present in `launch_dir` before running the
+# command. 
 
 # Mandatory variables:
 
@@ -157,31 +168,32 @@ with open(output_file_name, "w") as toml_file:
 #   Sampling function: `fixed`.
 # - `caps_directory` (str) is the input folder containing the neuroimaging data in a [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy.
 # Sampling function: `fixed`.
-# - `preprocessing_json` (str) corresponds to the JSON file produced by `clinicadl extract` used for the search. 
-# Sampling function: `fixed`.
-# - `tsv_path` (str) is the input folder of a TSV file tree generated by `clinicadl tsvtool {split|kfold}`.
-# Sampling function: `fixed`.
-# - `diagnoses` (list of str) is the list of the labels that will be used for training. 
-# Sampling function: `fixed`.
-# - `epochs` (int) is the [maximum number of epochs](Train/Details.md#stopping-criterion).
-# Sampling function: `fixed`.
-# - `n_convblocks` (int) is the number of convolutional blocks in CNN.
-# Sampling function: `randint`.
-# - `first_conv_width` (int) is the number of kernels in the first convolutional layer.
-# Sampling function: `choice`.
-# - `n_fcblocks` (int) is the number of fully-connected layers at the end of the CNN.
-# Sampling function: `randint`.
+# - `preprocessing_json` (str) corresponds to the JSON file produced by
+# `clinicadl extract` used for the search.  Sampling function: `fixed`.
+# - `tsv_path` (str) is the input folder of a TSV file tree generated by
+# `clinicadl tsvtool {split|kfold}`.  Sampling function: `fixed`.
+# - `diagnoses` (list of str) is the list of the labels that will be used for
+# training.  Sampling function: `fixed`.
+# - `epochs` (int) is the [maximum number of
+# epochs](Train/Details.md#stopping-criterion).  Sampling function: `fixed`.
+# - `n_convblocks` (int) is the number of convolutional blocks in CNN.  Sampling
+# function: `randint`.
+# - `first_conv_width` (int) is the number of kernels in the first convolutional
+# layer.  Sampling function: `choice`.
+# - `n_fcblocks` (int) is the number of fully-connected layers at the end of the
+# CNN.  Sampling function: `randint`.
+#
 # ## Train & evaluate a random network
 # Based on the hyperparameter space described in `random_search.json`, you will
 # now be able to train a random network. To do so the following command can be
 # run:
 
-
 # %%
 !clinicadl random-search random_search maps_random_search2
 # %% [markdown]
-# A new folder `test` has been created in `launch_dir`. As for any network trained
-# with ClinicaDL it is possible to evaluate its performance on a test set:
+# A new folder `test` has been created in `launch_dir`. As for any network
+# trained with ClinicaDL it is possible to evaluate its performance on a test
+# set:
 # %%
 # Evaluate the network performance on the 2 test images
 !clinicadl predict random_search/maps_random_search2 test --participant_tsv data/split/test.tsv --caps_directory data/synthetic --selection_metrics "loss" --no-gpu
@@ -203,20 +215,25 @@ display(metrics)
 # file in the folder corresponding to a random job.
 
 # The architecture can be fully retrieved with 4 keys:
-# - `convolutions` is a dictionnary describing each convolutional block,
-# - `network_normalization` is the type of normalization layer used in covolutional blocks,
+# - `convolutions` is a dictionary describing each convolutional block,
+# - `network_normalization` is the type of normalization layer used in
+# convolutional blocks,
 # - `n_fcblocks` is the number of fully-connected layers,
 # - `dropout` is the dropout rate applied at the dropout layer.
 
 # One convolutional block is described by the following values:
-# - `in_channels` is the number of channels of the input (if set to null corresponds to the number of channels of the input data),
-# - `out_channels` is the number of channels in the output of the convolutional block. It corresponds to 2 * `in_channels` except for the first channel chosen from `first_conv_width`, and if it becomes greater than `channels_limit`.
-# - `n_conv` corresponds to the number of convolutions in the convolutional block,
+# - `in_channels` is the number of channels of the input (if set to null
+# corresponds to the number of channels of the input data),
+# - `out_channels` is the number of channels in the output of the convolutional
+# block. It corresponds to 2 * `in_channels` except for the first channel chosen
+# from `first_conv_width`, and if it becomes greater than `channels_limit`.
+# - `n_conv` corresponds to the number of convolutions in the convolutional
+# block,
 # - `d_reduction` is the dimension reduction applied in the block.
 
 # ### Convolutional block - example 1
 
-# Convolutional block dictionnary:
+# Convolutional block dictionary:
 # ```python
 # {
 #     "in_channels": 16,
@@ -235,7 +252,7 @@ display(metrics)
 
 # ### Convolutional block - example 1
 
-# Convolutional block dictionnary:
+# Convolutional block dictionary:
 # ```python
 # {
 #     "in_channels": 32,
@@ -253,7 +270,7 @@ display(metrics)
 
 # A simple way to better visualize your random architecture is to construct it
 # using `create_model` function from ClinicaDL. This function needs the list of
-# options of the model stored in the JSON file as well as the size of the input. 
+# options of the model stored in the JSON file as well as the size of the input.
 # %%
 # !pip install torchsummary
 
