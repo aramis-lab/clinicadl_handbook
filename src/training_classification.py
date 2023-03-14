@@ -241,16 +241,18 @@ print('GPU is available', torch.cuda.is_available())
 # In case of[multi-cohort training, must be a path to a TSV file.
 # - `OUTPUT_MAPS_DIRECTORY` (Path) is the folder where the results are stored.
 
-# The training can be configured through a [TOML configuration](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#configuration-file) file or by using the command line options. If you have a Toml configuration file you can use the following option to load it:
+# The training can be configured through a [TOML
+# configuration](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#configuration-file)
+# file or by using the command line options. If you have a TOML configuration
+# file you can use the following option to load it:
 
 # - `--config_file` (Path) is the path to a TOML configuration file. This file
 # contains the value for the options that you want to specify (to avoid too long
 # command line).
 
-# If an option is specified twice (in the configuration file and as an option in
-# command line) then **the value specified in the command line will have a
-# higher priority when running the job**.
-
+# If an option is specified twice (in the configuration file and, as an option,
+# in the command line) then **the values specified in the command line will
+# override the values of the configuration file**.
 
 # %%[markdown]
 # A few options depend on the classification task:
