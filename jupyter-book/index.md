@@ -45,10 +45,10 @@ to be applicable to the analysis of other neurological diseases.
 
 The Jupyter Book is divided into the following sections:
 
-- Brackground
+- Background
   - [Clinical context: Alzheimer's disease](clinical)
   - [Deep learning classification](deep_learning)
-  - [External Ressources](background)
+  - [External Resources](background)
 
 - Preprocessing data
   - [Prepare neuroimaging data](notebooks/preprocessing)
