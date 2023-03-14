@@ -9,12 +9,12 @@ parts:
       - file: deep_learning
         title: Deep learning
       - file: background
-        title: External ressources
+        title: External resources
 
   - caption: Preprocessing
     chapters:
       - file: notebooks/preprocessing
-        title: Prepare neurimaging data
+        title: Prepare neuroimaging data
       - file: notebooks/label_extraction
         title: Define your population
   - caption: Deep learning
