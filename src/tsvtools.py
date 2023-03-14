@@ -13,17 +13,18 @@
 # ---
 # %% [markdown]
 # # How to use `tsvtools`
-# In this tutorial, we rely on the wonderful ADNI data set, as every
-# preprocessing step needed by ClinicaDL was already performed. The goal will be
-# to try to differentiate men from women on the cognitively normal population
-# from t1w-MRI, and then infer the results on other. 
+# In this tutorial, we rely on the ADNI data set, as every preprocessing step
+# needed by ClinicaDL was already performed. The goal will be to try to
+# differentiate by gender (men/women) on the cognitively normal population from
+# t1w-MRI, and then infer the results on other. 
 #
 # BIDS data can be found at: `/network/lustre/dtlake01/aramis/datasets/adni/bids/BIDS`
 #
 # Corresponding CAPS is at: `/network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021`
+#
 # ```{note}
-# To run this notebook without editing the path to the data, create symbolic links to the BIDS
-# and the CAPS:
+# To run this notebook without editing the path to the data, create symbolic
+# links to the BIDS and the CAPS:
 # ln -s /network/lustre/dtlake01/aramis/datasets/adni/bids ./data/bids
 # ln -s /network/lustre/dtlake01/aramis/datasets/adni/caps/caps_v2021/ ./data/caps_v202
 # ```
