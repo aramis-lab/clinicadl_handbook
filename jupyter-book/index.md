@@ -52,20 +52,18 @@ The Jupyter Book is divided into the following sections:
 
 - Preprocessing data
   - [Prepare neuroimaging data](notebooks/preprocessing)
-  - [Define your population](notebooks/tsvtools)  
   - [Labels extraction](notebooks/label_extraction)
+  - [Generate synthetic data](notebooks/generate)
 
 - Deep Learning
   - [Classification on 2D slices](notebooks/training_classification)
   - [Regression on 3D images](notebooks/training_regression)
   - [Reconstruction on 3D patch/ROI](notebooks/training_reconstruction)
   - [Custom training](notebooks/training_custom)
-  - [Random search](notebooks/random_search.ipynb)
 
 - Going further
-  - [Generate synthetic data](notebooks/generate)
-  - [Perfom classification using pretrained models](notebooks/inference)
   - [Interpret trained models](notebooks/interpretability.ipynb)
+  - [Launch a random search](notebooks/random_search.ipynb)
 
 
 
