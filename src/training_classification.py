@@ -15,8 +15,6 @@
 # %%
 # Uncomment this cell if running in Google Colab
 # !pip install clinicadl==1.2.0
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
 
 # %% [markdown]
 # # Classification with a CNN on 2D slice.
@@ -61,11 +59,12 @@
 # write them as output files for the entire images, for each slice, for each roi
 # or for each patch.
 
+# %% [markdown]
 # Here, as you will use slice-level, you simply need to type the following
 # command line:
 
 # ```bash
-# clinicadl prepare-data slice <caps_directory> <modality>
+# clinicadl prepare-data {image/patch/roi/slice} <caps_directory> <modality>
 # ```
 # where:
 
@@ -79,6 +78,7 @@
 # When using patch or slice extraction, default values were set according to
 # [Wen et al., 2020](https://doi.org/10.1016/j.media.2020.101694)
 
+# %% [markdown]
 # Output files are stored into a new folder (inside the CAPS) and follows a
 # structure like this:
 
@@ -87,16 +87,24 @@
 # ├── image_based
 # │   └── t1_linear
 # │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
-# └── slice_based
+# ├── slice_based
+# │   └── t1_linear
+# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-0_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-1_T1w.pt
+# │       ├── ...
+# │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-N_T1w.pt
+# ├── patch_based
+# │   └── pet-linear
+# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-0_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-1_T1w.pt
+# │       ├── ...
+# │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-N_T1w.pt
+# └── roi_based
 #     └── t1_linear
-#         ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-0_T1w.pt
-#         ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-1_T1w.pt
-#         ├── ...
-#         └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-N_T1w.pt
-
-
+#         └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
 # ```
 
+# %% [markdown]
 # In short, there is a folder for each feature (**image, slice, roi or patch**)
 # and inside the numbered tensor files with the corresponding feature. 
 # Files are saved with the .pt extension and contains tensors in PyTorch format.
@@ -106,12 +114,13 @@
 # ```text
 # CAPS_DIRECTORY
 # └── tensor_extraction
-#         └── <extract_json>
+#         └── <extract_json>.json
 #```
 # These files are compulsory to run the train command. They provide all the
 # details of the processing performed by the prepare-data command that will be
 # necessary when reading the tensors.
 
+# %%[markdown]
 # ```{warning}
 # The default behavior of the pipeline is to only extract images even if another
 # extraction method is specified.  However, all the options will be saved in the
@@ -120,32 +129,47 @@
 # CAPS, you have to add the `--save-features` flag.
 # ```
 
-# ClinicaDL is able to extract patches _on-the-fly_ (from one single file) when
-# running training or inference tasks. The downside of this approach is that,
-# depending on the size of your dataset, you have to make sure that you have
-# enough memory resources in your GPU card to host the full images/tensors for
-# all your data. 
+# ClinicaDL is able to extract patches/roi or slices _on-the-fly_ (from one
+# single file) when running training or inference tasks. The downside of this
+#  approach is that, depending on the size of your dataset, you have to make 
+# sure that you have enough memory resources in your GPU card to host the full 
+# images/tensors for all your data. 
 
 # If the memory size of the GPU card you use is too small, we suggest you to
 # extract the patches and/or the slices using the proper `tensor_format` option
 # of the command described above.
 
+
 # %% [markdown]
-# (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
-# please uncomment the next cell)
+# ## Before starting
+# If you failed to obtain the preprocessing using the `t1-linear` pipeline,
+# please uncomment the next cell. You can extract tensors from this CAPS but
+# for the training part you will need a bigger dataset.
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
+
+# %% [markdown]
+# If you have already download the full datset and converted it to
+# CAPS, you can give the path to the dataset directory by changing
+# the following path. If not, just run it as written.
+# %%
+!export OASIS_CAPS="data_oasis/CAPS_example"
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
-!clinicadl prepare-data slice <caps_directory> t1-linear --extract_json slice_classification_t1
+!clinicadl prepare-data slice data_oasis/CAPS_example t1-linear --extract_json slice_classification_t1
 # %% [markdown]
 # At the end of this command, a new directory named `deeplearning_prepare_data`
 # is created inside each subject/session of the CAPS structure. We can easily
-# verify:
+# verify. If you failed to obtain the extracted tensors please uncomment the 
+# next cell.
+
 # %%
-!tree -L 3 ./OasisCaps_example/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
+# %%
+!tree -L 3 data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M000/deeplearning_prepare_data/
 
 #%% [markdown]
 # # Train your own models
@@ -163,7 +187,7 @@ from pyrsistent import v
 import torch
 
 # Check if a GPU is available
-print('GPU is available', torch.cuda.is_available())
+print('GPU is available: ', torch.cuda.is_available())
 
 #%% [markdown]
 
@@ -188,13 +212,6 @@ print('GPU is available', torch.cuda.is_available())
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `classification` task. 
 
-#%% [markdown]
-# ### Prerequisites
-#
-# You need to execute the `clinicadl tsvtool get-labels` and `clinicadl tsvtools
-# {split|kfold}`commands prior to running this task to have the correct TSV file
-# organization.  Moreover, there should be a CAPS, obtained running the
-# preprocessing pipeline wanted.
 
 # %% [markdown]
 # ### CNN and 2D  slice-level for classification
@@ -218,9 +235,15 @@ print('GPU is available', torch.cuda.is_available())
 # During training, the gradients update are done based on the loss computed at
 # the slice level. Final performance metric are computed at the subject level by
 # combining the outputs of the slices of the same subject.
-
 #%% [markdown]
-### Running the task
+# ### Prerequisites
+#
+# You need to execute the `clinicadl tsvtool get-labels` and `clinicadl tsvtools
+# {split|kfold}`commands prior to running this task to have the correct TSV file
+# organization.  Moreover, there should be a CAPS, obtained running the
+# preprocessing pipeline wanted.
+#%% [markdown]
+# ### Running the task
 # The training task can be run with the following command line:
 # ```text
 # clinicadl train classification [OPTIONS] CAPS_DIRECTORY PREPROCESSING_JSON \
@@ -283,11 +306,12 @@ print('GPU is available', torch.cuda.is_available())
 
 # %% 
 # 2D-slice single-CNN training
-!clinicadl train classification -h
-!clinicadl train classification <caps_directory> slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_resnet18 --n_splits 4 --architecture resnet18
+#!clinicadl train classification -h
+!clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_resnet18 --n_splits 4 --architecture resnet18
+
 # %%
 # 2D-slice multi-CNN training
-!clinicadl train classification <caps_directory> slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_multi --n_splits 4 --architecture resnet18 --multi_network
+!clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_multi --n_splits 4 --architecture resnet18 --multi_network
 
 # %% [markdown]
 # The clinicadl train command outputs a MAPS structure in which there are only
@@ -344,8 +368,12 @@ print('GPU is available', torch.cuda.is_available())
 #
 # (If you failed to train the model please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/maps_classification_2D_slice_multi.tar.gz -o maps_classification_2D_slice_multi.tar.gz
+!tar xf maps_classification_2D_slice_multi.tar.gz
+
+# %%
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/maps_classification_2D_slice_resnet.tar.gz -o maps_classification_2D_slice_resnet.tar.gz
+!tar xf maps_classification_2D_slice_resnet.tar.gz
 
 # %% [markdown]
 # The `predict` functionality performs individual prediction and metrics
@@ -379,10 +407,10 @@ print('GPU is available', torch.cuda.is_available())
 
 # %%
 !clinicadl predict -h
-!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory <caps_directory>
+!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
 #%%
-!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18_multi 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory <caps_directory>
+!clinicadl predict data_oasis/maps_classification_2D_slice_multi 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
 # %% [markdown]
 # Results are stored in the MAPS of path `model_path`, according to the
@@ -408,3 +436,4 @@ print('GPU is available', torch.cuda.is_available())
 import pandas as pd
 metrics = pd.read_csv("data_oasis/maps_classification_2D_slice_resnet18/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
 metrics.head()
+# %%

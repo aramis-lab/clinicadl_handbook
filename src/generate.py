@@ -15,8 +15,7 @@
 # %%
 # Uncomment this cell if running in Google Colab
 # !pip install clinicadl==1.2.0
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
+
 # %% [markdown]
 # # Generate synthetic dataset
 #
@@ -40,8 +39,8 @@
 # `CAPS_example` in the data_oasis directory (Otherwise uncomment the next cell
 # to download a local version of the necessary folders).
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps2.tar.gz -o OasisCaps2.tar.gz
-# !tar xf OasisCaps2.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # ## Generate trivial data
 
@@ -81,7 +80,7 @@
 # image.
 # ```
 # %% 
-!clinicadl generate trivial OasisCaps_example data/synthetic --n_subjects 4 --preprocessing t1-linear
+!clinicadl generate trivial data_oasis/CAPS_example data/synthetic --n_subjects 4 --preprocessing t1-linear
 # %% [markdown]
 # ### Reproduce the tsv file system necessary to train
 
@@ -117,14 +116,11 @@
 # You can also implement your own models by following the instructions of [this
 # section](./training_custom.ipynb).
 
-# For now, there is a mistake when you generate data because tensors are extracted but the extract.json file
-# is not extracted whereas this file is needed when you want to train a network. So it is needed to copy the 
-# JSON file from the data_oasis/CAPS_example. 
-# The ClinicaDL developers team is aware of this problem and it will be solved
-# in a next release.
+# %%
+# Prepare data (extraction of image tensors)
+!clinicadl prepare-data image data//synthetice t1-linear --extract_json extract_T1linear_image
 # %%
 # Train a network with synthetic data
-!cp -r data_oasis/CAPS_example/tensor_extraction data/synthetic/tensor_extraction
 !clinicadl train classification data/synthetic extract_T1linear_image data/split/3_fold data/synthetic_maps --architecture Conv4_FC3 --n_splits 3 --split 0 
 # %% [markdown]
 # As the number of images is very small (4 per class), we do not rely on the

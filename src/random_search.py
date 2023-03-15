@@ -15,8 +15,6 @@
 # %%
 # Uncomment this cell if running in Google Colab
 # !pip install clinicadl==1.2.0
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
 # %% [markdown]
 
 # # Launch a random search
@@ -34,13 +32,12 @@
 #
 # This notebook relies on the synthetic data generated in the previous notebook.
 # If you did not run it, uncomment the following cell to generate the
-# corresponding dataset.
+# corresponding dataset. If you want to generate a bigger synthetic CAPS, 
+# please check this [notebook](./generate)
 # %%
-import os
-
-# os.makedirs("data", exist_ok=True)
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/synthetic.tar.gz -o synthetic.tar.gz
-# !tar xf synthetic.tar.gz -C data
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
+# !clinicadl generate trivial data_oasis/CAPS_example data/synthetic --n_subjects 4 --preprocessing t1-linear
 # %% [markdown]
 # ## Define the hyperparameter space
 
@@ -189,14 +186,14 @@ with open(output_file_name, "w") as toml_file:
 # run:
 
 # %%
-!clinicadl random-search random_search maps_random_search2
+!clinicadl random-search random_search maps_random_search
 # %% [markdown]
 # A new folder `test` has been created in `launch_dir`. As for any network
 # trained with ClinicaDL it is possible to evaluate its performance on a test
 # set:
 # %%
 # Evaluate the network performance on the 2 test images
-!clinicadl predict random_search/maps_random_search2 test --participant_tsv data/split/test.tsv --caps_directory data/synthetic --selection_metrics "loss" --no-gpu
+!clinicadl predict random_search/maps_random_search test --participant_tsv data/split/test.tsv --caps_directory data/synthetic --selection_metrics "loss" --no-gpu
 # %%
 import pandas as pd
 

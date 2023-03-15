@@ -90,12 +90,17 @@
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
-!clinicadl prepare-data image ./OasisCaps_example/ t1-linear --extract_json image_regression_t1
+!clinicadl prepare-data image data_adni/CAPS_example t1-linear --extract_json image_regression_t1
 # %% [markdown]
 # At the end of this command, a new directory named `deeplearning_prepare_data` is
-# created inside each subject/session of the CAPS structure. We can easily verify:
+# created inside each subject/session of the CAPS structure. If you failed to 
+# obtain the extracted tensors please uncomment the next cell.
+
 # %%
-!tree -L 3 ./OasisCaps_example/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
+# %%
+!tree -L 3 data_adni/CAPS_example/subjects/sub-ADNI005S*/ses-M00/deeplearning_prepare_data/
 
 # %%[markdown]
 # ClinicaDL uses the `Conv5_FC3` convolutional network for inputs of type 3D
@@ -122,7 +127,7 @@ from pyrsistent import v
 import torch
 
 # Check if a GPU is available
-print('GPU is available', torch.cuda.is_available())
+print('GPU is available: ', torch.cuda.is_available())
 #%% [markdown]
 #
 # ### Data used for training:
@@ -200,7 +205,7 @@ print('GPU is available', torch.cuda.is_available())
 # %%
 # Training for regression on the age 
 !clinicadl train regression -h
-!clinicadl train regression <caps_directory> image_regression_t1 data_adni/split/4_fold data_adni/maps_regression_image --n_splits 4 
+!clinicadl train regression data_adni/CAPS_example image_regression_t1 data_adni/split/4_fold data_adni/maps_regression_image --n_splits 4 
 
 # %% [markdown]
 # The clinicadl train command outputs a MAPS structure in which there are only two data groups: train and validation. 
@@ -254,8 +259,8 @@ print('GPU is available', torch.cuda.is_available())
 # (If you failed to train the model
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/maps_regression_image.tar.gz -o maps_regression_image.tar.gz
+# !tar xf maps_regression_image.tar.gz
 
 # %% [markdown]
 # The `predict` functionality performs individual prediction and metrics
@@ -310,3 +315,4 @@ print('GPU is available', torch.cuda.is_available())
 import pandas as pd
 metrics = pd.read_csv("data_adni/maps_regression_image/split-0/best-loss/test-Oasis/test-OASIS_slice_level_metrics.tsv", sep="\t")
 metrics.head()
+# %%

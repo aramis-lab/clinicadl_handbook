@@ -42,7 +42,7 @@
 
 #%%
 # Downloading pretrained model
-!curl -k https://aramislab.paris.inria.fr/files/data/models/dl/models_v002/model_trivial.tar.gz
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/interpret/model_trivial.tar.gz
 !tar xf model_trivial.tar.gz
 
 # Downloading masks used for trivial data generation
@@ -65,7 +65,7 @@ plotting.show()
 #%% [markdown]
 # Saliency maps will be generated using trivial data generated from OASIS. If
 # you did not run the notebook
-# [Debug architecture search](generate.ipynb), you will need to run the
+# [generate synthetic data](generate.ipynb), you will need to run the
 # following cell as well:
 
 #%%
@@ -73,8 +73,8 @@ import os
 
 os.makedirs("data", exist_ok=True)
 # Download trivial CAPS
-!curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/synthetic.tar.gz -o synthetic.tar.gz
-!tar xf synthetic.tar.gz -C data
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/interpret/caps_trivial.tar.gz -o caps_trivial.tar.gz
+!tar xf caps_trivial.tar.gz 
 
 
 #%% [markdown]
@@ -113,16 +113,14 @@ os.makedirs("data", exist_ok=True)
 # binary classification we expect the map of the opposite node to have opposite
 # values than the ones in the corresponding node (that is not very interesting).
 
-
 #%%
 # grad-cam diagnosis AD
-!clinicadl interpret interpret/maps_trivial test-adni-gc gc_AD grad-cam --save_individual -d AD --save_nifti
-
+!clinicadl interpret interpret/maps_trivial test-gc gc_AD grad-cam -d AD --caps_directory interpret/caps_trivial_tensor --participants_tsv interpret/caps_trivial_tensor/data.tsv 
 
 
 #%%
 # gradients diagnosis CN
-!clinicadl interpret interpret/maps_trivial test-gd gd_CN gradients -d CN --caps_directory interpret/caps_trivial --participants_tsv interpret/caps_trivial/split/test_baseline.tsv --save_nifti --save_individual
+!clinicadl interpret interpret/maps_trivial test-gd gd_CN gradients -d CN --caps_directory interpret/caps_trivial_tensor --participants_tsv interpret/caps_trivial_tensor/data.tsv  --save_individual
 
 
 #%% [markdown]
@@ -135,7 +133,7 @@ os.makedirs("data", exist_ok=True)
 # `<participant_id>/<subject_id>` structure:
 
 #%%
-!tree interpret/maps_trivial/fold-0/gradients/best_loss/individual-AD_target-CN
+!tree interpret/maps_trivial/fold-0/gradients/best_loss/test-gc
 
 #%%[markdown]
 # Because we add the `--save_individual` option, we can plot the individual

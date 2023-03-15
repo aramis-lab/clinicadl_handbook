@@ -15,9 +15,6 @@
 # Uncomment the next lines if running in Google Colab
 # !pip install clinicadl==1.2.0
 
-# %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
 # %% [markdown]
 # # Define your population
 
@@ -29,22 +26,33 @@
 # In the following, we will see how to split these samples between training,
 # validation and test sets using tools available in `clinica` and `clinicadl`.
 
-# In this section we will work on a subset of 100 subjects of the OASIS dataset
-# (and a subset of 100 subjects of the ADNI dataset). You can find the list of
-# participants that have passed the quality check in the data folder
-# (oasis_after_qc.tsv and adni_after_qc.tsv).
-
-
-# You can also download these files by uncomment the next cell:
-# %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisBids.tar.gz -o OasisBids.tar.gz
-# !tar xf OasisBids.tar.gz 
 
 # %% [markdown]
-# These tsv files allow to prepare the set of data to train a neural network, you can follow this notebook even without having access to these data but
-# if you want to do the rest of the notebooks, you will have to download the data from [ADNI](https://adni.loni.usc.edu/) or [OASIS](https://oasis-brains.org/) 
-# because it is not possible to separate a set of 4 
-# images without data leakage.
+# ## Before starting
+# This notebook allows to prepare the set of data to train a neural network, 
+# so in order to do the rest of the notebooks, you will have to download the 
+# data from [ADNI](https://adni.loni.usc.edu/) or [OASIS](https://oasis-brains.org/) 
+# because it is not possible to separate a set of 4 images without data leakage.
+# Moreover, you will need the data in a BIDS and a CAPS format so you need to 
+# re-run the notebook [preprocessing section](./preprocessing.ipynb) with your
+# own data.
+
+# %% [markdown]
+# This first two commands are the only ones that require access to the BIDS, if 
+# you were not able to download the data, you can uncomment the following cell
+# to download the BIDS of 4 subjects from OASIS-1 or the BIDS of 2 subjects 
+# from ADNI that were generated in the 
+# [preprocessing section](./preprocessing.ipynb).
+
+# %%
+# #OASIS BIDS
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!tar xf BIDS_example.tar.gz 
+
+# %%
+# #ADNI BIDS
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!tar xf BIDS_example.tar.gz 
 
 
 # %% [markdown]
@@ -69,20 +77,17 @@
 # `merge-tsv.tsv`.
 
 # %% [markdown]
-# In the [preprocessing section](./preprocessing.ipynb) an example BIDS of 4
-# subjects from OASIS-1 was generated (if you did not run interactively that
-# section, download the dataset by uncomment the next cell):
-# %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisBids.tar.gz -o OasisBids.tar.gz
-# !tar xf OasisBids.tar.gz
-# %% [markdown]
-# Execute the following command to gather metadata included in this BIDS:
+# We are going to run some experiences on ADNI and OASIS datasets,
+# if you have already download the full datset and converted it to
+# BIDS, you can give the path to the dataset directory by changing
+# the following path. If not, just run it as written.
+# Execute the following command to gather metadata included in this BIDS.
 # %%
 # Merge meta-data information
-!clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv -tsv data_oasis/after_qc.tsv
+!clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv 
 
 #%%
-# !clinica iotools merge-tsv data_adni/BIDS_example data_adni/merged.tsv -tsv data_adni/after_qc.tsv
+!clinica iotools merge-tsv data_adni/BIDS_example data_adni/merged.tsv 
 # %% [markdown]
 # ### Check missing modalities for each subject
 #
@@ -104,16 +109,36 @@
 #  the example BIDS of OASIS:
 # %%
 # Find missing modalities
-!clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
+!clinica iotools check-missing-modalities OASIS_BIDS data_oasis/missing_mods
 #%%
-# !clinica iotools check-missing-modalities data_adni/BIDS data_adni/missing_mods
+!clinica iotools check-missing-modalities ADNI_BIDS data_adni/missing_mods
 # %% [markdown]
-# The output of this command, `data/<dataset>_missing_mods`, is a folder in
+# The output of this command, `missing_mods/`, is a folder in
 # which a series of tsv files is written (one file per session label containing
 # one row per subject and one column per modality).
+
 # %% [markdown]
 # ## Prepare metadata with `clinicadl tsvtools` 
-#
+
+# In this section we will work on a subset of 100 subjects of the OASIS dataset
+# (and a subset of 100 subjects of the ADNI dataset). You can find the list of
+# participants that have passed the quality check in the data folder
+# (oasis_after_qc.tsv and adni_after_qc.tsv).
+
+# If you were not able to run the two previous cells on the full dataset, you 
+# can uncomment the next cell to download the needed files (merged.tsv and 
+# missing_mods directory)
+
+# %%
+#for OASIS-1 dataset
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
+!tar xf iotools_output.tar.gz
+
+# %%
+#for ADNI dataset
+!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
+!tar xf iotools_output.tar.gz
+
 # %% [markdown]
 # ### Get the labels
 #
@@ -139,27 +164,23 @@
 # `--merged_tsv` and `--missing_mods`. It will avoid the pipeline to re-run
 # them.
 
-# %% [markdown]
-# If you failed running the `clinica iotools` command you can download the
-# output by running the following cell:
-# %%
-# TO DOWNLOAD
+
 # %% [markdown]
 # By default the pipeline only extracts the AD and CN labels, which corresponds
 # to the only available labels in OASIS. Run the following cell to extract them
 # in a new file `labels.tsv` from the restricted version of OASIS:
 # %%
-!clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/after_qc.tsv
+!clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
 # %%
-# !clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_path data_adni/after_qc.tsv
+!clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv
 # %% [markdown]
 # This tool writes a unique TSV file containing the labels asked by the user.
 # They are stored in the column named diagnosis.
 
 # <div class="alert alert-block alert-info">
 # <b>Restriction path:</b><p>
-#     At the end of the command line another restriction was given to extract the
-#     labels only from sessions in <code>data/OASIS_after_qc.tsv</code>. This tsv
+#     At the end of the command line a restriction was given to extract the
+#     labels only from sessions in <code>data/oasis_after_qc.tsv</code>. This tsv
 #     file corresponds to the output of the <a
 #     href="./preprocessing.ipynb">quality check procedure</a> that was manually
 #     cut to only keep the sessions passing the quality check. It depends on the
@@ -179,7 +200,7 @@
 # the population:
 
 # ```bash
-# clinicadl tsvtool analysis <merged_tsv> <data_tsv> <results_path>
+# clinicadl tsvtools analysis <merged_tsv> <data_tsv> <results_path>
 # ```
 # where:
 # - `merged_tsv` is the output file of the `clinica iotools merge-tsv`command.
@@ -195,7 +216,9 @@
 !clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/labels.tsv data_oasis/analysis.tsv
 # %%
 # Run the analysis on ADNI
-#!clinicadl tsvtool analysis data_adni/merged.tsv data_adni/labels.tsv data_adni/analysis.tsv
+!clinicadl tsvtools analysis data_adni/merged.tsv data_adni/labels.tsv data_adni/analysis.tsv -d CN
+
+
 # %%
 def display_table(table_path):
     """Custom function to display the clinicadl tsvtool analysis output"""
@@ -219,8 +242,15 @@ def display_table(table_path):
 
     format_df.index.name = None
     display(format_df)
-# %%
-display_table("analysis.tsv")
+#%%
+display_table("data_oasis/analysis.tsv")
+#%%
+display_table("data_adni/analysis.tsv")
+# %% [markdown]
+# If you were not able to run the previous cell to get the analysis, you 
+# can uncomment the next cell to have an overview of what it should look
+# like.
+
 # %% [markdown]
 # There is no significant bias on age anymore, but do you notice any other
 # problems? 
@@ -276,8 +306,10 @@ display_table("analysis.tsv")
 !clinicadl tsvtools get-progression data_adni/labels.tsv 
 
 #%%
-df_labels = pd.read_csv("data/Adni_labels.tsv ", sep ="\t")
-print(df_labels["ADNIOOSO266"])
+import pandas as pd
+df_labels = pd.read_csv("data_adni/labels.tsv", sep ="\t")
+df_labels.set_index(["participant_id","session_id"])
+print(df_labels)
 
 # %% [markdown]
 # ## Split the data samples into training, validation and test sets
@@ -335,7 +367,7 @@ print(df_labels["ADNIOOSO266"])
 
 # %% 
 # for Adni dataset
-# !clinicadl tsvtools split data_adni/labels.tsv --n_test 20 --subset_name test 
+!clinicadl tsvtools split data_adni/labels.tsv --n_test 0.2 --subset_name test 
 # %% [markdown]
 # The differences between populations of the train + validation and test sets
 # can be assessed to check that there is no discrepancies between the two sets.
@@ -345,9 +377,9 @@ print(df_labels["ADNIOOSO266"])
 !clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/split/test_baseline.tsv data_oasis/analysis_test.tsv
 # %%
 print("Train + validation set")
-display_table("data/OASIS_trainval_analysis.tsv")
+display_table("data_oasis/analysis_trainval.tsv")
 print("Test set")
-display_table("data/OASIS_test_analysis.tsv")
+display_table("data_oasis/analysis_test.tsv")
 # %% [markdown]
 # If you are not satisfied with these populations, you can relaunch the test or
 # change the parameters used to evaluate the difference between the
@@ -392,7 +424,7 @@ display_table("data/OASIS_test_analysis.tsv")
 
 # %%
 # for ADNI dataset
-# !clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 4 --subset_name validation
+!clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 4 --subset_name validation
 # %% [markdown]
 # ### Check the absence of data leakage
 #
@@ -414,7 +446,7 @@ display_table("data/OASIS_test_analysis.tsv")
 # command line. The next cell executes it on the splits generated in the previous
 # sections.
 # %%
-from clinicadl.tools.tsv.test import run_test_suite
+from tests.test_tsvtools import run_test_suite
 
 # Run check for train+val / test split
 run_test_suite("./data/labels_lists", n_splits=0, subset_name="test")
@@ -436,3 +468,4 @@ run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation"
 #     data leakage.</p>
 #     <img src="./images/data_leakage.png">
 # </div>
+# %%

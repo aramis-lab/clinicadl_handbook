@@ -15,8 +15,6 @@
 # %%
 # Uncomment this cell if running in Google Colab
 # !pip install clinicadl==1.2.0
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
 
 # %% [markdown]
 # # Training for reconstruction
@@ -152,17 +150,17 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
-!clinicadl prepare-data patch <caps_directory> pet-linear --subjects_sessions_tsv data_adni/after_qc.tsv --extract_json pet_reconstruction --acq_label 18FFDG --suvr_reference_region cerebellumPons2
+!clinicadl prepare-data patch data_oasis/CAPS_example pet-linear --subjects_sessions_tsv data_adni/after_qc.tsv --extract_json pet_reconstruction --acq_label 18FFDG --suvr_reference_region cerebellumPons2
 # %% [markdown]
 # At the end of this command, a new directory named `deeplearning_prepare_data` is
 # created inside each subject/session of the CAPS structure. We can easily verify:
 # %%
-!tree -L 3 ./<caps_directory>/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
+!tree -L 3 ./data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M00/deeplearning_prepare_data/
 
 # %%
 # We can also do the same things with region of interest. 
@@ -173,8 +171,8 @@
 #
 # Uncomment the next cell if you want to extract roi tensors:
 #%%
-#!cp -r data_adni/masks <caps_directory>/masks
-#!clinicadl prepare-data roi <caps_directory> pet-linear --roi_list rightHippocampusBox --roi_list leftHippocampusBox
+#!cp -r data_adni/masks data_adni/CAPS_example/masks
+#!clinicadl prepare-data roi data_adni/CAPS_example pet-linear --roi_list rightHippocampusBox --roi_list leftHippocampusBox
  
 # %% [markdown]
 # These two paradigms can be divided into two different frameworks:
@@ -300,10 +298,17 @@ print('GPU is available', torch.cuda.is_available())
 # the best validation performance.  Default: `loss`.
 # - `--loss` (str) is the name of the loss used to optimize the reconstruction
 # task. Must correspond to a Pytorch class. Default: `MSELoss`.
+
+
+# %% [markdown]
+# (If you failed to obtain the tensor extraction using the `prepare-data` 
+# pipeline, please uncomment the next cell)
+
+
 # %%
 # 3D-patch autoencoder pretraining
 !clinicadl train reconstruction -h
-# clinicadl train reconstruction <caps_directory> pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstrcution_3D_patch --n_splits 4 
+clinicadl train reconstruction data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstrcution_3D_patch --n_splits 4 
 
 
 # %% [markdown]
@@ -339,14 +344,14 @@ print('GPU is available', torch.cuda.is_available())
 # ```
 
 # With autoencoder pretraining
-#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_3D_patch --n_splits 4 --epochs 3
+!clinicadl train classification data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_3D_patch --n_splits 4 --epochs 3
 
 # %%
 # 3D-patch multi-CNN training
 !clinicadl train classification -h 
 
 # With autoencoder pretraining
-#!clinicadl train classification <caps_directory> pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch_multi --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
+!clinicadl train classification data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch_multi --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
 
 # %% [markdown]
 # The clinicadl train command outputs a MAPS structure in which there are only
@@ -402,8 +407,8 @@ print('GPU is available', torch.cuda.is_available())
 #
 # (If you failed to train the model please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
+# !tar xf adniCaps.tar.gz
 
 # %% [markdown]
 # The `predict` functionality performs individual prediction and metrics
