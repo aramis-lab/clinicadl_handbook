@@ -52,18 +52,18 @@ The Jupyter Book is divided into the following sections:
 
 - Preprocessing data
   - [Prepare neuroimaging data](notebooks/preprocessing)
-  - [Labels extraction](notebooks/label_extraction)
+  - [Define your popultaion](notebooks/label_extraction)
   - [Generate synthetic data](notebooks/generate)
 
 - Deep Learning
   - [Classification on 2D slices](notebooks/training_classification)
   - [Regression on 3D images](notebooks/training_regression)
   - [Reconstruction on 3D patch/ROI](notebooks/training_reconstruction)
-  - [Custom training](notebooks/training_custom)
 
 - Going further
   - [Interpret trained models](notebooks/interpretability.ipynb)
   - [Launch a random search](notebooks/random_search.ipynb)
+  - [Custom training](notebooks/training_custom)
 
 
 
@@ -78,7 +78,7 @@ case, when available, links to instances of Google Colab are displayed.
 
 Interactive notebooks can be launched using a **Google Colab** instance. To do
 this, click on the icon <i class="fa fa-rocket" aria-hidden="true"></i>
- in the upper right side of the corresponding page. When
+in the upper right side of the corresponding page. When
 launching the **Colab**, an initial step is proposed to set-up the notebook
 with the necessary software, this can take some time, particularly for the
 notebook "Prepare your neuroimaging data". Notebooks can be run independently.
