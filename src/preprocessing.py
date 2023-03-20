@@ -66,7 +66,7 @@
 # </pre>
 # %% [markdown]
 
-# ## `clinica convert`pipelines`
+# ## `clinica convert` pipelines
 # 
 # Both OASIS and ADNI dataset contains imaging data in ANALYZE format and does
 # not provide a BIDS version of the data. To solve this issue, clinica provides
@@ -92,12 +92,15 @@
 # ### Before starting
 # We are going to run some experiences on ADNI and OASIS datasets,
 # if you have already download the full datset, you can give the 
-# path to the clinical data directory and the dataset directory 
-# here by changing the paths.
+# path to your own dirctory when needed.
+
+# %% [markdown]
 # ### Run the pipeline
+# To run this pipeline, you need clinical data. The next cell allows you to 
+# download an example from OASIS dataset of 4 images.
 # %%
 # Download the example dataset of 4 images
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/database.tar.gz -o oasis_database.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/database.tar.gz -o oasis_database.tar.gz
 !tar xf oasis_database.tar.gz 
 
 # %%
@@ -113,8 +116,8 @@
 # (If you failed to obtain the BIDS exmaple using the `t1-linear`
 # pipeline, please uncomment the next cell)
 # %%
-# #!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
-# #!tar xf BIDS_example.tar.gz 
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!tar xf BIDS_example.tar.gz 
 # %% [markdown]
 # # Why prepare data ?
 # Preprocessing of neuroimaging data is essential before doing any experience
@@ -230,7 +233,7 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-!curl -k /Users/camille.brianceau/aramis/data_tuto_23/tuto_final_tar/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
 !tar xf CAPS_example.tar.gz
 # %% [markdown]
 # ```{warning}
@@ -321,20 +324,21 @@ plotting.show()
 # subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert
 # adni-to-bids)
 # %%
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
 !tar xf adniBids.tar.gz
 # %%
-!clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example
+!clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
 !clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are
 # saved using a specific suffix:
 # `_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-<ref-region>_pet.nii.gz`. 
 
+# %% [markdown]
 # If you failed to run the previous cell, please uncomment the next one to 
 # download the CAPS dataset:
 # %%
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
 !tar xf adniCaps.tar.gz
 # %% [markdown]
 # For example, we can see the difference between raw images and processed images
@@ -424,7 +428,7 @@ plotting.show()
 
 # %%
 import pandas as pd
-df_T1 = pd.read_csv("data_oasis/QC_results_t1.tsv", sep="\t")
+df_T1 = pd.read_csv("data_oasis/QC_result_t1.tsv", sep="\t")
 print(df_T1)
 
 
@@ -435,6 +439,11 @@ print(df_T1)
 # you will see that temporal regions are misaligned as well as occipital regions
 # and cerebellum leading to this low probabilty value. ;-)
 
-#%%
-df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
-print(df_pet)
+#%% 
+# comming soon
+# df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
+# print(df_pet)
+
+# %% [markdown]
+# Now that you have your preprocessed data, you can split them in order to 
+# prepare your training in the next notebook.

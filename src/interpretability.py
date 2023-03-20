@@ -42,9 +42,10 @@
 
 #%%
 # Downloading pretrained model
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/interpret/model_trivial.tar.gz
-!tar xf model_trivial.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/interpret/maps_trivial.tar.gz -o maps_trivial.tar.gz
+!tar xf maps_trivial.tar.gz
 
+# %%
 # Downloading masks used for trivial data generation
 !curl -k https://aramislab.paris.inria.fr/files/data/masks/AAL2.tar.gz -o AAL2.tar.gz
 !tar xf AAL2.tar.gz
@@ -73,7 +74,7 @@ import os
 
 os.makedirs("data", exist_ok=True)
 # Download trivial CAPS
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/interpret/caps_trivial.tar.gz -o caps_trivial.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/interpret/caps_trivial.tar.gz -o caps_trivial.tar.gz
 !tar xf caps_trivial.tar.gz 
 
 
@@ -108,7 +109,7 @@ os.makedirs("data", exist_ok=True)
 # node, 
 # - the second command loads CN images and generates saliency maps based on AD
 # node,
-
+#
 # Choosing the target node can be interesting in multi-class problems, but in
 # binary classification we expect the map of the opposite node to have opposite
 # values than the ones in the corresponding node (that is not very interesting).
@@ -127,7 +128,7 @@ os.makedirs("data", exist_ok=True)
 # This command will generate saliency maps for the model selected on validation 
 # loss. You can obtain the same maps for the model selection on validation
 # balanced accuracy by adding the option `--selection best_balanced_accuracy`.
-
+#
 # One map is generated per image in the folder `gradients/selection/<name>`.
 # These images are organized in a similar way than the CAPS, with a
 # `<participant_id>/<subject_id>` structure:
@@ -142,33 +143,12 @@ os.makedirs("data", exist_ok=True)
 # individual ones.
 
 
-
 #%%
 def plot_individual_maps(diagnosis, target):
     import os
     from os import path
     
-    subjects_path = f"/Users/camille.brianceau/aramis/clinicadl_handbook/src/models/maps_bis/split-0/best-loss/maps_bis_OASIS_interpret/interpret-test/mean_roi-0_map.pt"
-    subjects_list = [subject for subject in os.listdir(subjects_path) 
-                     if path.isdir(path.join(subjects_path, subject))]
-    subjects_list.sort()
-    for subject in subjects_list:
-        map_path = path.join(subjects_path, subject, "ses-M00", "map.nii.gz")
-        plotting.plot_stat_map(map_path, title=f"Saliency map of {subject}",
-                               cut_coords=(-50, 14), display_mode="yz", threshold=10**-3)
-    plotting.show()
-
-print("Saliency maps of AD images based on CN nodes")
-plot_individual_maps("AD", "CN")
-print("Saliency maps of CN images based on AD nodes")
-plot_individual_maps("CN", "AD")
-
-#%%
-def plot_individual_maps(diagnosis, target):
-    import os
-    from os import path
-    
-    subjects_path = f"/Users/camille.brianceau/aramis/clinicadl_handbook/src/models/maps_bis/split-0/best-loss/maps_bis_OASIS_interpret/interpret-test/mean_roi-0_map.pt"
+    subjects_path = f"interpret/maps_trivial/split-0/best-loss/maps_bis_OASIS_interpret/interpret-test/mean_roi-0_map.pt"
     subjects_list = [subject for subject in os.listdir(subjects_path) 
                      if path.isdir(path.join(subjects_path, subject))]
     subjects_list.sort()
@@ -187,3 +167,4 @@ plot_individual_maps("CN", "AD")
 # The group saliency maps are very noisy and may be difficult to interpret but
 # individual maps are less noisy as the individual differences are less present
 # and we can see more easily the main pattern.
+# %%

@@ -27,10 +27,10 @@
 # - The `encoder` which reduces the dimensionality of the input to a smaller
 # feature map: the code.
 # - The `decoder` which reconstructs the input based on the code.
-
+#
 # The mean squared error is used to evaluate the difference between the input
 # and its reconstruction.
-
+#
 # There are many paradigms associated to autoencoders, but here we will only
 # focus on a specific case that allows us to get the weights that can be
 # transferred to a CNN. In ClinicaDL, the autoencoders are designed based on a
@@ -38,12 +38,12 @@
 # - the `encoder` corresponds to the convolutional layers of the CNN,
 # - the `decoder` is composed of the transposed version of the operations used
 # in the encoder.
-
+#
 # After training the autoencoder, the weights in its encoder can be copied in
 # the convolutional layers of a CNN to initialize it. This can improve its
 # performance as the autoencoder has already learnt patterns characterizing the
 # data distribution.
-
+#
 
 # <figure>
 #   <img src="images/autoencoder_architecture.png" alt="CNN architecture" style="height: 350px; margin: 10px; text-align: center;">
@@ -57,7 +57,7 @@
 # The 3D patch-level models compensate the absence of 3D information in the 2D
 # slice-level approach and keep some of its advantages (low memory usage and
 # larger sample size). 
-
+#
 # ROI-based models are similar to 3D-patch but take advantage of prior knowledge
 # on Alzheimer's disease. Indeed most of the patches are not informative as they
 # contain parts of the brain that are not affected by the disease. Methods based
@@ -75,11 +75,11 @@
 # 2019)](https://papers.nips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library).
 # Four types of tensors are proposed: 3D images, 3D patches, 3D ROI or 2D
 # slices.
-##
+#
 # This pipeline selects the preprocessed images, extract the "tensors", and
 # write them as output files for the entire images, for each slice, for each roi
 # or for each patch.
-
+#
 # Here, as you will use slice-level, you simply need to type the following
 # command line:
 
@@ -94,13 +94,13 @@
 # - `modality` is the name of the preprocessing performed on the original
 # images. It can be `t1-linear` or `pet-linear`. You can choose custom if you
 # want to get a tensor from a custom filename.
-
+#
 # When using patch or slice extraction, default values were set according to
 # [Wen et al., 2020](https://doi.org/10.1016/j.media.2020.101694)
-
+#
 # Output files are stored into a new folder (inside the CAPS) and follows a
 # structure like this:
-
+#
 # ```text
 # deeplearning_prepare_data
 # ├── image_based
@@ -150,7 +150,7 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/CAPS_example.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
@@ -171,26 +171,24 @@
 #
 # Uncomment the next cell if you want to extract roi tensors:
 #%%
-#!cp -r data_adni/masks data_adni/CAPS_example/masks
+#!cp -r data/masks data_adni/CAPS_example/masks
 #!clinicadl prepare-data roi data_adni/CAPS_example pet-linear --roi_list rightHippocampusBox --roi_list leftHippocampusBox
  
 # %% [markdown]
 # These two paradigms can be divided into two different frameworks:
-
 # - **single-network**: one network is trained on all patch locations / all
 # regions.
 # - **multi-network**: one network is trained per patch location / per region.
-
+#
 # For **multi-network** the sample size is smaller (equivalent to image level
 # framework), however the network may be more accurate as they are specialized
 # for one patch location / for one region.
-
-
+# %% [markdown]
 # As for the 2D slice-level model, the gradient updates are done based on the
 # loss computed at the patch level. Final performance metrics are computed at
 # the subject level by combining the outputs of the patches or the two
 # hippocampi of the same subject.
-
+#
 # The default network used for reconstruction in ClinicaDL is an autoencoder
 # derived from the convolutional part of CNN with 5 convolutionnal layers
 # followed by 3 fully connected.  The compatible criterion loss are :
@@ -241,11 +239,12 @@ print('GPU is available', torch.cuda.is_available())
 # "./label_extraction.ipynb" the extraction of labels and data splits on this
 # dataset.
 #
-# ## `train RECONSTRUCTION` 
+# %% [markdown]
+# ## `clinicadl train RECONSTRUCTION` 
 #
 # This functionality mainly relies on the PyTorch deep learning library
 # [[Paszke et al., 2019](https://papers.nips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library)].
-
+#
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `reconstruction` task. 
 
@@ -277,16 +276,16 @@ print('GPU is available', torch.cuda.is_available())
 # `clinicadl tsvtool {split|kfold}`.  In case of[multi-cohort training, must be
 # a path to a TSV file.
 # - `OUTPUT_MAPS_DIRECTORY` (Path) is the folder where the results are stored.
-
+#
 # The training can be configured through a [Toml
 # configuration](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#configuration-file)
 # file or by using the command line options. If you have a Toml configuration
 # file you can use the following option to load it:
-
+#
 # - `--config_file` (Path) is the path to a Toml configuration file. This file
 # contains the value for the options that you want to specify (to avoid too long
 # command line).
-
+#
 # If an option is specified twice (in the configuration file and, as an option,
 # in the command line) then **the values specified in the command line will
 # override the values of the configuration file**.
@@ -303,12 +302,14 @@ print('GPU is available', torch.cuda.is_available())
 # %% [markdown]
 # (If you failed to obtain the tensor extraction using the `prepare-data` 
 # pipeline, please uncomment the next cell)
-
+# %%
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_extracted.tar.gz -o oasisCaps_extracted.tar.gz
+# !tar xf oasisCaps_extracted.tar.gz
 
 # %%
 # 3D-patch autoencoder pretraining
 !clinicadl train reconstruction -h
-clinicadl train reconstruction data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstrcution_3D_patch --n_splits 4 
+clinicadl train reconstruction data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstruction_3D_patch --n_splits 4 
 
 
 # %% [markdown]
@@ -342,16 +343,16 @@ clinicadl train reconstruction data_oasis/CAPS_example pet_reconstruction data_a
 # Transferring weights between tasks that are not similar enough can hurt the
 # performance!
 # ```
-
+#%%
 # With autoencoder pretraining
-!clinicadl train classification data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_3D_patch --n_splits 4 --epochs 3
+!clinicadl train classification data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_3D_patch_transfer --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3
 
 # %%
 # 3D-patch multi-CNN training
 !clinicadl train classification -h 
-
+# %%
 # With autoencoder pretraining
-!clinicadl train classification data_oasis/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch_multi --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
+!clinicadl train classification data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_transfer_AE_patch_multi --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3 --multi-network
 
 # %% [markdown]
 # The clinicadl train command outputs a MAPS structure in which there are only
@@ -407,7 +408,7 @@ clinicadl train reconstruction data_oasis/CAPS_example pet_reconstruction data_a
 #
 # (If you failed to train the model please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
 # !tar xf adniCaps.tar.gz
 
 # %% [markdown]

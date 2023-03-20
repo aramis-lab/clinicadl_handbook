@@ -1,6 +1,0 @@
-{
-    "n_splits": 2,
-    "subset_name": "validation",
-    "MCI_sub_categories": true,
-    "stratification": "sex"
-}

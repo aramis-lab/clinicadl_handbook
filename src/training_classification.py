@@ -26,11 +26,11 @@
 # some processing) as the probability that the input image belongs to the
 # corresponding class.  Then, the prediction of the CNN for a given image
 # corresponds to the class with the highest probability in the output vector.
-
+#
 # The cross-entropy loss between the ground truth and the network output is used
 # to quantify the error made by the network during the training process, which
 # becomes null if the network outputs 100% probability for the true class.
-
+#
 # There are no rules regarding the architectures of CNNs, except that they
 # contain convolution and activation layers.  In ClinicaDL, other layers such
 # as pooling, batch normalization, dropout and fully-connected layers are also
@@ -74,7 +74,7 @@
 # - `modality` is the name of the preprocessing performed on the original
 # images. It can be `t1-linear` or `pet-linear`. You can choose custom if you
 # want to get a tensor from a custom filename.
-
+#
 # When using patch or slice extraction, default values were set according to
 # [Wen et al., 2020](https://doi.org/10.1016/j.media.2020.101694)
 
@@ -134,7 +134,7 @@
 #  approach is that, depending on the size of your dataset, you have to make 
 # sure that you have enough memory resources in your GPU card to host the full 
 # images/tensors for all your data. 
-
+#
 # If the memory size of the GPU card you use is too small, we suggest you to
 # extract the patches and/or the slices using the proper `tensor_format` option
 # of the command described above.
@@ -146,15 +146,14 @@
 # please uncomment the next cell. You can extract tensors from this CAPS but
 # for the training part you will need a bigger dataset.
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 
 # %% [markdown]
 # If you have already download the full datset and converted it to
 # CAPS, you can give the path to the dataset directory by changing
-# the following path. If not, just run it as written.
-# %%
-!export OASIS_CAPS="data_oasis/CAPS_example"
+# the CAPS path. If not, just run it as written but the results will 
+# not be relevant.
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
@@ -166,7 +165,7 @@
 # next cell.
 
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %%
 !tree -L 3 data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M000/deeplearning_prepare_data/
@@ -208,7 +207,7 @@ print('GPU is available: ', torch.cuda.is_available())
 
 # This functionality mainly relies on the PyTorch deep learning library
 # [[Paszke et al., 2019](https://papers.nips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library)].
-
+#
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `classification` task. 
 
@@ -227,19 +226,19 @@ print('GPU is available: ', torch.cuda.is_available())
 
 # - **single-CNN**: one CNN is trained on all slice locations.
 # - **multi-CNN**: one CNN is trained per slice location.
-
+#
 # For **multi-CNN** the sample size is smaller (equivalent to image level
 # framework), however the CNNs may be more accurate as they are specialized for
 # one slice location.
-
+#
 # During training, the gradients update are done based on the loss computed at
 # the slice level. Final performance metric are computed at the subject level by
 # combining the outputs of the slices of the same subject.
 #%% [markdown]
 # ### Prerequisites
 #
-# You need to execute the `clinicadl tsvtool get-labels` and `clinicadl tsvtools
-# {split|kfold}`commands prior to running this task to have the correct TSV file
+# You need to execute `clinicadl tsvtools get-labels` and `clinicadl tsvtools
+# {split|kfold}` commands prior to running this task to have the correct TSV file
 # organization.  Moreover, there should be a CAPS, obtained running the
 # preprocessing pipeline wanted.
 #%% [markdown]
@@ -263,16 +262,16 @@ print('GPU is available: ', torch.cuda.is_available())
 # `clinicadl tsvtool {split|kfold}`.
 # In case of[multi-cohort training, must be a path to a TSV file.
 # - `OUTPUT_MAPS_DIRECTORY` (Path) is the folder where the results are stored.
-
+#
 # The training can be configured through a [TOML
 # configuration](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#configuration-file)
 # file or by using the command line options. If you have a TOML configuration
 # file you can use the following option to load it:
-
+#
 # - `--config_file` (Path) is the path to a TOML configuration file. This file
 # contains the value for the options that you want to specify (to avoid too long
 # command line).
-
+#
 # If an option is specified twice (in the configuration file and, as an option,
 # in the command line) then **the values specified in the command line will
 # override the values of the configuration file**.
@@ -307,7 +306,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # %% 
 # 2D-slice single-CNN training
 #!clinicadl train classification -h
-!clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_resnet18 --n_splits 4 --architecture resnet18
+!clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_resnet18 --n_splits 4 --architecture resnet18 
 
 # %%
 # 2D-slice multi-CNN training
@@ -368,12 +367,23 @@ print('GPU is available: ', torch.cuda.is_available())
 #
 # (If you failed to train the model please uncomment the next cell)
 # %%
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/maps_classification_2D_slice_multi.tar.gz -o maps_classification_2D_slice_multi.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/maps_classification_2D_slice_multi.tar.gz -o maps_classification_2D_slice_multi.tar.gz
 !tar xf maps_classification_2D_slice_multi.tar.gz
 
 # %%
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/maps_classification_2D_slice_resnet.tar.gz -o maps_classification_2D_slice_resnet.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/maps_classification_2D_slice_resnet.tar.gz -o maps_classification_2D_slice_resnet.tar.gz
 !tar xf maps_classification_2D_slice_resnet.tar.gz
+
+# %% [markdown]
+# If you failed to train the model, you also need to download the TSV files with 
+# the list of participants for each split used for the training because `clinicadl 
+# tsvtools split` and `clinicadl tsvtools kfold` commands randomly split data so 
+# you can have data leakage error (see previous [notebook](notebooks/labels_extraction.ipynb) 
+# for more information about data leakage).
+
+#%% 
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/split.tar.gz -o training_split.tar.gz
+!tar xf training_split.tar.gz
 
 # %% [markdown]
 # The `predict` functionality performs individual prediction and metrics
@@ -406,8 +416,8 @@ print('GPU is available: ', torch.cuda.is_available())
 # [documentation](https://clinicadl.readthedocs.io/en/latest/Predict/).
 
 # %%
-!clinicadl predict -h
-!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
+#!clinicadl predict -h
+!clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis2' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
 #%%
 !clinicadl predict data_oasis/maps_classification_2D_slice_multi 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example

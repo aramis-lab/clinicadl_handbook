@@ -29,15 +29,7 @@
 
 # %% [markdown]
 # ## Before starting
-# This notebook allows to prepare the set of data to train a neural network, 
-# so in order to do the rest of the notebooks, you will have to download the 
-# data from [ADNI](https://adni.loni.usc.edu/) or [OASIS](https://oasis-brains.org/) 
-# because it is not possible to separate a set of 4 images without data leakage.
-# Moreover, you will need the data in a BIDS and a CAPS format so you need to 
-# re-run the notebook [preprocessing section](./preprocessing.ipynb) with your
-# own data.
-
-# %% [markdown]
+# This notebook allows to prepare the set of data to train a neural network.
 # This first two commands are the only ones that require access to the BIDS, if 
 # you were not able to download the data, you can uncomment the following cell
 # to download the BIDS of 4 subjects from OASIS-1 or the BIDS of 2 subjects 
@@ -78,7 +70,7 @@
 
 # %% [markdown]
 # We are going to run some experiences on ADNI and OASIS datasets,
-# if you have already download the full datset and converted it to
+# if you have already download the full dataset and converted it to
 # BIDS, you can give the path to the dataset directory by changing
 # the following path. If not, just run it as written.
 # Execute the following command to gather metadata included in this BIDS.
@@ -109,9 +101,9 @@
 #  the example BIDS of OASIS:
 # %%
 # Find missing modalities
-!clinica iotools check-missing-modalities OASIS_BIDS data_oasis/missing_mods
+!clinica iotools check-missing-modalities data_oasis/BIDS_example_local data_oasis/missing_mods
 #%%
-!clinica iotools check-missing-modalities ADNI_BIDS data_adni/missing_mods
+!clinica iotools check-missing-modalities data_adni/BIDS_example data_adni/missing_mods
 # %% [markdown]
 # The output of this command, `missing_mods/`, is a folder in
 # which a series of tsv files is written (one file per session label containing
@@ -120,10 +112,18 @@
 # %% [markdown]
 # ## Prepare metadata with `clinicadl tsvtools` 
 
-# In this section we will work on a subset of 100 subjects of the OASIS dataset
-# (and a subset of 100 subjects of the ADNI dataset). You can find the list of
-# participants that have passed the quality check in the data folder
-# (oasis_after_qc.tsv and adni_after_qc.tsv).
+# In order to do the rest of the notebooks, you will have to download the 
+# data from [ADNI](https://adni.loni.usc.edu/) or [OASIS](https://oasis-brains.org/) 
+# because it is not possible to separate a set of 4 images without data leakage.
+# Moreover, you will need the data in a BIDS and a CAPS format so you need to 
+# re-run the notebook [preprocessing section](./preprocessing.ipynb) with your
+# own data.
+
+# But in this section we will work on a subset of 100 subjects of the OASIS 
+# dataset (and a subset of 100 subjects of the ADNI dataset) and you only need 
+# the list of subject for now. You can find this list of participants that have
+# passed the quality check in the data folder (oasis_after_qc.tsv and 
+# adni_after_qc.tsv).
 
 # If you were not able to run the two previous cells on the full dataset, you 
 # can uncomment the next cell to download the needed files (merged.tsv and 
@@ -131,12 +131,12 @@
 
 # %%
 #for OASIS-1 dataset
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
 
 # %%
 #for ADNI dataset
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
 
 # %% [markdown]
@@ -171,8 +171,15 @@
 # in a new file `labels.tsv` from the restricted version of OASIS:
 # %%
 !clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
+# %% [markdown]
+# In ADNI dataset, a subject can have several sessions during his follow-up and
+# so you can find another diagnosis, mild cognitive impairment (MCI). For more 
+# information please refer to the [preprocessing section](./preprocessing.ipynb).
+# Moreover, the BIDS example that you have downloaded doesn't label alzheimer's 
+# disease as 'AD' but as 'Dementia' so you need to add the '--diagnosis/-d' 
+# option.
 # %%
-!clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv
+!clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv -d CN -d Dementia -d MCI
 # %% [markdown]
 # This tool writes a unique TSV file containing the labels asked by the user.
 # They are stored in the column named diagnosis.
@@ -216,7 +223,7 @@
 !clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/labels.tsv data_oasis/analysis.tsv
 # %%
 # Run the analysis on ADNI
-!clinicadl tsvtools analysis data_adni/merged.tsv data_adni/labels.tsv data_adni/analysis.tsv -d CN
+!clinicadl tsvtools analysis data_adni/merged.tsv data_adni/labels.tsv data_adni/analysis.tsv -d CN -d Dementia -d MCI
 
 
 # %%
@@ -248,8 +255,8 @@ display_table("data_oasis/analysis.tsv")
 display_table("data_adni/analysis.tsv")
 # %% [markdown]
 # If you were not able to run the previous cell to get the analysis, you 
-# can uncomment the next cell to have an overview of what it should look
-# like.
+# can find the results int `data` folder on github to have an overview of 
+# what it should look like.
 
 # %% [markdown]
 # There is no significant bias on age anymore, but do you notice any other
@@ -446,7 +453,7 @@ display_table("data_oasis/analysis_test.tsv")
 # command line. The next cell executes it on the splits generated in the previous
 # sections.
 # %%
-from tests.test_tsvtools import run_test_suite
+from clinicadl.tests.test_tsvtools import run_test_suite
 
 # Run check for train+val / test split
 run_test_suite("./data/labels_lists", n_splits=0, subset_name="test")
@@ -468,4 +475,7 @@ run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation"
 #     data leakage.</p>
 #     <img src="./images/data_leakage.png">
 # </div>
+
 # %%
+# Now that you have your train, test and validation split, you can train a 
+# network for classification, regression or reconstruction with clinicaDL.

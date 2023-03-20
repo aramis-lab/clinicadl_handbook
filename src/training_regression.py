@@ -14,9 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==0.2.1
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/dataOasis.tar.gz -o dataOasis.tar.gz
-# !tar xf dataOasis.tar.gz
+# !pip install clinicadl==1.2.0
 
 
 # %% [markdown]
@@ -42,7 +40,7 @@
 # The `prepare-data` pipeline selects the preprocessed images, extracts the
 # "tensors", and writes them as output files for the entire images, for each
 # slice, for each roi or for each patch.
-
+#
 # The following command will perform this extraction, at the image-level:
 
 # ```bash
@@ -56,7 +54,7 @@
 # - `modality` is the name of the preprocessing performed on the original
 # images. It can be `t1-linear` or `pet-linear`. You can choose custom if you
 # want to get a tensor from a custom filename.
-
+# %% [markdown]
 
 # Output files are stored into a new folder (inside the CAPS) and follows a
 # structure like this:
@@ -85,8 +83,9 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/databases/tuto/OasisCaps1.tar.gz -o OasisCaps1.tar.gz
-# !tar xf OasisCaps1.tar.gz
+# %%
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # To perform the feature extraction for our dataset, run the following cell:     
 # %%
@@ -97,8 +96,8 @@
 # obtain the extracted tensors please uncomment the next cell.
 
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
-# !tar xf oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_extracted.tar.gz -o oasisCaps_extracted.tar.gz
+# !tar xf oasisCaps_extracted.tar.gz
 # %%
 !tree -L 3 data_adni/CAPS_example/subjects/sub-ADNI005S*/ses-M00/deeplearning_prepare_data/
 
@@ -110,13 +109,13 @@
 #   automatically adapts to the input feature map size.
 # * 3 fully-connected layers.
 
-# <img src="../../images/imageCNN.png">
+# <img src="../images/imageCNN.png">
 
 #%% [markdown]
 # ## Before starting 
 # ```{warning}
 # If you do not have access to a GPU, training the CNN may require too much
-# time.  However, you can execute this notebook on Colab to run it on a GPU.
+# time. However, you can execute this notebook on Colab to run it on a GPU.
 # ```
 
 # If you already know the models implemented in `clinicadl`, you can directly
@@ -130,7 +129,7 @@ import torch
 print('GPU is available: ', torch.cuda.is_available())
 #%% [markdown]
 #
-# ### Data used for training:
+# ### Data used for training
 #
 # Because they are time-costly, the preprocessing steps presented in the
 # beginning of this tutorial were only executed on a subset of OASIS-1, but
@@ -142,11 +141,11 @@ print('GPU is available: ', torch.cuda.is_available())
 # "./label_extraction.ipynb" the extraction of labels and data splits on this
 # dataset.
 
-# ## `train REGRESSION` 
+# ## `clinicadl train REGRESSION` 
 
 # This functionality mainly relies on the PyTorch deep learning library
 # [[Paszke et al., 2019](https://papers.nips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library)].
-
+#
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `regression` task. 
 
@@ -158,7 +157,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # preprocessing pipeline wanted.
 
 #%% [markdown]
-### Running the task
+# ### Running the task
 # The training task can be run with the following command line:
 # ```bash
 # clinicadl train regression [OPTIONS] CAPS_DIRECTORY PREPROCESSING_JSON \
@@ -178,16 +177,16 @@ print('GPU is available: ', torch.cuda.is_available())
 # `clinicadl tsvtool {split|kfold}`.  In case of[multi-cohort training, must be
 # a path to a TSV file.
 # - `OUTPUT_MAPS_DIRECTORY` (Path) is the folder where the results are stored.
-
+#
 # The training can be configured through a [TOML
 # configuration](https://clinicadl.readthedocs.io/en/latest/Train/Introduction/#configuration-file)
 # file or by using the command line options. If you have a TOML configuration
 # file you can use the following option to load it:
-
+#
 # - `--config_file` (Path) is the path to a TOML configuration file. This file
 # contains the value for the options that you want to specify (to avoid too long
 # command line).
-
+#
 # If an option is specified twice (in the configuration file and, as an option,
 # in the command line) then **the values specified in the command line will
 # override the values of the configuration file**.
@@ -259,7 +258,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # (If you failed to train the model
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_adni/maps_regression_image.tar.gz -o maps_regression_image.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/maps_regression_image.tar.gz -o maps_regression_image.tar.gz
 # !tar xf maps_regression_image.tar.gz
 
 # %% [markdown]
