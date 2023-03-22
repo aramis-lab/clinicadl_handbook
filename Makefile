@@ -48,6 +48,8 @@ full-clean.book:
 .PHONY: build.book
 build.book: clean.book
 	@$(POETRY) run jupyter-book build $(BOOK_DIR)
+	@$(RM) -rf jupyter-book/_build/html/slides jupyter-book/_build/html/images
+	@cp -r ./images jupyter-book/_build/html
 
 ## sanity-check    : Verify if all py files have a correspondent notebook (ipynb file)
 .PHONY: sanity-check
