@@ -320,7 +320,7 @@ clinicadl train reconstruction data_adni/CAPS_example pet_reconstruction data_ad
 #     CNN until the fully-connected layers (see the <a
 #     href="./deep_learning.md#autoencoder-pretraining">bakground section</a> for
 #     more details on autoencoders construction).</p>
-#     <img src="./images/autoencoder.png">
+#     <img src="../images/autoencoder.png">
 #     <p>Then the weights of the encoder will be transferred to the convolutions
 #     of the CNN to initialize it before its training. This procedure is called
 #     <i>autoencoder pretraining</i>.</p>
