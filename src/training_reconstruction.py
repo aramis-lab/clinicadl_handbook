@@ -454,7 +454,7 @@ clinicadl train reconstruction data_adni/CAPS_example pet_reconstruction data_ad
 !clinicadl predict data_adni/maps_reconstrcution_3D_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv --save_tensor
 
 #%%
-clinicadl predict data_adni/maps_classification_transfer_AE_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv 
+!clinicadl predict data_adni/maps_classification_transfer_AE_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv 
 # %% [markdown]
 # Results are stored in the MAPS of path `model_path`, according to the
 # following file system:
