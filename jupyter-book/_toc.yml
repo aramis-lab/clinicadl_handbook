@@ -17,20 +17,20 @@ parts:
         title: Prepare neuroimaging data
       - file: notebooks/label_extraction
         title: Define your population
+      - file: notebooks/generate
+        title: Generate synthetic data
   - caption: Deep learning
     chapters:
       - file: notebooks/training_classification
-        title: classification on 2D slices
+        title: Classification on 2D slices
       - file: notebooks/training_reconstruction
         title: Reconstruction on 3D patch / ROI
       - file: notebooks/training_regression
         title: Regression on 3D images
-      - file: notebooks/training_custom
-        title: Custom training
   - caption: Going further
     chapters:
-      - file: notebooks/generate
-        title: Debug non-automated search
+      - file: notebooks/training_custom
+        title: Custom training
       - file: notebooks/random_search
         title: Random search
       - file: notebooks/interpretability

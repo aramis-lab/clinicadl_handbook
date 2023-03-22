@@ -103,7 +103,7 @@ their value by 0).  This behavior is enabled during training to limit
 overfitting, then it is disabled during evaluation to obtain the best possible
 prediction.
 
-<img src="../../images/dropout_layer.png" alt="Dropout layer" style="height: 200px; margin: 10px; text-align: center;">
+<img src="./images/dropout_layer.png" alt="Dropout layer" style="height: 200px; margin: 10px; text-align: center;">
 
 ### Fully-connected
 
@@ -114,7 +114,7 @@ In convolutional neural networks they are often used at the end of the
 architecture to reduce the final feature maps to a number of nodes equal to the
 number of classes in the dataset.
 
-<img src="../../images/FC_layer.jpeg" alt="Fully connected layer" style="height: 200px; margin: 10px; text-align: center;">
+<img src="./images/FC_layer.jpeg" alt="Fully connected layer" style="height: 200px; margin: 10px; text-align: center;">
 
 
 ## Tasks & architectures

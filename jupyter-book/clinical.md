@@ -27,7 +27,7 @@ of AD: the Alzheimer’s Disease Neuroimaging Initiative (ADNI), the Australian
 Imaging, Biomarkers and Lifestyle (AIBL) and the Open Access Series of Imaging
 Studies (OASIS).
 
-<img src="../../images/logo_datasets.png" style="width: 500px;" alt="logos of the different databases" class="center">
+<img src="./images/logo_datasets.png" style="width: 500px;" alt="logos of the different databases" class="center">
 
 
 ### ADNI
@@ -95,7 +95,12 @@ the Clinical Dementia Rating (CDR). Even though assessment protocols are
 standardized, these scores can be highly variable based on the examiner and the
 physical/psychological condition of the patient during the test.
 
-> The goal of ADNI neuropsychological testing is to use standardized procedures to objectively and reliably assess a subject’s cognitive abilities.  However, **neuropsychological testing is not a mechanical process**. The examiner encounters a wide range of emotional and physical problems that can interfere with testing, and the skill and judgment of the examiner often affect the subject’s willingness to be tested and the effort he/she invests.
+> The goal of ADNI neuropsychological testing is to use standardized procedures
+> to objectively and reliably assess a subject’s cognitive abilities.  However, 
+> **neuropsychological testing is not a mechanical process**. The examiner 
+> encounters a wide range of emotional and physical problems that can interfere 
+> with testing, and the skill and judgment of the examiner often affect the 
+> subject’s willingness to be tested and the effort he/she invests.
 
 <i><div style="text-align: right"> Excerpt from the <a href="http://adni.loni.usc.edu/wp-content/uploads/2010/09/ADNI_GeneralProceduresManual.pdf">ADNI general procedure manual</a>, p.76 </div></i>
 
@@ -123,7 +128,7 @@ _never progressed to dementia_.
 <b>Time horizon:</b><p>
     In this notebook, we set the time horizon to 36 months.
     The time horizon allows us to study the stability of MCI patients and to sort them between sMCI and pMCI classes.</p>
-    <img src="../../images/MCI_stability.png">
+    <img src="./images/MCI_stability.png">
 </div>
 
 ## A word on the OASIS dataset
