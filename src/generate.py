@@ -39,7 +39,7 @@
 # `CAPS_example` in the data_oasis directory (Otherwise uncomment the next cell
 # to download a local version of the necessary folders).
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # ## Generate trivial data
