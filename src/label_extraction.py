@@ -267,9 +267,9 @@ display_table("data_adni/analysis.tsv")
 #     <p>There is still a difference in sex distribution and the network could
 #     learn a bias on sex such as "women are cognitively normal" and "men are
 #     demented". However, there are too few images in OASIS to continue removing
-#     sessions to equilibrate the groups.
+#     sessions to equilibrate the groups.</p>
 #     
-#     To check that such bias is not learnt, it is possible to run a logistic
+#     <p>To check that such bias is not learnt, it is possible to run a logistic
 #     regression after training between sex and the predicted label to check if
 #     they are correlated.</p>
 # </div>
