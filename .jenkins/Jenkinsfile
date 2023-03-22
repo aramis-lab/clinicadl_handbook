@@ -29,7 +29,6 @@ pipeline {
             source /usr/local/bin/_activate_current_env.sh
             poetry about
             poetry install
-            make build.notebooks
             make build.book
             sed -i 's+github/aramis-lab/clinicadl_handbook/blob/main/jupyter-book/notebooks+github/aramis-lab/clinicadl_handbook/blob/main/notebooks+g' ./jupyter-book/_build/html/notebooks/*.html
           '''

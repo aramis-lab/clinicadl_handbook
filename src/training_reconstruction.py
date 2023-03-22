@@ -46,7 +46,7 @@
 #
 
 # <figure>
-#   <img src="images/autoencoder_architecture.png" alt="CNN architecture" style="height: 350px; margin: 10px; text-align: center;">
+#   <img src="../images/autoencoder_architecture.png" alt="CNN architecture" style="height: 350px; margin: 10px; text-align: center;">
 #     <figcaption><i>Autoencoder derived from the previous CNN architecture</i></figcaption>
 # </figure>
 
