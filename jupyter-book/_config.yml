@@ -15,7 +15,7 @@ exclude_patterns:
   - "README.md"
 
 repository:
-  url: https://github.com/aramis-lab/tuto_clinicadl
+  url: https://github.com/aramis-lab/clinicadl_handbook
   path_to_book: jupyter-book/
   branch: main
 
