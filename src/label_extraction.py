@@ -334,7 +334,7 @@ print(df_labels)
 #     <li> The <b>validation set</b> is used to stop the training process and select the best model, </li>
 #     <li> The <b>test set</b> is used after the end of the training process to perform an unbiased evaluation of the performance. </li>
 # </ul>
-#     <img src="../../../images/split.png">
+#     <img src="../images/split.png">
 #     <p>Due to the k-fold validation procedure, k trainings are conducted
 #     according to the k training/validation pairs generated. This leads to k
 #     different models that are evaluated on the test set at the end. The final
@@ -473,9 +473,9 @@ run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation"
 #     not been contaminated by data that is correlated to the train and/or
 #     validation sets. You will find below examples of procedures that can lead to
 #     data leakage.</p>
-#     <img src="./images/data_leakage.png">
+#     <img src="../images/data_leakage.png">
 # </div>
 
-# %%
+# %% [markdown]
 # Now that you have your train, test and validation split, you can train a 
 # network for classification, regression or reconstruction with clinicaDL.
