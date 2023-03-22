@@ -476,6 +476,6 @@ run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation"
 #     <img src="../images/data_leakage.png">
 # </div>
 
-# %%
+# %% [markdown]
 # Now that you have your train, test and validation split, you can train a 
 # network for classification, regression or reconstruction with clinicaDL.
