@@ -35,7 +35,7 @@
 # corresponding dataset. If you want to generate a bigger synthetic CAPS, 
 # please check this [notebook](./generate)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/files/data/handbook_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 
 # %%
