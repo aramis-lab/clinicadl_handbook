@@ -91,8 +91,8 @@
 # %% [markdown]
 # ### Before starting
 # We are going to run some experiences on ADNI and OASIS datasets,
-# if you have already download the full datset, you can give the 
-# path to your own dirctory when needed.
+# if you have already download the full dataset, you can give the 
+# path to your own directory when needed.
 
 # %% [markdown]
 # ### Run the pipeline
