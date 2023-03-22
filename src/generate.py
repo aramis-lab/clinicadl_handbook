@@ -53,7 +53,7 @@
 # more easily tested as fewer data samples are required and convergence should
 # be reached faster as the classification task is simpler.
 
-# <img src="../../../images/generate_trivial.png" alt="generate trivial" style="height: 350px; margin: 10px; text-align: center;">
+# <img src="../images/generate_trivial.png" alt="generate trivial" style="height: 350px; margin: 10px; text-align: center;">
 
 # ```{warning}
 # You need to execute the `clinica run` and `clinicadl prepare-data` pipelines

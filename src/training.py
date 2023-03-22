@@ -201,7 +201,7 @@ ll data
 #   automatically adapts to the input feature map size.
 # * 3 fully-connected layers.
 
-# <img src="./images/ROICNN.png">
+# <img src="../images/ROICNN.png">
 
 # As for the 2D slice-level model, the gradient updates are done based on the loss
 # computed at the patch level. Final performance metrics are computed at the
@@ -215,7 +215,7 @@ ll data
 #     CNN until the fully-connected layers (see the <a
 #     href="./deep_learning.md#autoencoder-pretraining">bakground section</a> for
 #     more details on autoencoders construction).</p>
-#     <img src="./images/autoencoder.png">
+#     <img src="../images/autoencoder.png">
 #     <p>Then the weights of the encoder will be transferred to the convolutions
 #     of the CNN to initialize it before its training. This procedure is called
 #     <i>autoencoder pretraining</i>.</p>
@@ -271,7 +271,7 @@ ll data
 # hippocampus. They cannot be pre extracted with `clinicadl preprocessing
 # extract-tensor` and are computed from the whole MR volume.
 
-# <p align="center"><img src="./images/hippocampi.png" alt="Coronal views of ROI inputs"></p>
+# <p align="center"><img src="../images/hippocampi.png" alt="Coronal views of ROI inputs"></p>
 # %%
 # ROI-based autoencoder pretraining
 !clinicadl train roi autoencoder -h
@@ -309,7 +309,7 @@ The 3D image-level CNN in `clinicadl` is designed as follows:
   automatically adapts to the input feature map size.
 * 3 fully-connected layers.
 
-<img src="./images/imageCNN.png">
+<img src="../images/imageCNN.png">
 
 Depending on the preprocessing, the size of the fully connected layers must be
 adapted. This is why two models exist in `clinicadl`:
@@ -396,7 +396,7 @@ adapted. This is why two models exist in `clinicadl`:
 # ```{admonition} Suggestion!
 # :class: tip
 # Do not hesitate to ask for help on
-# [GitHub](https://github.com/aramis-lab/AD-DL/issues/new) or propose a new pull
+# [GitHub](https://github.com/aramis-lab/clinicadl/issues/new) or propose a new pull
 # request!
 # ```
 # %% [markdown]
@@ -410,7 +410,7 @@ adapted. This is why two models exist in `clinicadl`:
 #   *regression*).
 # * The folder containing the input images in CAPS format.
 # * A file containing information on the preprocessing  `PREPROCESSING_JSON`.
-# * A folder wiht files in TSV format to define where the train and validation are stored.
+# * A folder with files in TSV format to define where the train and validation are stored.
 # * A folder to the path where the MAPS will be stored.
 #
 # Multiple options can be entered by using the option `-c, --config_file`, a
@@ -427,14 +427,14 @@ adapted. This is why two models exist in `clinicadl`:
 ! tar xf ../data/RandomCaps.tar.gz -C ../data/
 # %% [markdown]
 # ## Example 1: training using the whole image
-# Lets suposse that we want to train a network of preprocessed images using
+# Lets suppose that we want to train a network of preprocessed images using
 # slices.
 # Our images comes from a synthetic dataset containing images with random noise,
 # obtained with `clinicadl generate`. 
 # %% [markdown]
-# The configuration file `train_cnofig.toml`
+# The configuration file `train_config.toml`
 # ```[toml]
-# # Config file for tutotiel
+# # Config file for tutoriel
 # [Cross_validation]
 # n_splits = 2
 # split = []
