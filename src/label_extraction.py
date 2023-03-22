@@ -38,7 +38,7 @@
 
 # %%
 # #OASIS BIDS
-!curl -k https://aramislab.paris.inria.fr/files/data/tuto_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!curl -k https://aramislab.paris.inria.fr/files/data/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
 !tar xf BIDS_example.tar.gz 
 
 # %%
