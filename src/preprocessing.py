@@ -13,7 +13,7 @@
 # ---
 
 # %%
-# Uncomment the next lines if running in Google Colab
+# Uncomment the next line if running in Google Colab
 # # !pip install clinicadl==1.2.0
 
 #%% [markdown]
@@ -211,7 +211,7 @@
 # - `caps_directory` is the output folder containing the results in a
 # [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
 
-# %%[markdown]
+# %% [markdown]
 # ```{warning}
 # The following command can take some time to execute, depending on the
 # configuration of your host machine. Running in a classical **Colab** instance
@@ -233,8 +233,8 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
-!tar xf CAPS_example.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
+# !tar xf CAPS_example.tar.gz
 # %% [markdown]
 # ```{warning}
 # The registration algorithm provided by ANTs exposes some reproducibility issues
@@ -308,7 +308,7 @@ plotting.show()
 # pons or pons2 (used for FDG). See [PET introduction](clinical) for more
 # details about masks versions.
 
-# %%[markdown]
+# %% [markdown]
 # ```{warning}
 # The following command can take some time to execute, depending on the
 # configuration of your host machine. Running in a classical **Colab** instance
@@ -324,8 +324,8 @@ plotting.show()
 # subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert
 # adni-to-bids)
 # %%
-!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
-!tar xf adniBids.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
+# !tar xf adniBids.tar.gz
 # %%
 !clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
 !clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
@@ -338,8 +338,8 @@ plotting.show()
 # If you failed to run the previous cell, please uncomment the next one to 
 # download the CAPS dataset:
 # %%
-!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
-!tar xf adniCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_example.tar.gz -o adniCaps.tar.gz
+# !tar xf adniCaps.tar.gz
 # %% [markdown]
 # For example, we can see the difference between raw images and processed images
 # from our dataset:
@@ -381,7 +381,7 @@ plotting.show()
 # To automatically assess the quality of the **t1-linear** preprocessing, we
 # propose to use a pretrained network which learnt to classify images that are
 # adequately registered to a template from others for which the registration
-# failed. This procedure is adaptated from [(Fonov et al,
+# failed. This procedure is adapted from [(Fonov et al,
 # 2022)](https://doi.org/10.1016/j.neuroimage.2022.119266), using their
 # pretrained models. The original code of [(Fonov et al,
 # 2022)](https://doi.org/10.1016/j.neuroimage.2022.119266) can be found on
@@ -409,14 +409,14 @@ plotting.show()
 # preprocessing. They should not be applied to other preprocessing procedures as
 # the results may not be reliable.
 
-# %%[markdown]
+# %% [markdown]
 # ### Run the pipeline
 # %%
 # quality-check for t1-linear preprocessing
 !clinicadl quality-check t1-linear data_oasis/CAPS_example data_oasis/QC_result_t1.tsv --no-gpu --threshold 0.8
 
 # %%
-# quality-check for pet-linear preprocessing (comming soon)
+# quality-check for pet-linear preprocessing (coming soon)
 #!clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
 
 # %% [markdown]
@@ -424,23 +424,22 @@ plotting.show()
 # These quality check can be really conservative and may keep some images that
 # are not of good quality. You may want to check the images kept to assess if
 # their quality is good enough for your application.
-
+# ```
 
 # %%
 import pandas as pd
 df_T1 = pd.read_csv("data_oasis/QC_result_t1.tsv", sep="\t")
 print(df_T1)
 
-
 # %% [markdown]
 # Based on these TSV file, participant `OASIS10304` should be discarded for the
-# rest of your anlysis. If you compare its registration with [MNI152NLin2009cSym
+# rest of your analysis. If you compare its registration with [MNI152NLin2009cSym
 # template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html),
 # you will see that temporal regions are misaligned as well as occipital regions
-# and cerebellum leading to this low probabilty value. ;-)
+# and cerebellum leading to this low probability value. ;-)
 
 #%% 
-# comming soon
+# coming soon
 # df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
 # print(df_pet)
 
