@@ -18,11 +18,15 @@
 # %% [markdown]
 # # Define your population
 
-# This notebook is an introduction to tools that can be used to identify
-# relevant samples and split them between training, validation and test cohorts.
-# **This step is mandatory preliminary to training to avoid issues such as lack
-# of clinical meaning or data leakage**. 
-
+# This notebook is an introduction to the tools proposed by ClinicaDL to
+# identify relevant samples and to split them into coherent groups to be used
+# during the training, the validation and the test stages.
+#
+# ```{important}
+# This step is mandatory preliminary to training to avoid issues such as lack
+# of clinical meaning or data leakage. 
+# ```
+#
 # In the following, we will see how to split these samples between training,
 # validation and test sets using tools available in `clinica` and `clinicadl`.
 
