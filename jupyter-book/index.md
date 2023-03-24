@@ -1,3 +1,4 @@
+![banner](./images/ClinicaDL_banner.png)
 # Deep learning classification from brain MRI: Application to Alzheimer's disease
 
 ## Introduction
