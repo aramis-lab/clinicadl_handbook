@@ -113,11 +113,11 @@
 # [adni-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/ADNI2BIDS/), [aibl-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/AIBL2BIDS/), [habs-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/HABS2BIDS/), [nifd-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/NIFD2BIDS/), [oasis3-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/OASIS3TOBIDS/), [ukb-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/UKBtoBIDS/).
 
 # %% [markdown]
-# (If you failed to obtain the BIDS exmaple using the `t1-linear`
-# pipeline, please uncomment the next cell)
+# (If you failed to convert the dataset to the BIDS specification using the last
+# command, please uncomment the next cell)
 # %%
-!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
-!tar xf BIDS_example.tar.gz 
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
+# !tar xf BIDS_example.tar.gz 
 # %% [markdown]
 # # Why prepare data ?
 # Preprocessing of neuroimaging data is essential before doing any experience
@@ -189,7 +189,7 @@
 # 2008)](https://doi.org/10.1016/j.media.2007.06.004).
 # - **Cropping** resulting in final images of size 169×208×179 with 1 mm3
 # isotropic voxels.
-
+#
 # If you run this notebook locally, please check that ANTs is correctly
 # installed. If it is not the case, uncomment the three following lines and run
 # it.
@@ -212,11 +212,11 @@
 # [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
 
 # %% [markdown]
-# ```{warning}
+# ```{info}
 # The following command can take some time to execute, depending on the
 # configuration of your host machine. Running in a classical **Colab** instance
 # can take up to 30 min.
-
+#
 # We will increase a little bit the computation capacity using 2 cores with the
 # `--n_procs 2` flag. Since there are 4 images, you can set `--n_procs 4` if
 # your computer can handle this.
@@ -233,15 +233,15 @@
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
 # please uncomment the next cell)
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
-# !tar xf CAPS_example.tar.gz
+# # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
+# # !tar xf CAPS_example.tar.gz
 # %% [markdown]
 # ```{warning}
 # The registration algorithm provided by ANTs exposes some reproducibility issues
 # when running in different environments. The outputs are "visually" very close
 # but not exactly the same. For further information and some clues on how to
-# reduce the variability please read this
-# [page](https://github.com/ANTsX/ANTs/wiki/antsRegistration-reproducibility-issues).
+# reduce the variability when using ANTs please read its
+# [documentation page](https://github.com/ANTsX/ANTs/wiki/antsRegistration-reproducibility-issues).
 # ```
 # %% [markdown]
 # For example, we can see the difference between raw images and processed images
@@ -280,7 +280,7 @@ plotting.show()
 # - **Cropping** of the registered images to remove the background.
 
 # %% [markdown]
-# ```{warning}
+# ```{info}
 # You need to have performed the t1-linear pipeline on your T1-weighted MR images.
 # ```
 
@@ -320,15 +320,15 @@ plotting.show()
 # ```
 # %% [markdown]
 # ### Run the pipeline
-# Please uncomment the next cells to download a dataset of pet images of 4
-# subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert
-# adni-to-bids)
+# Start by downloading a dataset of PET images for 4 subjects from ADNI
+# database.  The dataset was converted to the BIDS specification using `clinica
+# convert adni-to-bids`.
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
-# !tar xf adniBids.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
+!tar xf adniBids.tar.gz
 # %%
 !clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
-!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
+!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example fdg cerebellumPons2 --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are
 # saved using a specific suffix:
@@ -405,7 +405,7 @@ plotting.show()
 
 ##
 # !!! note
-# Quality checks pipelines are all different and depends on the chosen
+# Quality checks pipelines are all different and depend on the chosen
 # preprocessing. They should not be applied to other preprocessing procedures as
 # the results may not be reliable.
 
@@ -417,7 +417,7 @@ plotting.show()
 
 # %%
 # quality-check for pet-linear preprocessing (coming soon)
-#!clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
+# !clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
 
 # %% [markdown]
 # ```{warning}
@@ -436,13 +436,14 @@ print(df_T1)
 # rest of your analysis. If you compare its registration with [MNI152NLin2009cSym
 # template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html),
 # you will see that temporal regions are misaligned as well as occipital regions
-# and cerebellum leading to this low probability value. ;-)
+# and cerebellum leading to this low probability value.
 
 #%% 
-# coming soon
+# quality-check for pet-linear preprocessing (coming soon)
 # df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
 # print(df_pet)
 
 # %% [markdown]
 # Now that you have your preprocessed data, you can split them in order to 
 # prepare your training in the next notebook.
+# %%
