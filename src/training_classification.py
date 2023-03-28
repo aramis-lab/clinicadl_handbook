@@ -147,7 +147,7 @@
 # please uncomment the next cell. You can extract tensors from this CAPS but
 # for the training part you will need a bigger dataset.
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example_prepared.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 
 # %% [markdown]
@@ -418,7 +418,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # [documentation](https://clinicadl.readthedocs.io/en/latest/Predict/).
 
 # %%
-#!clinicadl predict -h
+# !clinicadl predict -h
 !clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis2' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
 #%%
