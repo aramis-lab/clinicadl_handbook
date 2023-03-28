@@ -15,37 +15,56 @@
 # %% [markdown]
 # # Training for custom task
 #
-# ## Customize your experiment!
+# The aim of ClinicaDL is not only to provide a collection of tools, 
+# but also to allow users to add their own in the framework.
 
-# You want to train your custom architecture, with a custom input type or
-# preprocessing on other labels? Please fork and clone the [github
-# repo](https://github.com/aramis-lab/clinicadl]) to add your changes.
+# %% [markdown]
+# ## Custom architectures.
 
-
-# ### Add a custom model  <i class="fa fa-hourglass-start " aria-hidden="true"></i>
+# Custom architectures can be added to ClinicaDL by adding a model class
+# in `clinicadl/utils/network`and importing it in 
+# `clinicadl/utils/network/__init__.py`.
 #
-# Write your model class in `clinicadl/tools/deep_learning/models` and import it
-# in `clinicadl/tools/deep_learning/models/__init__.py`.
+# This model class inherits from  the abstract `Network` class in 
+#`clinicadl/utils/network/network.py`.
+#
+# Three abstract methods must be implemented to make it work:
 
-# <div class="alert alert-block alert-info">
-# <b>Autoencoder transformation:</b><p>
-#     Your custom model can be transformed in autoencoder in the same way as
-#     predefined models. To make it possible, implement the convolutional part in
-#     <code>features</code> and the fully-connected layer in
-#     <code>classifier</code>. See predefined models as examples.
-# </div>
+# 1. `forward`: computes the forward pass of the network, it may return several 
+# outputs needed to compute the loss.
+# 2. `predict`: computes the forward pass of the network and only returns the main 
+# output.
+# 3. `compute_outputs_and_loss`: computes the main outputs and the loss of the 
+# network.
 
-# ### Add a custom input type <i class="fa fa-hourglass-start " aria-hidden="true"></i> <i class="fa fa-hourglass-start " aria-hidden="true"></i> <i class="fa fa-hourglass-start " aria-hidden="true"></i>
+# %% [markdown]
+# If you want to implement a network which outputs an array, you can inherit from 
+# `CNN` class in `clinicadl/utils/network/sub_network.py` (see for example `Conv5_FC3` 
+# `clinicadl/utils/network/cnn/models.py` which is a child class of `CNN`).
 
-# Input types that are already provided in `clinicadl` are image, patch, roi and
-# slice. To add a custom input type, please follow the steps detailed below:
-# * Choose a mode name for this input type (for example default ones are image,
-# patch, roi and slice).
-# * Add your dataset class in `clinicadl/tools/deep_learning/data.py` as a child
-# class of the abstract class `MRIDataset`.
-# * Create your dataset in `return_dataset` by adding:
+# %% [markdown]
+# If you want to implement a reconstruction autoencoder, you can inherit from 
+# `Autoencoder` class in `clinicadl/utils/network/sub_network.py` (see for example 
+# `AE_Conv5_FC3` `clinicadl/utils/network/cnn/models.py` which is a child class of 
+# `Autoencoder`).
 
-# ```python
+# Your network may be parametrized: in this case parameter names must correspond to
+# the options of the command line (for example `dropout`) or `input_size` / `output_size` 
+# which are computed by the MAPSManager. 
+# If you need a new parameter for your class you will have to add it to the command line.
+
+# %% [markdown]
+## Custom input type
+
+# Input types that are already provided in `clinicadl` are `image`, `patch`, `roi` and 
+#`slice`. To add a custom input type, please follow the steps detailed below:
+
+# - Choose a mode name for this input type (for example default ones are image, patch, 
+# roi and slice). 
+# - Add your dataset class in `clinicadl/utils/caps_dataset/data.py` as a child class of 
+# the abstract class `CapsDataset`.
+# - Create your dataset in `return_dataset` by adding:
+# ```
 # elif mode==<mode_name>:
 #     return <dataset_class>(
 #         input_dir,
@@ -55,29 +74,35 @@
 #         <custom_args>
 #     )
 # ```
+# - Add your custom subparser to `train` and complete `train_func` in `clinicadl/cli.py`.
 
-# * Add your custom subparser to `train` and complete `train_func` in `clinicadl/cli.py`.
-
-# ### Add a custom preprocessing <i class="fa fa-hourglass-start " aria-hidden="true"></i> <i class="fa fa-hourglass-start " aria-hidden="true"></i>
-#
-# Define the path of your new preprocessing in the `_get_path` method of
-# `MRIDataset` in `clinicadl/tools/deep_learning/data.py`. You will also have to
-# add the name of your preprocessing pipeline in the general command line by
-# modifying the possible choices of the `preprocessing` argument of
-# `train_pos_group` in `cli.py`.
-
-# ### Change the labels <i class="fa fa-hourglass-start " aria-hidden="true"></i>
-#
-# You can launch a classification task with clinicadl using any labels. The
-# input tsv files must include the columns `participant_id`, `session_id` and
-# `diagnosis`. If the column `diagnosis` does not contain the labels described
-# in this tutorial (AD, CN, MCI, sMCI, pMCI), you can add your own label name
-# associated to a class value in the `diagnosis_code` of the class `MRIDataset`
-# in `clinicadl/tools/deep_learning/data.py`.
 # %% [markdown]
-# ```{admonition} Suggestion!
-# :class: tip
-# Do not hesitate to ask for help on
-# [GitHub](https://github.com/aramis-lab/clinicadl/issues/new) or propose a new pull
-# request!
-# ```
+# ## Custom task
+
+# Available tasks in ClinicaDL are `classification`, `regression` and `reconstruction`.
+# You can implement a new task `task` by adding its corresponding TaskManager in 
+# `clinicadl/utils/task_manager/<task>.py`. This new class must inherits from the abstract
+# class `TaskManager` in `clinicadl/utils/task_manager/task_manager.py`.
+#
+# Then modify the `_init_task_manager` function in the class `MapsManager` at 
+# `clinicadl/utils/maps_manager/maps_manager.py`.
+
+# %% [markdown]
+# ## Custom metric
+
+# Other metrics can be added to the ones already available in ClinicaDL.
+# If the metric to add is composed of several words, please use the acronym
+# to name it (for example `balanced accuracy` becomes `BA`, `mean squared error`
+# becomes `MSE`).
+#
+# Then add the method `<metric>_fn` to `MetricModule` in `clinicadl/utils/metric_module.py`,
+# where `metric` is the name of your metric in lower case (for example `balanced accuracy` 
+# function is `ba_fn`).
+#
+# This metric will only be used to evaluate specific tasks, then the `evaluation_metrics` 
+# property of the corresponding `TaskManager` must be updated in `clinicadl/utils/task_manager`.
+#
+# Finally, to use this metric as a selection metric, please the `metric_optimum` dict in
+# `clinicadl/utils/metric_module.py`. The key is the name of your metric, and the content is 
+# respectively `min` or `max` if the performance improves when the metric respectively 
+# decreases or increases.

@@ -20,7 +20,8 @@
 # # Training for reconstruction
 
 # The objective of the `reconstruction` is to learn to reconstruct images given
-# in input. To do so, we used a type of artificial neural network called **autoencoder**.
+# as input. To do so, we can use a type of artificial neural network called 
+# **autoencoder**.
 # 
 # An autoencoder learns to reconstruct data given as input. It is composed of
 # two parts:
@@ -229,7 +230,9 @@ print('GPU is available', torch.cuda.is_available())
 
 
 #%% [markdown]
-# ### Data used for training: Because they are time-costly, the preprocessing
+# ### Data used for training
+# 
+# Because they are time-costly, the preprocessing
 # steps presented in the beginning of this tutorial were only executed on a
 # subset of OASIS-1, but obviously two participants are insufficient to train a
 # network! To obtain more meaningful results, you should retrieve the whole <a

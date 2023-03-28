@@ -68,11 +68,12 @@
 
 # ## `clinica convert` pipelines
 # 
-# Both OASIS and ADNI dataset contains imaging data in ANALYZE format and does
-# not provide a BIDS version of the data. To solve this issue, clinica provides
-# a
-# [converter](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Converters/OASIS2BIDS/)
-# to automatically convert ANALYZE files into NIfTI following the BIDS standard.
+# Both OASIS and ADNI dataset contain imaging data in ANALYZE format 
+# and do not provide a BIDS version of the data. To solve this issue, 
+# [clinica](https://aramislab.paris.inria.fr/clinica/docs/public/latest/) 
+# provides a [converter](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Converters/OASIS2BIDS/)
+# to automatically convert ANALYZE files into NIfTI following the BIDS 
+# standard.
 
 # A command line instruction is enough to get the data in BIDS format:
 
@@ -90,14 +91,14 @@
 
 # %% [markdown]
 # ### Before starting
-# We are going to run some experiences on ADNI and OASIS datasets,
-# if you have already download the full dataset, you can give the 
+# We are going to run some experiments on the ADNI and OASIS datasets,
+# if you have already download the full dataset, you can set the 
 # path to your own directory when needed.
 
 # %% [markdown]
 # ### Run the pipeline
 # To run this pipeline, you need clinical data. The next cell allows you to 
-# download an example from OASIS dataset of 4 images.
+# download an example dataset with 4 images from OASIS.
 # %%
 # Download the example dataset of 4 images
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/database.tar.gz -o oasis_database.tar.gz
@@ -109,27 +110,29 @@
 
 # %% [markdown]
 
-# **Clinica** also provides other converters that work the same, such as:
+# **Clinica** also provides other converters that work in the same way, 
+# such as:
 # [adni-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/ADNI2BIDS/), [aibl-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/AIBL2BIDS/), [habs-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/HABS2BIDS/), [nifd-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/NIFD2BIDS/), [oasis3-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/OASIS3TOBIDS/), [ukb-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/UKBtoBIDS/).
 
 # %% [markdown]
-# (If you failed to convert the dataset to the BIDS specification using the last
-# command, please uncomment the next cell)
+
+# (If you failed to obtain the BIDS example using the `oasis-to-bids`
+# pipeline, please uncomment the next cell).
 # %%
 # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
 # !tar xf BIDS_example.tar.gz 
 # %% [markdown]
 # # Why prepare data ?
-# Preprocessing of neuroimaging data is essential before doing any experience
-# and especially before training a neural network with these data.  -
-# **Registration** help to standardize the neuroimaging data so that they are
-# consistent across different subjects, scanners, and imaging modalities. This
+# Preprocessing of neuroimaging data is essential before doing any experiment 
+# and especially before training a neural network with that data.
+# - **Registration** helps to standardize the neuroimaging data so that it is 
+# consistent across different subjects, scanners, and imaging modalities. This 
 # makes it easier for the deep neural network to learn patterns and make
 # accurate predictions. 
 # - Preprocessing techniques such as **motion correction** and **noise
-# reduction** can help to minimize sources of noise and improve the quality of
-# the data because due to a variety of factors, such as head motion, scanner
-# artifacts, and biological variability, neuroimaging data can be noisy. 
+# reduction** can help to minimize sources of noise and improve the quality of 
+# the data. Neuroimaging data can be noisy due to a variety of factors, such as 
+# head motion, scanner artifacts, and biological variability. 
 # - Preprocessing can also be used to **extract features** from the neuroimaging
 # data that are relevant to the task at hand. For example, if the goal is to
 # classify brain regions based on their functional connectivity, preprocessing
@@ -271,10 +274,11 @@ plotting.show()
 
 # This pipeline performs spatial normalization to the MNI space and intensity
 # normalization of PET images. Its steps include:
-
-# - **Affine registration** to the MNI152NLin2009cSym template [Fonov et al.,
-# 2011, 2009] in MNI space with the SyN algorithm [Avants et al., 2008] from the
-# ANTs software package [Avants et al., 2014];
+# - **Affine registration** to the MNI152NLin2009cSym template 
+# [Fonov et al., [2011](https://www.sciencedirect.com/science/article/pii/S1053811910010062?via%3Dihub), 
+# [2009](https://www.sciencedirect.com/science/article/pii/S1053811909708845?via%3Dihub)] 
+# in MNI space with the SyN algorithm [[Avants et al., 2008]](https://doi.org/10.1016/j.media.2007.06.004) 
+# from the ANTs software package [[Avants et al., 2014]](https://doi.org/10.3389/fninf.2014.00044);
 # - **Intensity normalization** using the average PET uptake in reference
 # regions resulting in a standardized uptake value ratio (SUVR) map;
 # - **Cropping** of the registered images to remove the background.
@@ -286,7 +290,6 @@ plotting.show()
 
 # %% [markdown]
 # The pipeline can be run with the following command line:
-
 
 # ```bash
 #   clinica run pet-linear [OPTIONS] BIDS_DIRECTORY CAPS_DIRECTORY ACQ_LABEL
@@ -323,6 +326,12 @@ plotting.show()
 # Start by downloading a dataset of PET images for 4 subjects from ADNI
 # database.  The dataset was converted to the BIDS specification using `clinica
 # convert adni-to-bids`.
+
+# %%[markdown]
+# Please uncomment the next cells to download a dataset of pet images of 4 
+# subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert 
+# adni-to-bids`)
+
 # %%
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
 !tar xf adniBids.tar.gz
@@ -372,10 +381,10 @@ plotting.show()
 # template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html)
 # to evaluate the quality of the registration.
 
-# OASIS-1 dataset contains 416 images  and ADNI more than 3000 so quality check
-# of the whole datasets can be very time consuming. The next section gives you
-# some ideas on how to keep only images correctly preprocessed, when running in
-# a large dataset.
+# OASIS-1 dataset contains 416 images  and ADNI more than 3000, so the quality 
+# check of the entire datasets can be very time consuming. The next section gives 
+# you some ideas on how to keep only the images correctly preprocessed when 
+# working on a large dataset.
 
 # %% [markdown]
 # To automatically assess the quality of the **t1-linear** preprocessing, we
@@ -392,7 +401,7 @@ plotting.show()
 
 # The quality check can be run with the following command line:
 # ```
-# !clinicadl quality-check <preprocessing> <caps_directory> <output_path>
+# clinicadl quality-check <preprocessing> <caps_directory> <output_path>
 # ```
 # where:
 
