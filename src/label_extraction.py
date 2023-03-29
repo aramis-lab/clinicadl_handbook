@@ -466,13 +466,86 @@ display_table("data_oasis/analysis_test.tsv")
 # command line. The next cell executes it on the splits generated in the previous
 # sections.
 # %%
-from clinicadl.tests.test_tsvtools import run_test_suite
+import os
+from pathlib import Path
+import pandas as pd
+from clinicadl.utils.tsvtools_utils import extract_baseline
+"""
+Check the absence of data leakage
+    1) Baseline datasets contain only one scan per subject
+    2) No intersection between train and test sets
+"""
+
+
+def check_is_subject_unique(labels_path_baseline: Path):
+    #print("Check subject uniqueness", labels_path_baseline)
+
+    flag_is_unique = True
+    check_df = pd.read_csv(labels_path_baseline, sep="\t")
+    check_df.set_index(["participant_id", "session_id"], inplace=True)
+    if labels_path_baseline.name[-12:] != "baseline.tsv":
+        check_df = extract_baseline(check_df, set_index=False)
+    for _, subject_df in check_df.groupby(level=0):
+        if len(subject_df) > 1:
+            flag_is_unique = False
+    if flag_is_unique:
+        print(f"subject uniqueness is TRUE in {labels_path_baseline}")
+    else:
+        print(f"subject uniqueness is FALSE in {labels_path_baseline}")
+
+
+def check_is_independant(
+    train_path_baseline: Path, test_path_baseline: Path, subject_flag=True
+):
+
+    flag_is_independant = True
+    train_df = pd.read_csv(train_path_baseline, sep="\t")
+    train_df.set_index(["participant_id", "session_id"], inplace=True)
+    test_df = pd.read_csv(test_path_baseline, sep="\t")
+    test_df.set_index(["participant_id", "session_id"], inplace=True)
+
+    for subject, session in train_df.index:
+        if (subject, session) in test_df.index:
+            flag_is_independant = False
+    if flag_is_independant:
+        print(f"{train_path_baseline} and {test_path_baseline} are independant.")
+    else:
+        print(f"{train_path_baseline} and {test_path_baseline} are NOT independant.")
+
+
+
+def run_test_suite(data_tsv, n_splits):
+    check_train = True
+    if n_splits == 0:
+        train_baseline_tsv = data_tsv / "train_baseline.tsv"
+        test_baseline_tsv = data_tsv / "test_baseline.tsv"
+        if not train_baseline_tsv.exists():
+            check_train = False
+        check_is_subject_unique(test_baseline_tsv)
+        if check_train:
+            check_is_subject_unique(train_baseline_tsv)
+            check_is_independant(train_baseline_tsv, test_baseline_tsv)
+
+    else:
+        for i in range(n_splits):
+            for folder, _, files in os.walk(data_tsv):
+                folder = Path(folder)
+                for file in files:
+                    if file[-3:] == "tsv":
+                        check_is_subject_unique(folder / file)
+                train_baseline_tsv = folder / "train_baseline.tsv"
+                test_baseline_tsv = folder / "validation_baseline.tsv"
+                if train_baseline_tsv.exists():
+                    if test_baseline_tsv.exists():
+                        check_is_independant(train_baseline_tsv, test_baseline_tsv)
+                
+
 
 # Run check for train+val / test split
-run_test_suite("./data/labels_lists", n_splits=0, subset_name="test")
+run_test_suite(Path("./data_oasis/split"), n_splits=0)
 
 # Run check for train / validation splits
-run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation")
+run_test_suite(Path("./data_oasis/split/4_fold"), n_splits=4)
 # %% [markdown]
 # If no Error was raised then none of the three conditions was broken. It is now
 # possible to use the train and the validation sets to perform a classification
