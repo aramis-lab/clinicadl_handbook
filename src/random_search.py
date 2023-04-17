@@ -141,7 +141,7 @@ with open(output_file_name, "w") as toml_file:
 # Moreover, there should be a CAPS, obtained running the `t1-linear` pipeline of
 # ClinicaDL.
 
-# %%[markdown]
+# %% [markdown]
 ## Running the task
 
 # This task can be run with the following command line:

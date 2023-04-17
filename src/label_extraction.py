@@ -82,7 +82,7 @@
 # Merge meta-data information
 !clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv 
 
-#%%
+# %%
 !clinica iotools merge-tsv data_adni/BIDS_example data_adni/merged.tsv 
 # %% [markdown]
 # ### Check missing modalities for each subject
@@ -106,7 +106,7 @@
 # %%
 # Find missing modalities
 !clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
-#%%
+# %%
 !clinica iotools check-missing-modalities data_adni/BIDS_example data_adni/missing_mods
 # %% [markdown]
 # The output of this command, `missing_mods/`, is a folder with a series of
@@ -254,9 +254,9 @@ def display_table(table_path):
 
     format_df.index.name = None
     display(format_df)
-#%%
+# %%
 display_table("data_oasis/analysis.tsv")
-#%%
+# %%
 display_table("data_adni/analysis.tsv")
 # %% [markdown]
 # 
@@ -319,7 +319,7 @@ display_table("data_adni/analysis.tsv")
 # %%
 !clinicadl tsvtools get-progression data_adni/labels.tsv 
 
-#%%
+# %%
 import pandas as pd
 df_labels = pd.read_csv("data_adni/labels.tsv", sep ="\t")
 df_labels.set_index(["participant_id","session_id"])

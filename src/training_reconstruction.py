@@ -170,7 +170,7 @@
 # hippocampus that can be used to define two region of interest.
 #
 # Uncomment the next cell if you want to extract roi tensors:
-#%%
+# %%
 #!cp -r data/masks data_adni/CAPS_example/masks
 #!clinicadl prepare-data roi data_adni/CAPS_example pet-linear --roi_list rightHippocampusBox --roi_list leftHippocampusBox
  
@@ -209,7 +209,7 @@
 # The evaluation metrics are the mean squared error (MSE) and mean absolute
 # error (MAE).
 
-#%% [markdown]
+# %% [markdown]
 # ## Before starting 
 # ```{warning}
 # If you do not have access to a GPU, training the CNN may require too much time.
@@ -219,7 +219,7 @@
 # If you already know the models implemented in `clinicadl`, you can directly jump
 # to the `train custom` to implement your own custom experiment!
 
-#%%
+# %%
 
 from pyrsistent import v
 import torch
@@ -228,7 +228,7 @@ import torch
 print('GPU is available', torch.cuda.is_available())
 
 
-#%% [markdown]
+# %% [markdown]
 # ### Data used for training: Because they are time-costly, the preprocessing
 # steps presented in the beginning of this tutorial were only executed on a
 # subset of OASIS-1, but obviously two participants are insufficient to train a
@@ -248,14 +248,14 @@ print('GPU is available', torch.cuda.is_available())
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `reconstruction` task. 
 
-#%% [markdown]
+# %% [markdown]
 # ### Prerequisites
 # You need to execute the `clinicadl tsvtool get-labels` and `clinicadl tsvtools
 # {split|kfold}`commands prior to running this task to have the correct TSV file
 # organization.  Moreover, there should be a CAPS, obtained running the
 # preprocessing pipeline wanted.
 
-#%% [markdown]
+# %% [markdown]
 ### Running the task
 # The training task can be run with the following command line:
 # ```text
@@ -290,7 +290,7 @@ print('GPU is available', torch.cuda.is_available())
 # in the command line) then **the values specified in the command line will
 # override the values of the configuration file**.
 #
-# %%[markdown]
+# %% [markdown]
 # A few options depend on the regression task:
 
 # - `--selection_metrics` (str) are metrics used to select networks according to
@@ -347,7 +347,7 @@ print('GPU is available', torch.cuda.is_available())
 # Transferring weights between tasks that are not similar enough can hurt the
 # performance!
 # ```
-#%%
+# %%
 # With autoencoder pretraining
 !clinicadl train classification data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold data_adni/maps_classification_3D_patch_transfer --architecture Conv4_FC3 --transfer_path data_adni/maps_reconstrcution_patch --n_splits 4 --epochs 3
 
@@ -457,7 +457,7 @@ print('GPU is available', torch.cuda.is_available())
 !clinicadl predict -h
 !clinicadl predict data_adni/maps_reconstrcution_3D_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv --save_tensor
 
-#%%
+# %%
 !clinicadl predict data_adni/maps_classification_transfer_AE_patch 'test-adni' --caps_directory <caps_directory> --participants_tsv data_adni/split/test_baseline.tsv 
 # %% [markdown]
 # Results are stored in the MAPS of path `model_path`, according to the

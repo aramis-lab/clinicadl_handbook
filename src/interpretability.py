@@ -40,7 +40,7 @@
 # mask used for trivial data generation, so we can compare them to the saliency
 # maps obtained.
 
-#%%
+# %%
 # Downloading pretrained model
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/interpret/maps_trivial.tar.gz -o maps_trivial.tar.gz
 !tar xf maps_trivial.tar.gz
@@ -50,26 +50,26 @@
 !curl -k https://aramislab.paris.inria.fr/files/data/masks/AAL2.tar.gz -o AAL2.tar.gz
 !tar xf AAL2.tar.gz
 
-#%% [markdown]
+# %% [markdown]
 # In this trivial dataset, "AD" brains are atrophied according to the first mask
 # while "CN" brains are atrophied according to the second mask. The first mask
 # include the whole cerebellum + the left hemisphere while the second mask
 # includes the right hemisphere.
 
-#%%
+# %%
 from nilearn import plotting
 
 plotting.plot_stat_map("AAL2/mask-1.nii", title="AD atrophy", cut_coords=(-50, 14), display_mode="yz")
 plotting.plot_stat_map("AAL2/mask-2.nii", title="CN atrophy", cut_coords=(-50, 14), display_mode="yz")
 plotting.show()
 
-#%% [markdown]
+# %% [markdown]
 # Saliency maps will be generated using trivial data generated from OASIS. If
 # you did not run the notebook
 # [generate synthetic data](generate.ipynb), you will need to run the
 # following cell as well:
 
-#%%
+# %%
 import os
 
 os.makedirs("data", exist_ok=True)
@@ -78,7 +78,7 @@ os.makedirs("data", exist_ok=True)
 !tar xf caps_trivial.tar.gz 
 
 
-#%% [markdown]
+# %% [markdown]
 ## Generate individual saliency maps
 #
 # Saliency maps on corresponding to one image can be computed with the following
@@ -102,7 +102,7 @@ os.makedirs("data", exist_ok=True)
 # overwrite to True.
 # ```
 
-#%% [markdown]
+# %% [markdown]
 # In the following we chose to generate saliency map based on the opposite
 # labels:
 # - the first command loads AD images and generates saliency maps based on CN
@@ -114,17 +114,17 @@ os.makedirs("data", exist_ok=True)
 # binary classification we expect the map of the opposite node to have opposite
 # values than the ones in the corresponding node (that is not very interesting).
 
-#%%
+# %%
 # grad-cam diagnosis AD
 !clinicadl interpret interpret/maps_trivial test-gc gc_AD grad-cam -d AD --caps_directory interpret/caps_trivial_tensor --participants_tsv interpret/caps_trivial_tensor/data.tsv 
 
 
-#%%
+# %%
 # gradients diagnosis CN
 !clinicadl interpret interpret/maps_trivial test-gd gd_CN gradients -d CN --caps_directory interpret/caps_trivial_tensor --participants_tsv interpret/caps_trivial_tensor/data.tsv  --save_individual
 
 
-#%% [markdown]
+# %% [markdown]
 # This command will generate saliency maps for the model selected on validation 
 # loss. You can obtain the same maps for the model selection on validation
 # balanced accuracy by adding the option `--selection best_balanced_accuracy`.
@@ -133,17 +133,17 @@ os.makedirs("data", exist_ok=True)
 # These images are organized in a similar way than the CAPS, with a
 # `<participant_id>/<subject_id>` structure:
 
-#%%
+# %%
 !tree interpret/maps_trivial/fold-0/gradients/best_loss/test-gc
 
-#%%[markdown]
+# %% [markdown]
 # Because we add the `--save_individual` option, we can plot the individual
 # saliency maps to check which regions the CNN is focusing on.
 # We can also plot the group saliency maps in the same way than for the
 # individual ones.
 
 
-#%%
+# %%
 def plot_individual_maps(diagnosis, target):
     import os
     from os import path
@@ -163,7 +163,7 @@ plot_individual_maps("AD", "CN")
 print("Saliency maps of CN images based on AD nodes")
 plot_individual_maps("CN", "AD")
 
-#%% [markdown]
+# %% [markdown]
 # The group saliency maps are very noisy and may be difficult to interpret but
 # individual maps are less noisy as the individual differences are less present
 # and we can see more easily the main pattern.

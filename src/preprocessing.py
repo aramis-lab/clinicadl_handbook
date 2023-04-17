@@ -16,7 +16,7 @@
 # Uncomment the next line if running in Google Colab
 # # !pip install clinicadl==1.3.0
 
-#%% [markdown]
+# %% [markdown]
 # # Prepare your neuroimaging data
 
 # There are different steps to perform before training your model or performing

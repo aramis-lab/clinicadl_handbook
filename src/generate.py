@@ -172,7 +172,7 @@ display(metrics)
 # - `caps_directory` is the output folder containing the results in a [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
 # - `generated_caps_directory` is the folder where the synthetic CAPS is stored.
 
-#%%
+# %%
 !clinicadl generate random data_oasis/CAPS_example data/CAPS_random --n_subjects 5 --preprocessing t1-linear
 
 # %% [markdown]
@@ -217,5 +217,5 @@ display(metrics)
 # where:
 # - `generated_caps_directory` is the folder where the synthetic CAPS is stored.
 
-#%%
+# %%
 !clinicadl generate shepplogan data/CAPS_shepplogan --n_subjects 3
