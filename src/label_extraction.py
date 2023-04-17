@@ -13,7 +13,7 @@
 # ---
 # %%
 # Uncomment the next lines if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 # %% [markdown]
 # # Define your population
@@ -33,7 +33,7 @@
 
 # %% [markdown]
 # ## Before starting
-# This notebook allows to prepare the set of data to train a neural network.
+# This notebook allows to prepare the dataset to train a neural network.
 # These first two commands are the only ones that require access to the BIDS. If
 # you were not able to process the data as indicated in the previous notebook,
 # you can uncomment the following cell to download the BIDS of 4 subjects from
@@ -73,10 +73,10 @@
 # `merge-tsv.tsv`.
 
 # %% [markdown]
-# We are going to run some experiences on ADNI and OASIS datasets,
-# if you have already download the full dataset and converted it to
-# BIDS, you can give the path to the dataset directory by changing
-# the following path. If not, just run it as written.
+# We are going to run some experiments on ADNI and OASIS datasets,
+# if you have already downloaded the full datasets and converted them to
+# BIDS, you can set the path to the dataset directory by changing
+# the following paths. If not, just run it as written.
 # Execute the following command to gather metadata included in this BIDS.
 # %%
 # Merge meta-data information
@@ -87,9 +87,9 @@
 # %% [markdown]
 # ### Check missing modalities for each subject
 #
-# We want to restrict the list of the sessions used to those including a T1-MR
-# image. Then the following command is needed to identify which modalities are
-# present for each session:
+# We want to restrict the list of sessions used to only include those with a T1-MR
+# image. The following command allows to identify which modalities are available 
+# for each session:
 #
 # ```bash
 # clinica iotools check-missing-modalities <bids_directory> <output_directory>
@@ -98,11 +98,11 @@
 # - `bids_directory` is the input folder of a BIDS compliant dataset.
 # - `output_directory` is the output folder.
 
-# This pipeline does not have an option to give a list of subject/session so you
-# will check the missing modalities of all the datasets.
+# This pipeline does not have an option to give a list of subject/session so it 
+# checks the missing modalities for all of the datasets.
 # 
-#  Execute the following command to find which sessions include a T1-MR image on
-#  the example BIDS of OASIS:
+# Execute the following command to find which sessions include a T1-MR image on
+# the example BIDS from OASIS:
 # %%
 # Find missing modalities
 !clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
@@ -141,7 +141,7 @@
 !tar xf iotools_output.tar.gz
 
 # %%
-#for ADNI dataset
+#for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
 
@@ -163,12 +163,11 @@
 # You can increase the verbosity of the command by adding -v flag(s).
 # ```
 
-# The bids directory is mandatory to run the `clinica iotools merge-tsv` and
-# `clinica iotools check-missing-modalities` inside this pipelines if it has not
-# been done before.  However if you already have run these pipelines, the path
-# is not mandatory anymore so you can put anything and add the options
-# `--merged_tsv` and `--missing_mods`. It will avoid the pipeline to re-run
-# them.
+# The `bids_directory` argument is mandatory to run the `clinica iotools merge-tsv` 
+# and `clinica iotools check-missing-modalities` within this pipeline if it has not 
+# been done before. If you already have run these pipelines, the path is no longer 
+# mandatory and you can put anything, just add the options `--merged_tsv` and 
+# `--missing_mods`, to avoid re-running these pipelines.
 
 
 # %% [markdown]
@@ -178,11 +177,11 @@
 # %%
 !clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
 # %% [markdown]
-# In ADNI dataset, a subject can have several sessions during his follow-up and
-# so you can find another diagnosis, mild cognitive impairment (MCI). For more 
+# In the ADNI dataset, a subject can have several sessions during his follow-up 
+# and so you can find another diagnosis, mild cognitive impairment (MCI). For more 
 # information please refer to the [preprocessing section](./preprocessing.ipynb).
 # Moreover, the BIDS example that you have downloaded doesn't label alzheimer's 
-# disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis/-d` 
+# disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis`/`-d` 
 # option.
 # %%
 !clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv -d CN -d Dementia -d MCI
@@ -263,7 +262,7 @@ display_table("data_adni/analysis.tsv")
 # 
 # ```{note}
 # If you were not able to run the previous cell to get the analysis, you 
-# can find the results int `data` folder on github to have an overview of 
+# can find the results in the `data` folder on github to have an overview of 
 # what it should look like.
 # ```
 # %% [markdown]
@@ -272,7 +271,7 @@ display_table("data_adni/analysis.tsv")
 
 # <div class="alert alert-block alert-warning">
 # <b>Demographic bias:</b>
-#     <p>There is still a difference in sex distribution and the network could
+#     <p>There is still a difference in the sex distribution and the network could
 #     learn a bias on sex such as "women are cognitively normal" and "men are
 #     demented". However, there are too few images in OASIS to continue removing
 #     sessions to equilibrate the groups.</p>
@@ -285,8 +284,8 @@ display_table("data_adni/analysis.tsv")
 # %% [markdown]
 # ### Get the progression of the Alzheimer's disease
 #
-# For ADNI dataset, because the dataset is longitudinal, the stability of the
-# diagnostic status can be calculated.  The progression label corresponds to the
+# For the ADNI dataset, because the dataset is longitudinal, the stability of the
+# diagnostic status can be computed.  The progression label corresponds to the
 # following description: 
 # - s (stable): diagnosis remains identical during the time_horizon period
 # following the current visit, 
@@ -299,7 +298,7 @@ display_table("data_adni/analysis.tsv")
 # - us (unstable): otherwise (multiple conversions / regressions). 
 
 # ClinicaDL implements a tool to get the progression label for each couple
-# [subject, session] and add a new column progression to the TSV file given.
+# [subject, session] and adds a new column progression to the TSV file given.
 
 # ```bash
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
@@ -316,7 +315,7 @@ display_table("data_adni/analysis.tsv")
 # ``` 
 
 # %% [markdown]
-# #### Run the pipeline on ADNI dataset
+# #### Run the pipeline on the ADNI dataset
 # %%
 !clinicadl tsvtools get-progression data_adni/labels.tsv 
 
@@ -330,7 +329,7 @@ print(df_labels)
 # ## Split the data samples into training, validation and test sets
 #
 # Now that the labels have been extracted and possible biases have been
-# identified, data have to be split in different sets. This step is essential to
+# identified, the data have to be split in different sets. This step is essential to
 # guarantee the independence of the final evaluation. 
 #
 # <div class="alert alert-block alert-info">
@@ -340,13 +339,13 @@ print(df_labels)
 # <ul>
 #     <li> The <b>train set</b> is used to update the weights, </li>
 #     <li> The <b>validation set</b> is used to stop the training process and select the best model, </li>
-#     <li> The <b>test set</b> is used after the end of the training process to perform an unbiased evaluation of the performance. </li>
+#     <li> The <b>test set</b> is used once the training process is finished, and is used to perform an unbiased evaluation of the performance of the model. </li>
 # </ul>
 #     <img src="../images/split.png">
-#     <p>Due to the k-fold validation procedure, k trainings are conducted
+#     <p>In the k-fold validation procedure, k trainings are conducted
 #     according to the k training/validation pairs generated. This leads to k
-#     different models that are evaluated on the test set at the end. The final
-#     test performance is then the mean value of these k models.</p>
+#     different models that are evaluated on the test set once the training is 
+#     finished. The final test performance is then the mean value of these k models.</p>
 # </div>
 #
 # Tools that have been developed for this part are based on the guidelines of
@@ -361,13 +360,13 @@ print(df_labels)
 # clinicadl tsvtool split <data_tsv>
 # ```
 # where:
-# - `data_tsv` is the he TSV file with the data that are going to be split
-# (output of clinicadl tsvtools getlabels|split|kfold).
+# - `data_tsv` is the TSV file with the data that are going to be split
+# (output of `clinicadl tsvtools getlabels|split|kfold`).
 #
 # Each diagnostic label is split independently. Random splits are generated
-# until there are non-significant differences between age and sex distributions
-# between the test set and the train + validation set. Then three TSV files are
-# written:
+# until the differences between age and sex distributions between the test 
+# set and the train + validation set are non-significant . Then three TSV 
+# files are written:
 #
 # - the baseline sessions of the test set,
 # - the baseline sessions of the train + validation set,
@@ -384,7 +383,7 @@ print(df_labels)
 # for Adni dataset
 !clinicadl tsvtools split data_adni/labels.tsv --n_test 0.2 --subset_name test 
 # %% [markdown]
-# The differences between populations of the train + validation and test sets
+# The differences between the populations of the train + validation and test sets
 # can be assessed to check that there is no discrepancies between the two sets.
 # %%
 !clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/split/train.tsv data_oasis/analysis_trainval.tsv
@@ -423,7 +422,7 @@ display_table("data_oasis/analysis_test.tsv")
 #
 # where `formatted_data_path` is the output tsv file of `clinicadl tsvtool getlabels|split|kfold`.
 
-# In a similar way than for the test split, three tsv files are written
+# In a similar way as for the test split, three tsv files are written
 # **per split** for each set:
 
 # - the baseline sessions of the validation set,

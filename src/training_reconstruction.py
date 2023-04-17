@@ -14,13 +14,13 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 # %% [markdown]
 # # Training for reconstruction
 
 # The objective of the `reconstruction` is to learn to reconstruct images given
-# in input. To do so, we used a type of artificial neural network called **autoencoder**.
+# as input. To do so, we can use a type of artificial neural network called **autoencoder**.
 # 
 # An autoencoder learns to reconstruct data given as input. It is composed of
 # two parts:
@@ -306,10 +306,14 @@ print('GPU is available', torch.cuda.is_available())
 # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/CAPS_extracted.tar.gz -o oasisCaps_extracted.tar.gz
 # !tar xf oasisCaps_extracted.tar.gz
 
+# %% [markdown]
+# Please note that the purpose of this notebook is not to fully train a network 
+# because we don't have enough data. The objective is to understand how ClinicaDL 
+# works and make inferences using pretrained models in the next section.
 # %%
 # 3D-patch autoencoder pretraining
 !clinicadl train reconstruction -h
-clinicadl train reconstruction data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstruction_3D_patch --n_splits 4 
+!clinicadl train reconstruction data_adni/CAPS_example pet_reconstruction data_adni/split/4_fold/ data_adni/maps_reconstruction_3D_patch --n_splits 4 
 
 
 # %% [markdown]

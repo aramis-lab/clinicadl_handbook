@@ -48,6 +48,7 @@ feature map using translations:
 
 <img src="https://drive.google.com/uc?id=166EuqiwIZkKPMOlVzA-v5WemJE2tDCES" style="height: 200px; center;">
 
+
 A convolution layer captures local patterns that are limited to the size of its
 filters.  However, a succession of several convolutions allows increasing the
 **receptive field**, i.e. the size of the region used in the input image to

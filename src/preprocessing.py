@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment the next line if running in Google Colab
-# # !pip install clinicadl==1.2.0
+# # !pip install clinicadl==1.3.0
 
 #%% [markdown]
 # # Prepare your neuroimaging data
@@ -68,7 +68,7 @@
 
 # ## `clinica convert` pipelines
 # 
-# Both OASIS and ADNI dataset contains imaging data in ANALYZE format and does
+# Both OASIS and ADNI dataset contain imaging data in ANALYZE format and do
 # not provide a BIDS version of the data. To solve this issue, clinica provides
 # a
 # [converter](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Converters/OASIS2BIDS/)
@@ -90,14 +90,14 @@
 
 # %% [markdown]
 # ### Before starting
-# We are going to run some experiences on ADNI and OASIS datasets,
+# We are going to run some experiments on the ADNI and OASIS datasets,
 # if you have already download the full dataset, you can give the 
 # path to your own directory when needed.
 
 # %% [markdown]
 # ### Run the pipeline
 # To run this pipeline, you need clinical data. The next cell allows you to 
-# download an example from OASIS dataset of 4 images.
+# download an example dataset with 4 images from OASIS.
 # %%
 # Download the example dataset of 4 images
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/database.tar.gz -o oasis_database.tar.gz
@@ -109,7 +109,7 @@
 
 # %% [markdown]
 
-# **Clinica** also provides other converters that work the same, such as:
+# **Clinica** also provides other converters that work in the same way, such as:
 # [adni-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/ADNI2BIDS/), [aibl-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/AIBL2BIDS/), [habs-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/HABS2BIDS/), [nifd-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/NIFD2BIDS/), [oasis3-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/OASIS3TOBIDS/), [ukb-to-bids](https://aramislab.paris.inria.fr/clinica/docs/public/v0.7.2/Converters/UKBtoBIDS/).
 
 # %% [markdown]
@@ -120,9 +120,9 @@
 # !tar xf BIDS_example.tar.gz 
 # %% [markdown]
 # # Why prepare data ?
-# Preprocessing of neuroimaging data is essential before doing any experience
-# and especially before training a neural network with these data.  -
-# **Registration** help to standardize the neuroimaging data so that they are
+# Preprocessing of neuroimaging data is essential before doing any experiment
+# and especially before training a neural network with these data.  
+# - **Registration** help to standardize the neuroimaging data so that they are
 # consistent across different subjects, scanners, and imaging modalities. This
 # makes it easier for the deep neural network to learn patterns and make
 # accurate predictions. 
@@ -164,7 +164,7 @@
 # when training deep learning models.
 
 # %% [markdown]
-# This notebook presents three possible preprocessing steps using the Clinica
+# This notebook presents three possible preprocessing steps using the [Clinica](https://aramislab.paris.inria.fr/clinica/docs/public/latest/)
 # software: 
 # - `t1-linear`: Affine registration of T1w images to the MNI standard space
 # - `t1-volume`: Volume-based processing of T1-weighted MR images with SPM
@@ -372,10 +372,10 @@ plotting.show()
 # template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html)
 # to evaluate the quality of the registration.
 
-# OASIS-1 dataset contains 416 images  and ADNI more than 3000 so quality check
-# of the whole datasets can be very time consuming. The next section gives you
-# some ideas on how to keep only images correctly preprocessed, when running in
-# a large dataset.
+# OASIS-1 dataset contains 416 images  and ADNI more than 3000, so the quality 
+# check of the entire datasets can be very time consuming. The next section gives
+# you some ideas on how to keep only the images correctly preprocessed when 
+# working on a large dataset.
 
 # %% [markdown]
 # To automatically assess the quality of the **t1-linear** preprocessing, we
@@ -404,7 +404,7 @@ plotting.show()
 # `t1-volume`) containing QC results.
 
 ##
-# !!! note
+# !!! Note:
 # Quality checks pipelines are all different and depend on the chosen
 # preprocessing. They should not be applied to other preprocessing procedures as
 # the results may not be reliable.
@@ -417,7 +417,7 @@ plotting.show()
 
 # %%
 # quality-check for pet-linear preprocessing (coming soon)
-# !clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
+!clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
 
 # %% [markdown]
 # ```{warning}
@@ -438,12 +438,12 @@ print(df_T1)
 # you will see that temporal regions are misaligned as well as occipital regions
 # and cerebellum leading to this low probability value.
 
-#%% 
-# quality-check for pet-linear preprocessing (coming soon)
-# df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
-# print(df_pet)
+# %% 
+# quality-check for pet-linear preprocessing 
+df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
+print(df_pet)
 
 # %% [markdown]
 # Now that you have your preprocessed data, you can split them in order to 
 # prepare your training in the next notebook.
-# %%
+

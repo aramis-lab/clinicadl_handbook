@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 # %% [markdown]
 
 # # Launch a random search

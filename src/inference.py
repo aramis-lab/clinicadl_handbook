@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==0.2.1
+# !pip install clinicadl==1.3.0
 # %% [markdown]
 # # Perfom classification using pretrained models
 

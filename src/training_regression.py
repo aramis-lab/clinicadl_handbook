@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 
 # %% [markdown]
@@ -201,6 +201,11 @@ print('GPU is available: ', torch.cuda.is_available())
 # - `--loss` (str) is the name of the loss used to optimize the regression task. 
 # Must correspond to a Pytorch class. Default: MSELoss.
 
+
+# %% [markdown]
+# Please note that the purpose of this notebook is not to fully train a network 
+# because we don't have enough data. The objective is to understand how ClinicaDL 
+# works and make inferences using pretrained models in the next section.
 # %%
 # Training for regression on the age 
 !clinicadl train regression -h
