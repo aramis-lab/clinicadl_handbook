@@ -22,7 +22,7 @@
 # When looking for new networks architecture to improve the performance of the
 # deep learning tasks implies to tests different sets of hyperparameters. This
 # takes a lot of time and frequently we finish with networks that don't
-# converge.  To avoid this pitfall, it is often advisec to simplify the problem:
+# converge.  To avoid this pitfall, it is often advised to simplify the problem:
 # focus on a subset of data / classification task that is more tractable than
 # the one that is currently explored. This is the purpose of `clinicadl
 # generate` which creates synthetic, tractable data from real data to
