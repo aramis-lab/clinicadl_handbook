@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 # %% [markdown]
 
 # # Launch a random search
@@ -141,7 +141,7 @@ with open(output_file_name, "w") as toml_file:
 # Moreover, there should be a CAPS, obtained running the `t1-linear` pipeline of
 # ClinicaDL.
 
-# %%[markdown]
+# %% [markdown]
 ## Running the task
 
 # This task can be run with the following command line:

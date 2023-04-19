@@ -13,7 +13,7 @@
 # ---
 # %%
 # Uncomment the next lines if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 # %% [markdown]
 # # Define your population
@@ -33,7 +33,8 @@
 
 # %% [markdown]
 # ## Before starting
-# This notebook allows to prepare the datset to train a neural network.
+# This notebook allows to prepare the dataset to train a neural network.
+
 # These first two commands are the only ones that require access to the BIDS. If
 # you were not able to process the data as indicated in the previous notebook,
 # you can uncomment the following cell to download the BIDS of 4 subjects from
@@ -83,7 +84,7 @@
 # Merge meta-data information
 !clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv 
 
-#%%
+# %%
 !clinica iotools merge-tsv data_adni/BIDS_example data_adni/merged.tsv 
 # %% [markdown]
 # ### Check missing modalities for each subject
@@ -104,10 +105,11 @@
 #
 # Execute the following command to find which sessions include a T1-MR image on
 # the example BIDS of OASIS:
+
 # %%
 # Find missing modalities
 !clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
-#%%
+# %%
 !clinica iotools check-missing-modalities data_adni/BIDS_example data_adni/missing_mods
 # %% [markdown]
 # The output of this command, `missing_mods/`, is a folder with a series of
@@ -142,7 +144,7 @@
 !tar xf iotools_output.tar.gz
 
 # %%
-#for ADNI dataset
+#for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
 
@@ -164,12 +166,11 @@
 # You can increase the verbosity of the command by adding -v flag(s).
 # ```
 
-
-# The `bids_directory` argument is mandatory in order to run the `clinica iotools 
-# merge-tsv` and `clinica iotools check-missing-modalities` within this pipeline 
-# if it has not been done before. If you already have run these pipelines, the 
-# path is no longer mandatory and you can put anything, just add the options 
-# `--merged_tsv` and `--missing_mods`, to avoid re-running these pipelines. 
+# The `bids_directory` argument is mandatory to run the `clinica iotools merge-tsv` 
+# and `clinica iotools check-missing-modalities` within this pipeline if it has not 
+# been done before. If you already have run these pipelines, the path is no longer 
+# mandatory and you can put anything, just add the options `--merged_tsv` and 
+# `--missing_mods`, to avoid re-running these pipelines.
 
 # %% [markdown]
 # By default the pipeline only extracts the AD and CN labels, which corresponds
@@ -179,11 +180,11 @@
 !clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
 # %% [markdown]
 
-# In the ADNI dataset, a subject can have several sessions during their 
-# follow-up and so there can be another diagnosis, mild cognitive impairment 
-# (MCI). For more information please refer to the [preprocessing section](./preprocessing.ipynb).
+# In the ADNI dataset, a subject can have several sessions during his follow-up 
+# and so you can find another diagnosis, mild cognitive impairment (MCI). For more 
+# information please refer to the [preprocessing section](./preprocessing.ipynb).
 # Moreover, the BIDS example that you have downloaded doesn't label alzheimer's 
-# disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis/-d` 
+# disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis`/`-d` 
 # option.
 # %%
 !clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv -d CN -d Dementia -d MCI
@@ -256,9 +257,9 @@ def display_table(table_path):
 
     format_df.index.name = None
     display(format_df)
-#%%
+# %%
 display_table("data_oasis/analysis.tsv")
-#%%
+# %%
 display_table("data_adni/analysis.tsv")
 # %% [markdown]
 # 
@@ -266,6 +267,7 @@ display_table("data_adni/analysis.tsv")
 # If you were not able to run the previous cell to get the analysis, you 
 # can find the results in the `data` folder on github to have an overview 
 # of what it should look like.
+
 # ```
 # %% [markdown]
 # There is no significant bias on age anymore, but do you notice any other
@@ -318,11 +320,11 @@ display_table("data_adni/analysis.tsv")
 # ``` 
 
 # %% [markdown]
-# #### Run the pipeline on ADNI dataset
+# #### Run the pipeline on the ADNI dataset
 # %%
 !clinicadl tsvtools get-progression data_adni/labels.tsv --time_horizon 36
 
-#%%
+# %%
 import pandas as pd
 df_labels = pd.read_csv("data_adni/labels.tsv", sep ="\t")
 df_labels.set_index(["participant_id","session_id"])
@@ -428,7 +430,7 @@ display_table("data_oasis/analysis_test.tsv")
 #
 # where `formatted_data_path` is the output tsv file of `clinicadl tsvtool getlabels|split|kfold`.
 
-# In a similar way than for the test split, three tsv files are written
+# In a similar way as for the test split, three tsv files are written
 # **per split** for each set:
 
 # - the baseline sessions of the validation set,

@@ -14,10 +14,11 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 # %% [markdown]
-# # Generate synthetic data
+# # Generate a synthetic dataset
+
 #
 # When looking for new networks architecture to improve the performance of the
 # deep learning tasks implies to tests different sets of hyperparameters. This
@@ -74,7 +75,7 @@
 
 # ```{warning}
 # `n_subjects` cannot be higher than the number of subjects in the initial
-# dataset. Indeed in each synthetic class, each synthetic image is derived
+# dataset. Indeed in each synthetic class, each synthetic image is derived 
 # from a real image.
 # ```
 # %% 
@@ -92,6 +93,7 @@
 # `missing_mods_directory` and the `merged.tsv` file, but if you already 
 # have these, you can give an empty folder as argument and provide the paths 
 # to the required files separately as keyword arguments.
+
 # Be careful, the output of the command (`labels.tsv`) is saved in the same
 # folder as the BIDS folder.
 # %%
@@ -172,7 +174,8 @@ display(metrics)
 # - `caps_directory` is the output folder containing the results in a [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
 # - `generated_caps_directory` is the folder where the synthetic CAPS is stored.
 
-#%%
+
+# %%
 !clinicadl generate random data_oasis/CAPS_example data/CAPS_random --n_subjects 5 --preprocessing t1-linear
 
 # %% [markdown]
@@ -189,9 +192,9 @@ display(metrics)
 # It creates three subtypes of 2D images distributed between two labels. These
 # three subtypes can be separated according to the top (framed in blue) and
 # bottom (framed in orange) regions: 
-# - subtype 0: Top and Bottom regions are of maximum size, 
-# - subtype 1: Top region has its maximum size but Bottom is atrophied, 
-# - subtype 2: Bottom region has its maximum size but Top is atrophied.
+# - **subtype 0**: Top and Bottom regions are of maximum size, 
+# - **subtype 1**: Top region has its maximum size but Bottom is atrophied, 
+# - **subtype 2**: Bottom region has its maximum size but Top is atrophied.
 
 # <img src="../images/generate_shepplogan.png" alt="generate shepplogan" style="height: 350px; margin: 10px; text-align: center;">
 
@@ -217,5 +220,5 @@ display(metrics)
 # where:
 # - `generated_caps_directory` is the folder where the synthetic CAPS is stored.
 
-#%%
+# %%
 !clinicadl generate shepplogan data/CAPS_shepplogan --n_subjects 3

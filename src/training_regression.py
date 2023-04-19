@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 
 # %% [markdown]
@@ -101,7 +101,7 @@
 # %%
 !tree -L 3 data_adni/CAPS_example/subjects/sub-ADNI005S*/ses-M00/deeplearning_prepare_data/
 
-# %%[markdown]
+# %% [markdown]
 # ClinicaDL uses the `Conv5_FC3` convolutional network for inputs of type 3D
 # image-level. This network is composed of:
 # * 5 convolutional layers with kernel 3x3x3,
@@ -111,7 +111,7 @@
 
 # <img src="../images/imageCNN.png">
 
-#%% [markdown]
+# %% [markdown]
 # ## Before starting 
 # ```{warning}
 # If you do not have access to a GPU, training the CNN may require too much
@@ -121,13 +121,13 @@
 # If you already know the models implemented in `clinicadl`, you can directly
 # jump to the `train custom` to implement your own custom experiment!
 
-#%%
+# %%
 from pyrsistent import v
 import torch
 
 # Check if a GPU is available
 print('GPU is available: ', torch.cuda.is_available())
-#%% [markdown]
+# %% [markdown]
 #
 # ### Data used for training
 #
@@ -149,14 +149,14 @@ print('GPU is available: ', torch.cuda.is_available())
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
 # and `regression`, in this notebook, we focus on the `regression` task. 
 
-#%% [markdown]
+# %% [markdown]
 # ### Prerequisites
 # You need to execute the `clinicadl tsvtools get-labels` and `clinicadl
 # tsvtools {split|kfold}`commands prior to running this task to have the correct
 # TSV file organization.  Moreover, there should be a CAPS, obtained running the
 # preprocessing pipeline wanted.
 
-#%% [markdown]
+# %% [markdown]
 # ### Running the task
 # The training task can be run with the following command line:
 # ```bash
@@ -191,7 +191,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # in the command line) then **the values specified in the command line will
 # override the values of the configuration file**.
 
-# %%[markdown]
+# %% [markdown]
 # A few options depend on the regression task:
 # - `--label` (str) is the name of the column containing the label for the
 # regression task.  It must be a continuous variable (float or int). Default:
@@ -201,6 +201,11 @@ print('GPU is available: ', torch.cuda.is_available())
 # - `--loss` (str) is the name of the loss used to optimize the regression task. 
 # Must correspond to a Pytorch class. Default: MSELoss.
 
+
+# %% [markdown]
+# Please note that the purpose of this notebook is not to fully train a network 
+# because we don't have enough data. The objective is to understand how ClinicaDL 
+# works and make inferences using pretrained models in the next section.
 # %%
 # Training for regression on the age 
 !clinicadl train regression -h

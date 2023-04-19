@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.2.0
+# !pip install clinicadl==1.3.0
 
 # %% [markdown]
 # # Classification with a CNN on 2D slice.
@@ -121,7 +121,7 @@
 # details of the processing performed by the prepare-data command that will be
 # necessary when reading the tensors.
 
-# %%[markdown]
+# %% [markdown]
 # ```{warning}
 # The default behavior of the pipeline is to only extract images even if another
 # extraction method is specified.  However, all the options will be saved in the
@@ -171,7 +171,7 @@
 # %%
 !tree -L 3 data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M000/deeplearning_prepare_data/
 
-#%% [markdown]
+# %% [markdown]
 # # Train your own models
 # ## Before starting 
 # ```{warning}
@@ -182,14 +182,14 @@
 # If you already know the models implemented in `clinicadl`, you can directly
 # jump to the `train custom` to implement your own custom experiment!
 
-#%%
+# %%
 from pyrsistent import v
 import torch
 
 # Check if a GPU is available
 print('GPU is available: ', torch.cuda.is_available())
 
-#%% [markdown]
+# %% [markdown]
 
 # ### Data used for training.
 #
@@ -203,7 +203,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # "./label_extraction.ipynb" the extraction of labels and data splits on this
 # dataset.
 
-#%% [markdown]
+# %% [markdown]
 # ## `train CLASSIFICATION` 
 
 # This functionality mainly relies on the PyTorch deep learning library
@@ -235,14 +235,14 @@ print('GPU is available: ', torch.cuda.is_available())
 # During training, the gradients update are done based on the loss computed at
 # the slice level. Final performance metric are computed at the subject level by
 # combining the outputs of the slices of the same subject.
-#%% [markdown]
+# %% [markdown]
 # ### Prerequisites
 #
 # You need to execute `clinicadl tsvtools get-labels` and `clinicadl tsvtools
 # {split|kfold}` commands prior to running this task to have the correct TSV file
 # organization.  Moreover, there should be a CAPS, obtained running the
 # preprocessing pipeline wanted.
-#%% [markdown]
+# %% [markdown]
 # ### Running the task
 # The training task can be run with the following command line:
 # ```text
@@ -301,9 +301,14 @@ print('GPU is available: ', torch.cuda.is_available())
 
 # %% [markdown]
 # The default label for the classification task is `diagnosis` but as long as it
-# is a categorical variable; it can be of any type.
+# is a categorical variable, it can be of any type.
+# %% [markdown]
 # The next cell train a `resnet18` to classify 2D slices of t1-linear MRI by
-# diagnosis (AD or CN).
+# diagnosis (AD or CN). 
+# Please note that the purpose of this notebook is not to fully train a network
+# because we don't have enough data. The objective is to understand how ClinicaDL 
+# works and make inferences using pretrained models in the next section.
+
 
 # %% 
 # 2D-slice single-CNN training
@@ -383,7 +388,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # you can have data leakage error (see previous [notebook](notebooks/labels_extraction.ipynb) 
 # for more information about data leakage).
 
-#%% 
+# %% 
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/split.tar.gz -o training_split.tar.gz
 !tar xf training_split.tar.gz
 
@@ -421,7 +426,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # !clinicadl predict -h
 !clinicadl predict data_oasis/maps_classification_2D_slice_resnet18 'test-Oasis2' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
-#%%
+# %%
 !clinicadl predict data_oasis/maps_classification_2D_slice_multi 'test-Oasis' --participants_tsv ./data_oasis/split/test_baseline.tsv --caps_directory data_oasis/CAPS_example
 
 # %% [markdown]
