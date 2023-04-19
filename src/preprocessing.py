@@ -404,10 +404,11 @@ plotting.show()
 # `t1-volume`) containing QC results.
 
 ##
-# !!! Note:
+# :::{note}
 # Quality checks pipelines are all different and depend on the chosen
 # preprocessing. They should not be applied to other preprocessing procedures as
 # the results may not be reliable.
+# :::
 
 # %% [markdown]
 # ### Run the pipeline
