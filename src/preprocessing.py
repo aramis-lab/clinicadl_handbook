@@ -164,7 +164,7 @@
 # when training deep learning models.
 
 # %% [markdown]
-# This notebook presents three possible preprocessing steps using the [Clinica](https://aramislab.paris.inria.fr/clinica/docs/public/latest/)
+# This notebook presents three possible preprocessing steps using the [Clinica](https://www.clinica.run/doc/)
 # software: 
 # - `t1-linear`: Affine registration of T1w images to the MNI standard space
 # - `t1-volume`: Volume-based processing of T1-weighted MR images with SPM
