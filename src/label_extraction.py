@@ -34,6 +34,7 @@
 # %% [markdown]
 # ## Before starting
 # This notebook allows to prepare the dataset to train a neural network.
+
 # These first two commands are the only ones that require access to the BIDS. If
 # you were not able to process the data as indicated in the previous notebook,
 # you can uncomment the following cell to download the BIDS of 4 subjects from
@@ -73,11 +74,12 @@
 # `merge-tsv.tsv`.
 
 # %% [markdown]
-# We are going to run some experiments on ADNI and OASIS datasets,
-# if you have already downloaded the full datasets and converted them to
-# BIDS, you can set the path to the dataset directory by changing
-# the following paths. If not, just run it as written.
-# Execute the following command to gather metadata included in this BIDS.
+# We are going to run some experiments on the ADNI and OASIS datasets, 
+# if you have already downloaded the full datasets and converted them to 
+# BIDS, you can set the path to the dataset directory by changing the 
+# following paths. If not, just run it as written. Execute the following 
+# command to gather metadata included in this BIDS.
+
 # %%
 # Merge meta-data information
 !clinica iotools merge-tsv data_oasis/BIDS_example data_oasis/merged.tsv 
@@ -87,9 +89,9 @@
 # %% [markdown]
 # ### Check missing modalities for each subject
 #
-# We want to restrict the list of sessions used to only include those with a T1-MR
-# image. The following command allows to identify which modalities are available 
-# for each session:
+# We want to restrict the list of sessions used to only include those with a 
+# T1-MR image. The following command allows to identify which modalities are 
+# available for each session:
 #
 # ```bash
 # clinica iotools check-missing-modalities <bids_directory> <output_directory>
@@ -97,12 +99,13 @@
 # where:
 # - `bids_directory` is the input folder of a BIDS compliant dataset.
 # - `output_directory` is the output folder.
-
+#
 # This pipeline does not have an option to give a list of subject/session so it 
 # checks the missing modalities for all of the datasets.
-# 
+#
 # Execute the following command to find which sessions include a T1-MR image on
-# the example BIDS from OASIS:
+# the example BIDS of OASIS:
+
 # %%
 # Find missing modalities
 !clinica iotools check-missing-modalities data_oasis/BIDS_example data_oasis/missing_mods
@@ -169,7 +172,6 @@
 # mandatory and you can put anything, just add the options `--merged_tsv` and 
 # `--missing_mods`, to avoid re-running these pipelines.
 
-
 # %% [markdown]
 # By default the pipeline only extracts the AD and CN labels, which corresponds
 # to the only available labels in OASIS. Run the following cell to extract them
@@ -177,6 +179,7 @@
 # %%
 !clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
 # %% [markdown]
+
 # In the ADNI dataset, a subject can have several sessions during his follow-up 
 # and so you can find another diagnosis, mild cognitive impairment (MCI). For more 
 # information please refer to the [preprocessing section](./preprocessing.ipynb).
@@ -262,8 +265,9 @@ display_table("data_adni/analysis.tsv")
 # 
 # ```{note}
 # If you were not able to run the previous cell to get the analysis, you 
-# can find the results in the `data` folder on github to have an overview of 
-# what it should look like.
+# can find the results in the `data` folder on github to have an overview 
+# of what it should look like.
+
 # ```
 # %% [markdown]
 # There is no significant bias on age anymore, but do you notice any other
@@ -274,7 +278,7 @@ display_table("data_adni/analysis.tsv")
 #     <p>There is still a difference in the sex distribution and the network could
 #     learn a bias on sex such as "women are cognitively normal" and "men are
 #     demented". However, there are too few images in OASIS to continue removing
-#     sessions to equilibrate the groups.</p>
+#     sessions to balance the groups.</p>
 #     
 #     <p>To check that such bias is not learnt, it is possible to run a logistic
 #     regression after training between sex and the predicted label to check if
@@ -285,7 +289,7 @@ display_table("data_adni/analysis.tsv")
 # ### Get the progression of the Alzheimer's disease
 #
 # For the ADNI dataset, because the dataset is longitudinal, the stability of the
-# diagnostic status can be computed.  The progression label corresponds to the
+# diagnostic status can be computed. The progression label corresponds to the
 # following description: 
 # - s (stable): diagnosis remains identical during the time_horizon period
 # following the current visit, 
@@ -298,7 +302,8 @@ display_table("data_adni/analysis.tsv")
 # - us (unstable): otherwise (multiple conversions / regressions). 
 
 # ClinicaDL implements a tool to get the progression label for each couple
-# [subject, session] and adds a new column progression to the TSV file given.
+# [subject, session] and adds a new column progression to the TSV file given as
+# argument.
 
 # ```bash
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
@@ -317,7 +322,7 @@ display_table("data_adni/analysis.tsv")
 # %% [markdown]
 # #### Run the pipeline on the ADNI dataset
 # %%
-!clinicadl tsvtools get-progression data_adni/labels.tsv 
+!clinicadl tsvtools get-progression data_adni/labels.tsv --time_horizon 36
 
 # %%
 import pandas as pd
@@ -329,7 +334,7 @@ print(df_labels)
 # ## Split the data samples into training, validation and test sets
 #
 # Now that the labels have been extracted and possible biases have been
-# identified, the data have to be split in different sets. This step is essential to
+# identified, the data has to be split in different sets. This step is essential to
 # guarantee the independence of the final evaluation. 
 #
 # <div class="alert alert-block alert-info">
@@ -342,10 +347,11 @@ print(df_labels)
 #     <li> The <b>test set</b> is used once the training process is finished, and is used to perform an unbiased evaluation of the performance of the model. </li>
 # </ul>
 #     <img src="../images/split.png">
-#     <p>In the k-fold validation procedure, k trainings are conducted
-#     according to the k training/validation pairs generated. This leads to k
-#     different models that are evaluated on the test set once the training is 
-#     finished. The final test performance is then the mean value of these k models.</p>
+#     <p>In the k-fold validation procedure, k trainings are conducted 
+#       according to the k training/validation pairs generated. This 
+#       leads to k different models that are evaluated on the test set 
+#       once the training is finished. The final test performance is then 
+#       the mean value of these k models.</p>
 # </div>
 #
 # Tools that have been developed for this part are based on the guidelines of
@@ -363,10 +369,10 @@ print(df_labels)
 # - `data_tsv` is the TSV file with the data that are going to be split
 # (output of `clinicadl tsvtools getlabels|split|kfold`).
 #
-# Each diagnostic label is split independently. Random splits are generated
+# Each diagnosis label is split independently. Random splits are generated 
 # until the differences between age and sex distributions between the test 
-# set and the train + validation set are non-significant . Then three TSV 
-# files are written:
+# set and the train + validation set are non-significant. Then three TSV files
+#  are written:
 #
 # - the baseline sessions of the test set,
 # - the baseline sessions of the train + validation set,
@@ -383,8 +389,10 @@ print(df_labels)
 # for Adni dataset
 !clinicadl tsvtools split data_adni/labels.tsv --n_test 0.2 --subset_name test 
 # %% [markdown]
-# The differences between the populations of the train + validation and test sets
-# can be assessed to check that there is no discrepancies between the two sets.
+# The differences between the populations of the train + validation and test 
+# sets can be assessed to check that there are no discrepancies between the 
+# two sets.
+
 # %%
 !clinicadl tsvtools analysis data_oasis/merged.tsv data_oasis/split/train.tsv data_oasis/analysis_trainval.tsv
 # %%
@@ -460,13 +468,86 @@ display_table("data_oasis/analysis_test.tsv")
 # command line. The next cell executes it on the splits generated in the previous
 # sections.
 # %%
-from clinicadl.tests.test_tsvtools import run_test_suite
+import os
+from pathlib import Path
+import pandas as pd
+from clinicadl.utils.tsvtools_utils import extract_baseline
+"""
+Check the absence of data leakage
+    1) Baseline datasets contain only one scan per subject
+    2) No intersection between train and test sets
+"""
+
+
+def check_is_subject_unique(labels_path_baseline: Path):
+    #print("Check subject uniqueness", labels_path_baseline)
+
+    flag_is_unique = True
+    check_df = pd.read_csv(labels_path_baseline, sep="\t")
+    check_df.set_index(["participant_id", "session_id"], inplace=True)
+    if labels_path_baseline.name[-12:] != "baseline.tsv":
+        check_df = extract_baseline(check_df, set_index=False)
+    for _, subject_df in check_df.groupby(level=0):
+        if len(subject_df) > 1:
+            flag_is_unique = False
+    if flag_is_unique:
+        print(f"subject uniqueness is TRUE in {labels_path_baseline}")
+    else:
+        print(f"subject uniqueness is FALSE in {labels_path_baseline}")
+
+
+def check_is_independant(
+    train_path_baseline: Path, test_path_baseline: Path, subject_flag=True
+):
+
+    flag_is_independant = True
+    train_df = pd.read_csv(train_path_baseline, sep="\t")
+    train_df.set_index(["participant_id", "session_id"], inplace=True)
+    test_df = pd.read_csv(test_path_baseline, sep="\t")
+    test_df.set_index(["participant_id", "session_id"], inplace=True)
+
+    for subject, session in train_df.index:
+        if (subject, session) in test_df.index:
+            flag_is_independant = False
+    if flag_is_independant:
+        print(f"{train_path_baseline} and {test_path_baseline} are independant.")
+    else:
+        print(f"{train_path_baseline} and {test_path_baseline} are NOT independant.")
+
+
+
+def run_test_suite(data_tsv, n_splits):
+    check_train = True
+    if n_splits == 0:
+        train_baseline_tsv = data_tsv / "train_baseline.tsv"
+        test_baseline_tsv = data_tsv / "test_baseline.tsv"
+        if not train_baseline_tsv.exists():
+            check_train = False
+        check_is_subject_unique(test_baseline_tsv)
+        if check_train:
+            check_is_subject_unique(train_baseline_tsv)
+            check_is_independant(train_baseline_tsv, test_baseline_tsv)
+
+    else:
+        for i in range(n_splits):
+            for folder, _, files in os.walk(data_tsv):
+                folder = Path(folder)
+                for file in files:
+                    if file[-3:] == "tsv":
+                        check_is_subject_unique(folder / file)
+                train_baseline_tsv = folder / "train_baseline.tsv"
+                test_baseline_tsv = folder / "validation_baseline.tsv"
+                if train_baseline_tsv.exists():
+                    if test_baseline_tsv.exists():
+                        check_is_independant(train_baseline_tsv, test_baseline_tsv)
+                
+
 
 # Run check for train+val / test split
-run_test_suite("./data/labels_lists", n_splits=0, subset_name="test")
+run_test_suite(Path("./data_oasis/split"), n_splits=0)
 
 # Run check for train / validation splits
-run_test_suite("./data/labels_lists/train", n_splits=5, subset_name="validation")
+run_test_suite(Path("./data_oasis/split/4_fold"), n_splits=4)
 # %% [markdown]
 # If no Error was raised then none of the three conditions was broken. It is now
 # possible to use the train and the validation sets to perform a classification

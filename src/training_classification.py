@@ -254,7 +254,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # - `CAPS_DIRECTORY` (Path) is the input folder containing the neuroimaging data
 # in a
 # [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/)
-# hierarchy.  In case of multi-cohort training, must be a path to a TSV file.
+# hierarchy. In case of multi-cohort training, must be a path to a TSV file.
 # - `PREPROCESSING_JSON` (str) is the name of the preprocessing json file stored
 # in the `CAPS_DIRECTORY` that corresponds to the `clinicadl extract` output.
 # This will be used to load the correct tensor inputs with the wanted
