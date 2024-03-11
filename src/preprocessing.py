@@ -217,7 +217,7 @@
 # [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
 
 # %% [markdown]
-# ```{info}
+# ```{note}
 # The following command can take some time to execute, depending on the
 # configuration of your host machine. Running in a classical **Colab** instance
 # can take up to 30 min.
@@ -286,7 +286,7 @@ plotting.show()
 # - **Cropping** of the registered images to remove the background.
 
 # %% [markdown]
-# ```{info}
+# ```{note}
 # You need to have performed the t1-linear pipeline on your T1-weighted MR images.
 # ```
 
@@ -415,11 +415,11 @@ plotting.show()
 # `t1-volume`) containing QC results.
 
 ##
-# :::{note}
+# ```{note}
 # Quality checks pipelines are all different and depend on the chosen
 # preprocessing. They should not be applied to other preprocessing procedures as
 # the results may not be reliable.
-# :::
+# ````
 
 # %% [markdown]
 # ### Run the pipeline
