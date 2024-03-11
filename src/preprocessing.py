@@ -254,7 +254,7 @@
 # %%
 from nilearn import plotting
 
-suffix_caps = '_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
+suffix_caps = '_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
 suffix_bids = '_T1w.nii.gz'
 sub1 = 'data_oasis/BIDS_example/sub-OASIS10016/ses-M000/anat/sub-OASIS10016_ses-M000' + suffix_bids 
 sub2 = 'data_oasis/CAPS_example/subjects/sub-OASIS10016/ses-M000/t1_linear/sub-OASIS10016_ses-M000' + suffix_caps
