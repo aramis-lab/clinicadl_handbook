@@ -92,7 +92,7 @@
 # %% [markdown]
 # ### Before starting
 # We are going to run some experiments on the ADNI and OASIS datasets,
-# if you have already download the full dataset, you can set the 
+# if you have already downloaded the full dataset, you can set the
 # path to your own directory when needed.
 
 # %% [markdown]
@@ -384,7 +384,7 @@ plotting.show()
 # to evaluate the quality of the registration.
 
 # OASIS-1 dataset contains 416 images  and ADNI more than 3000, so the quality 
-# check of the entire datasets can be very time consuming. The next section gives
+# check of the entire datasets can be very time-consuming. The next section gives
 # you some ideas on how to keep only the images correctly preprocessed when 
 # working on a large dataset.
 
