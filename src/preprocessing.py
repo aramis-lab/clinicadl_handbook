@@ -357,13 +357,12 @@ plotting.show()
 # %%
 from nilearn import plotting
 
-suffix_caps = '_task-rest_trc-fdg_pet_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-cerebellumPons2_pet.nii.gz'
-suffix_bids = '_task-rest_trc-fdg_pet.nii.gz'
-sub1 = 'data_adni/BIDS_example/sub-ADNI005S0610/ses-M72/pet/sub-ADNI005S0610_ses-M72' + suffix_bids 
-sub2 = 'data_adni/CAPS_example/subjects/sub-ADNI005S0610/ses-M72/pet_linear/sub-ADNI005S0610_ses-M72' + suffix_caps
-
-sub3 = 'data_adni/BIDS_example/sub-ADNI005S0929/ses-M00/pet/sub-ADNI005S0929_ses-M00' + suffix_bids
-sub4 = 'data_adni/CAPS_example/subjects/sub-ADNI005S0929/ses-M00/pet_linear/sub-ADNI005S0929_ses-M00' + suffix_caps
+suffix_caps = "_task-rest_trc-18FFDG_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-cerebellumPons2_pet.nii.gz"
+suffix_bids = "_task-rest_trc-18FFDG_pet.nii.gz"
+sub1 = f"data_adni/BIDS_example/sub-ADNI005S0610/ses-M072/pet/sub-ADNI005S0610_ses-M072{suffix_bids}"
+sub2 = f"data_adni/CAPS_example/subjects/sub-ADNI005S0610/ses-M072/pet_linear/sub-ADNI005S0610_ses-M072{suffix_caps}"
+sub3 = f"data_adni/BIDS_example/sub-ADNI005S0929/ses-M000/pet/sub-ADNI005S0929_ses-M000{suffix_bids}"
+sub4 = f"data_adni/CAPS_example/subjects/sub-ADNI005S0929/ses-M000/pet_linear/sub-ADNI005S0929_ses-M000{suffix_caps}"
 
 plotting.plot_anat(sub3, title="raw data: sub-ADNI005S0929")
 plotting.plot_anat(sub4, title="preprocessed data: sub-ADNI005S0929")
