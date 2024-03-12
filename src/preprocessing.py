@@ -339,7 +339,7 @@ plotting.show()
 !tar xf adniBids.tar.gz
 # %%
 !clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
-!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example fdg cerebellumPons2 --n_procs 2
+!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example 18FFDG cerebellumPons2 --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are
 # saved using a specific suffix:
