@@ -92,7 +92,7 @@
 # %% [markdown]
 # ### Before starting
 # We are going to run some experiments on the ADNI and OASIS datasets,
-# if you have already download the full dataset, you can set the 
+# if you have already downloaded the full dataset, you can set the
 # path to your own directory when needed.
 
 # %% [markdown]
@@ -339,7 +339,7 @@ plotting.show()
 !tar xf adniBids.tar.gz
 # %%
 !clinica run t1-linear data_adni/BIDS_example data_adni/CAPS_example --n_procs 2
-!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example fdg cerebellumPons2 --n_procs 2
+!clinica run pet-linear data_adni/BIDS_example data_adni/CAPS_example 18FFDG cerebellumPons2 --n_procs 2
 # %% [markdown]
 # Once the pipeline has been run, the necessary outputs for the next steps are
 # saved using a specific suffix:
@@ -357,13 +357,12 @@ plotting.show()
 # %%
 from nilearn import plotting
 
-suffix_caps = '_task-rest_trc-fdg_pet_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-cerebellumPons2_pet.nii.gz'
-suffix_bids = '_task-rest_trc-fdg_pet.nii.gz'
-sub1 = 'data_adni/BIDS_example/sub-ADNI005S0610/ses-M72/pet/sub-ADNI005S0610_ses-M72' + suffix_bids 
-sub2 = 'data_adni/CAPS_example/subjects/sub-ADNI005S0610/ses-M72/pet_linear/sub-ADNI005S0610_ses-M72' + suffix_caps
-
-sub3 = 'data_adni/BIDS_example/sub-ADNI005S0929/ses-M00/pet/sub-ADNI005S0929_ses-M00' + suffix_bids
-sub4 = 'data_adni/CAPS_example/subjects/sub-ADNI005S0929/ses-M00/pet_linear/sub-ADNI005S0929_ses-M00' + suffix_caps
+suffix_caps = "_task-rest_trc-18FFDG_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_suvr-cerebellumPons2_pet.nii.gz"
+suffix_bids = "_task-rest_trc-18FFDG_pet.nii.gz"
+sub1 = f"data_adni/BIDS_example/sub-ADNI005S0610/ses-M072/pet/sub-ADNI005S0610_ses-M072{suffix_bids}"
+sub2 = f"data_adni/CAPS_example/subjects/sub-ADNI005S0610/ses-M072/pet_linear/sub-ADNI005S0610_ses-M072{suffix_caps}"
+sub3 = f"data_adni/BIDS_example/sub-ADNI005S0929/ses-M000/pet/sub-ADNI005S0929_ses-M000{suffix_bids}"
+sub4 = f"data_adni/CAPS_example/subjects/sub-ADNI005S0929/ses-M000/pet_linear/sub-ADNI005S0929_ses-M000{suffix_caps}"
 
 plotting.plot_anat(sub3, title="raw data: sub-ADNI005S0929")
 plotting.plot_anat(sub4, title="preprocessed data: sub-ADNI005S0929")
@@ -384,7 +383,7 @@ plotting.show()
 # to evaluate the quality of the registration.
 
 # OASIS-1 dataset contains 416 images  and ADNI more than 3000, so the quality 
-# check of the entire datasets can be very time consuming. The next section gives
+# check of the entire datasets can be very time-consuming. The next section gives
 # you some ideas on how to keep only the images correctly preprocessed when 
 # working on a large dataset.
 
