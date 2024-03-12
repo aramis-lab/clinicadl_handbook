@@ -119,7 +119,7 @@
 # %% [markdown]
 # ## Prepare metadata with `clinicadl tsvtools` 
 
-# ```{info}
+# ```{note}
 # If you want to do the next experiment in proper conditions, you will have to
 # download the full data from [ADNI](https://adni.loni.usc.edu/) or
 # [OASIS](https://oasis-brains.org/). Indeed, it is not possible to separate a
