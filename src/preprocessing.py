@@ -451,7 +451,7 @@ print(df_T1)
 
 # %% 
 # quality-check for pet-linear preprocessing 
-df_pet = pd.read_csv("data_adni/QC_results_pet.tsv", sep="\t")
+df_pet = pd.read_csv("data_adni/QC_result_pet.tsv", sep="\t")
 print(df_pet)
 
 # %% [markdown]
