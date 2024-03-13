@@ -388,7 +388,7 @@ plotting.show()
 # working on a large dataset.
 
 # %% [markdown]
-# To automatically assess the quality of the **t1-linear** preprocessing, we
+# To automatically assess the quality of the **t1-linear** or the **pet-linear** preprocessing, we
 # propose to use a pretrained network which learnt to classify images that are
 # adequately registered to a template from others for which the registration
 # failed. This procedure is adapted from [(Fonov et al,
@@ -396,9 +396,6 @@ plotting.show()
 # pretrained models. The original code of [(Fonov et al,
 # 2022)](https://doi.org/10.1016/j.neuroimage.2022.119266) can be found on
 # [GitHub](https://github.com/vfonov/DARQ).
-
-# The **pet-linear** quality check will be available soon in a next release of
-# ClinicaDL !
 
 # The quality check can be run with the following command line:
 # ```
@@ -427,8 +424,8 @@ plotting.show()
 !clinicadl quality-check t1-linear data_oasis/CAPS_example data_oasis/QC_result_t1.tsv --no-gpu --threshold 0.8
 
 # %%
-# quality-check for pet-linear preprocessing (coming soon)
-!clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv fdg cerebellumPons2 --no-gpu
+# quality-check for pet-linear preprocessing
+!clinicadl quality-check pet-linear data_adni/CAPS_example data_adni/QC_result_pet.tsv 18FFDG cerebellumPons2
 
 # %% [markdown]
 # ```{warning}
