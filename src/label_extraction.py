@@ -177,7 +177,7 @@
 # to the only available labels in OASIS. Run the following cell to extract them
 # in a new file `labels.tsv` from the restricted version of OASIS:
 # %%
-!clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
+!clinicadl tsvtools get-labels data_oasis/BIDS_example data_oasis --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/oasis_after_qc.tsv
 # %% [markdown]
 
 # In the ADNI dataset, a subject can have several sessions during his follow-up 
@@ -187,7 +187,7 @@
 # disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis`/`-d` 
 # option.
 # %%
-!clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv -d CN -d Dementia -d MCI
+!clinicadl tsvtools get-labels data_adni/BIDS_example data_adni --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data_adni/adni_after_qc.tsv -d CN -d Dementia -d MCI
 # %% [markdown]
 # This tool writes a unique TSV file containing the labels asked by the user.
 # They are stored in the column named diagnosis.
