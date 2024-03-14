@@ -124,7 +124,7 @@
 # download the full data from [ADNI](https://adni.loni.usc.edu/) or
 # [OASIS](https://oasis-brains.org/). Indeed, it is not possible to separate a
 # set of 4 images without data leakage. You will need also to process the data,
-# as shown in the [previous notebook]((./preprocessing.ipynb)), in a BIDS and a
+# as shown in the [previous notebook](./preprocessing.ipynb), in a BIDS and a
 # CAPS specification.
 #```
 #
@@ -196,8 +196,8 @@
 # <b>Restriction path:</b><p>
 #     At the end of the command line a restriction was given to extract the
 #     labels only from sessions in <code>data/oasis_after_qc.tsv</code>. This tsv
-#     file corresponds to the output of the <a
-#     href="./preprocessing.ipynb">quality check procedure</a> that was manually
+#     file corresponds to the output of the 
+#     [quality check procedure](./preprocessing.ipynb) that was manually
 #     cut to only keep the sessions passing the quality check. It depends on the
 #     preprocessing: here it concerns a run of <code>t1-linear</code>.</p>
 # </div>
@@ -218,8 +218,8 @@
 # clinicadl tsvtools analysis <merged_tsv> <data_tsv> <results_path>
 # ```
 # where:
-# - `merged_tsv` is the output file of the `clinica iotools merge-tsv`command.
-# - `data_tsv` is the output file of `clinicadl tsvtool getlabels|split|kfold`).
+# - `merged_tsv` is the output file of the `clinica iotools merge-tsv` command.
+# - `data_tsv` is the output file of `clinicadl tsvtool getlabels|split|kfold`.
 # - `results_path` is the path to the tsv file that will be written (filename included).
 
 
@@ -309,7 +309,7 @@ display_table("data_adni/analysis.tsv")
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
 # ``` 
 # with :
-#  - `<data_tsv>` (str) is the TSV file containing the data (output of clinicadl
+#  - `DATA_TSV` (str) is the TSV file containing the data (output of clinicadl
 #  tsvtools get-labels|split|kfold).
 #  - `--time_horizon` (int) can be added: It is the time horizon in months that
 #  is used to assess the stability of the MCI subjects. Default value: 36.
