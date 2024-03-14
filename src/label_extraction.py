@@ -403,7 +403,7 @@ display_table("data_oasis/analysis_trainval.tsv")
 print("Test set")
 display_table("data_oasis/analysis_test.tsv")
 # %% [markdown]
-# If you are not satisfied with these populations, you can relaunch the `clinicadl tsvtools split` or
+# If you are not satisfied with these populations, you can relaunch the `clinicadl tsvtools split` command and
 # change the parameters used to evaluate the difference between the
 # distributions: `p_age_threshold` and `p_sex_threshold`.
 
