@@ -51,16 +51,16 @@
 # BIDS_Dataset/
 # ├── participants.tsv
 # ├── sub-CLNC01/
-# │   │   ├── ses-M00/
+# │   │   ├── ses-M000/
 # │   │   │   └── anat/
-# │   │   │       └── <b>sub-CLNC01_ses-M00_T1w.nii.gz</b>
+# │   │   │       └── <b>sub-CLNC01_ses-M000_T1w.nii.gz</b>
 # │   │   └── sub-CLNC01_sessions.tsv
 # ├── sub-CLNC02/
-# │   │   ├── ses-M00/
+# │   │   ├── ses-M000/
 # │   │   │   ├── anat/
-# │   │   │   │   └── <b>sub-CLNC02_ses-M00_T1w.nii.gz</b>
+# │   │   │   │   └── <b>sub-CLNC02_ses-M000_T1w.nii.gz</b>
 # │   │   │   └── pet/
-# │   │   │       └── <b>sub-CLNC02_ses-M00_trc-18FFDG.nii.gz</b>
+# │   │   │       └── <b>sub-CLNC02_ses-M000_trc-18FFDG.nii.gz</b>
 # │   │   └── sub-CLNC02_sessions.tsv
 # └──  ...
 # </pre>
