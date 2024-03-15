@@ -124,7 +124,7 @@
 # of the sessions, for now. 
 #
 # The whole preprocessing process has been run for you on these datasets. The
-# results of the [quality check procedure](./preprocessing.ipynb) have been used
+# results of the [quality check procedure](./preprocessing.ipynb#quality-check-of-your-preprocessed-data) have been used
 # to filter sessions. `data_oasis/oasis_after_qc.tsv` and `data_adni/adni_after_qc.tsv`
 # store the list of the sessions that have been accepted for each dataset.
 # 
@@ -192,8 +192,8 @@
 # <b>Restriction path:</b><p>
 #     At the end of the command line, a restriction was given to extract the
 #     labels only from sessions in <code>oasis_after_qc.tsv</code>. This tsv
-#     file corresponds to the output of the 
-#     [quality check procedure](./preprocessing.ipynb) that was manually
+#     file corresponds to the output of the  <a
+#     href="./preprocessing.html#quality-check-of-your-preprocessed-data">quality check procedure</a> that was manually
 #     cut to only keep the sessions passing the quality check. It depends on the
 #     preprocessing: here it concerns a run of <code>t1-linear</code>.</p>
 # </div>
