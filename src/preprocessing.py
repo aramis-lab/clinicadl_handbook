@@ -51,16 +51,16 @@
 # BIDS_Dataset/
 # ├── participants.tsv
 # ├── sub-CLNC01/
-# │   │   ├── ses-M00/
+# │   │   ├── ses-M000/
 # │   │   │   └── anat/
-# │   │   │       └── <b>sub-CLNC01_ses-M00_T1w.nii.gz</b>
+# │   │   │       └── <b>sub-CLNC01_ses-M000_T1w.nii.gz</b>
 # │   │   └── sub-CLNC01_sessions.tsv
 # ├── sub-CLNC02/
-# │   │   ├── ses-M00/
+# │   │   ├── ses-M000/
 # │   │   │   ├── anat/
-# │   │   │   │   └── <b>sub-CLNC02_ses-M00_T1w.nii.gz</b>
+# │   │   │   │   └── <b>sub-CLNC02_ses-M000_T1w.nii.gz</b>
 # │   │   │   └── pet/
-# │   │   │       └── <b>sub-CLNC02_ses-M00_trc-18FFDG.nii.gz</b>
+# │   │   │       └── <b>sub-CLNC02_ses-M000_trc-18FFDG.nii.gz</b>
 # │   │   └── sub-CLNC02_sessions.tsv
 # └──  ...
 # </pre>
@@ -254,17 +254,15 @@
 # %%
 from nilearn import plotting
 
-suffix_caps = '_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz'
-suffix_bids = '_T1w.nii.gz'
-sub1 = 'data_oasis/BIDS_example/sub-OASIS10016/ses-M000/anat/sub-OASIS10016_ses-M000' + suffix_bids 
-sub2 = 'data_oasis/CAPS_example/subjects/sub-OASIS10016/ses-M000/t1_linear/sub-OASIS10016_ses-M000' + suffix_caps
-
-sub3 = 'data_oasis/BIDS_example/sub-OASIS10304/ses-M000/anat/sub-OASIS10304_ses-M000' + suffix_bids
-sub4 = 'data_oasis/CAPS_example/subjects/sub-OASIS10304/ses-M000/t1_linear/sub-OASIS10304_ses-M000' + suffix_caps
+suffix_caps = "_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz"
+suffix_bids = "_T1w.nii.gz"
+sub1 = f"data_oasis/BIDS_example/sub-OASIS10016/ses-M000/anat/sub-OASIS10016_ses-M000{suffix_bids}"
+sub2 = f"data_oasis/CAPS_example/subjects/sub-OASIS10016/ses-M000/t1_linear/sub-OASIS10016_ses-M000{suffix_caps}"
+sub3 = f"data_oasis/BIDS_example/sub-OASIS10304/ses-M000/anat/sub-OASIS10304_ses-M000{suffix_bids}"
+sub4 = f"data_oasis/CAPS_example/subjects/sub-OASIS10304/ses-M000/t1_linear/sub-OASIS10304_ses-M000{suffix_caps}"
 
 plotting.plot_anat(sub3, title="raw data: sub-OASIS10304")
 plotting.plot_anat(sub4, title="preprocessed data: sub-OASIS10304")
-
 plotting.plot_anat(sub1, title="raw data: sub-OASIS10016")
 plotting.plot_anat(sub2, title="preprocessed data: sub-OASIS10016")
 
@@ -366,7 +364,6 @@ sub4 = f"data_adni/CAPS_example/subjects/sub-ADNI005S0929/ses-M000/pet_linear/su
 
 plotting.plot_anat(sub3, title="raw data: sub-ADNI005S0929")
 plotting.plot_anat(sub4, title="preprocessed data: sub-ADNI005S0929")
-
 plotting.plot_anat(sub1, title="raw data: sub-ADNI005S0610")
 plotting.plot_anat(sub2, title="preprocessed data: sub-ADNI005S0610")
 
@@ -382,7 +379,7 @@ plotting.show()
 # template](https://bids-specification.readthedocs.io/en/stable/99-appendices/08-coordinate-systems.html)
 # to evaluate the quality of the registration.
 
-# OASIS-1 dataset contains 416 images  and ADNI more than 3000, so the quality 
+# OASIS-1 dataset contains 416 images and ADNI more than 3000, so the quality
 # check of the entire datasets can be very time-consuming. The next section gives
 # you some ideas on how to keep only the images correctly preprocessed when 
 # working on a large dataset.
