@@ -103,9 +103,6 @@ dmypy.json
 .vscode/
 *.code-workspace
 
-# Project
-data/
-
 # DS store
 .DS_Store
 
