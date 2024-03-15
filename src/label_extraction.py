@@ -241,12 +241,25 @@ def display_table(table_path):
 
     OASIS_analysis_df = pd.read_csv(table_path, sep='\t')
     OASIS_analysis_df.set_index("group", drop=True, inplace=True)
-    columns = ["n_subjects", "n_scans",
-               "mean_age", "std_age", "min_age", "max_age",
-               "sexF", "sexM",
-               "mean_MMSE", "std_MMSE", "min_MMSE", "max_MMSE",
-               "CDR_0", "CDR_0.5", "CDR_1", "CDR_2", "CDR_3"]
-
+    columns = [
+        "n_subjects",
+        "n_scans",
+        "mean_age",
+        "std_age",
+        "min_age",
+        "max_age",
+        "sexF",
+        "sexM",
+        "mean_MMSE",
+        "std_MMSE",
+        "min_MMSE",
+        "max_MMSE",
+        "CDR_0",
+        "CDR_0.5",
+        "CDR_1",
+        "CDR_2",
+        "CDR_3",
+    ]
     # Print formatted table
     format_columns = ["subjects", "scans", "age", "sex", "MMSE", "CDR"]
     format_df = pd.DataFrame(index=OASIS_analysis_df.index, columns=format_columns)
@@ -480,8 +493,6 @@ Check the absence of data leakage
 
 
 def check_is_subject_unique(labels_path_baseline: Path):
-    #print("Check subject uniqueness", labels_path_baseline)
-
     flag_is_unique = True
     check_df = pd.read_csv(labels_path_baseline, sep="\t")
     check_df.set_index(["participant_id", "session_id"], inplace=True)
@@ -496,11 +507,8 @@ def check_is_subject_unique(labels_path_baseline: Path):
         print(f"subject uniqueness is FALSE in {labels_path_baseline}")
 
 
-def check_is_independant(
-    train_path_baseline: Path, test_path_baseline: Path, subject_flag=True
-):
-
-    flag_is_independant = True
+def check_is_independent(train_path_baseline: Path, test_path_baseline: Path):
+    flag_is_independent = True
     train_df = pd.read_csv(train_path_baseline, sep="\t")
     train_df.set_index(["participant_id", "session_id"], inplace=True)
     test_df = pd.read_csv(test_path_baseline, sep="\t")
@@ -508,38 +516,41 @@ def check_is_independant(
 
     for subject, session in train_df.index:
         if (subject, session) in test_df.index:
-            flag_is_independant = False
-    if flag_is_independant:
+            flag_is_independent = False
+    if flag_is_independent:
         print(f"{train_path_baseline} and {test_path_baseline} are independant.")
     else:
         print(f"{train_path_baseline} and {test_path_baseline} are NOT independant.")
 
 
+def run_test_suite(data_tsv: Path, n_splits: int):
+    _run_test_suite_no_split(data_tsv) if n_splits == 0 else _run_test_suite_multiple_splits(data_tsv)
 
-def run_test_suite(data_tsv, n_splits):
+
+def _run_test_suite_no_split(data_tsv: Path):
     check_train = True
-    if n_splits == 0:
-        train_baseline_tsv = data_tsv / "train_baseline.tsv"
-        test_baseline_tsv = data_tsv / "test_baseline.tsv"
-        if not train_baseline_tsv.exists():
-            check_train = False
-        check_is_subject_unique(test_baseline_tsv)
-        if check_train:
-            check_is_subject_unique(train_baseline_tsv)
-            check_is_independant(train_baseline_tsv, test_baseline_tsv)
+    train_baseline_tsv = data_tsv / "train_baseline.tsv"
+    test_baseline_tsv = data_tsv / "test_baseline.tsv"
+    if not train_baseline_tsv.exists():
+        check_train = False
+    check_is_subject_unique(test_baseline_tsv)
+    if check_train:
+        check_is_subject_unique(train_baseline_tsv)
+        check_is_independent(train_baseline_tsv, test_baseline_tsv)
 
-    else:
-        for i in range(n_splits):
-            for folder, _, files in os.walk(data_tsv):
-                folder = Path(folder)
-                for file in files:
-                    if file[-3:] == "tsv":
-                        check_is_subject_unique(folder / file)
-                train_baseline_tsv = folder / "train_baseline.tsv"
-                test_baseline_tsv = folder / "validation_baseline.tsv"
-                if train_baseline_tsv.exists():
-                    if test_baseline_tsv.exists():
-                        check_is_independant(train_baseline_tsv, test_baseline_tsv)
+
+def _run_test_suite_multiple_splits(data_tsv: Path):
+    for _ in range(n_splits):
+        for folder, _, files in os.walk(data_tsv):
+            folder = Path(folder)
+            for file in files:
+                if file[-3:] == "tsv":
+                    check_is_subject_unique(folder / file)
+            train_baseline_tsv = folder / "train_baseline.tsv"
+            test_baseline_tsv = folder / "validation_baseline.tsv"
+            if train_baseline_tsv.exists():
+                if test_baseline_tsv.exists():
+                    check_is_independent(train_baseline_tsv, test_baseline_tsv)
                 
 
 
