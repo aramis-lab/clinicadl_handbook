@@ -119,34 +119,30 @@
 # %% [markdown]
 # ## Prepare metadata with `clinicadl tsvtools` 
 
-# ```{note}
-# If you want to do the next experiment in proper conditions, you will have to
-# download the full data from [ADNI](https://adni.loni.usc.edu/) or
-# [OASIS](https://oasis-brains.org/). Indeed, it is not possible to separate a
-# set of 4 images without data leakage. You will need also to process the data,
-# as shown in the [previous notebook]((./preprocessing.ipynb)), in a BIDS and a
-# CAPS specification.
-#```
+# In this section we will work on a subset of 100 sessions of the OASIS dataset
+# (and a subset of 100 sessions of the ADNI dataset) and you only need the list
+# of the sessions, for now. 
 #
-# In this section we will work on a subset of 100 subjects of the OASIS dataset
-# (and a subset of 100 subjects of the ADNI dataset) and you only need the list
-# of subjects, for now. You can find this list of participants that have passed
-# the quality check in the data folder (`oasis_after_qc.tsv` and 
-# `adni_after_qc.tsv`).
-#
-# If you are not able to run the whole preprocessing process on the full
-# dataset, you can uncomment the next cell and download the necessary resources
-# (the `merged.tsv` file  and the `missing_mods` directory).
+# The whole preprocessing process has been run for you on these datasets. The
+# results of the [quality check procedure](./preprocessing.ipynb#quality-check-of-your-preprocessed-data) have been used
+# to filter sessions. `data_oasis/oasis_after_qc.tsv` and `data_adni/adni_after_qc.tsv`
+# store the list of the sessions that have been accepted for each dataset.
+# 
+# You can run the next cell to download the necessary resources
+# (`merged.tsv` and `oasis_after_qc.tsv` - or `adni_after_qc.tsv` - files,
+# as well as the `missing_mods` directory).
 
 # %%
 #for OASIS-1 dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  -O data_oasis/oasis_after_qc.tsv
 
 # %%
 #for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  -O data_adni/adni_after_qc.tsv
 
 # %% [markdown]
 # ### Get the labels
@@ -177,7 +173,7 @@
 # to the only available labels in OASIS. Run the following cell to extract them
 # in a new file `labels.tsv` from the restricted version of OASIS:
 # %%
-!clinicadl tsvtools get-labels data_oasis/BIDS_example --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data/oasis_after_qc.tsv
+!clinicadl tsvtools get-labels data_oasis/BIDS_example data_oasis --merged_tsv data_oasis/merged.tsv --missing_mods data_oasis/missing_mods --restriction_tsv data_oasis/oasis_after_qc.tsv
 # %% [markdown]
 
 # In the ADNI dataset, a subject can have several sessions during his follow-up 
@@ -187,17 +183,17 @@
 # disease as 'AD' but as 'Dementia' so you need to add the `--diagnosis`/`-d` 
 # option.
 # %%
-!clinicadl tsvtools get-labels data_adni/BIDS_example --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data/adni_after_qc.tsv -d CN -d Dementia -d MCI
+!clinicadl tsvtools get-labels data_adni/BIDS_example data_adni --merged_tsv data_adni/merged.tsv --missing_mods data_adni/missing_mods --restriction_tsv data_adni/adni_after_qc.tsv -d CN -d Dementia -d MCI
 # %% [markdown]
 # This tool writes a unique TSV file containing the labels asked by the user.
 # They are stored in the column named diagnosis.
 
 # <div class="alert alert-block alert-info">
 # <b>Restriction path:</b><p>
-#     At the end of the command line a restriction was given to extract the
-#     labels only from sessions in <code>data/oasis_after_qc.tsv</code>. This tsv
-#     file corresponds to the output of the <a
-#     href="./preprocessing.ipynb">quality check procedure</a> that was manually
+#     At the end of the command line, a restriction was given to extract the
+#     labels only from sessions in <code>oasis_after_qc.tsv</code>. This tsv
+#     file corresponds to the output of the  <a
+#     href="./preprocessing.html#quality-check-of-your-preprocessed-data">quality check procedure</a> that was manually
 #     cut to only keep the sessions passing the quality check. It depends on the
 #     preprocessing: here it concerns a run of <code>t1-linear</code>.</p>
 # </div>
@@ -218,8 +214,8 @@
 # clinicadl tsvtools analysis <merged_tsv> <data_tsv> <results_path>
 # ```
 # where:
-# - `merged_tsv` is the output file of the `clinica iotools merge-tsv`command.
-# - `data_tsv` is the output file of `clinicadl tsvtool getlabels|split|kfold`).
+# - `merged_tsv` is the output file of the `clinica iotools merge-tsv` command.
+# - `data_tsv` is the output file of `clinicadl tsvtool getlabels|split|kfold`.
 # - `results_path` is the path to the tsv file that will be written (filename included).
 
 
@@ -309,7 +305,7 @@ display_table("data_adni/analysis.tsv")
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
 # ``` 
 # with :
-#  - `<data_tsv>` (str) is the TSV file containing the data (output of clinicadl
+#  - `DATA_TSV` (str) is the TSV file containing the data (output of clinicadl
 #  tsvtools get-labels|split|kfold).
 #  - `--time_horizon` (int) can be added: It is the time horizon in months that
 #  is used to assess the stability of the MCI subjects. Default value: 36.
@@ -403,9 +399,9 @@ display_table("data_oasis/analysis_trainval.tsv")
 print("Test set")
 display_table("data_oasis/analysis_test.tsv")
 # %% [markdown]
-# If you are not satisfied with these populations, you can relaunch the test or
+# If you are not satisfied with these populations, you can relaunch the `clinicadl tsvtools split` command and
 # change the parameters used to evaluate the difference between the
-# distributions: `p_val_threshold` and `t_val_threshold`.
+# distributions: `p_age_threshold` and `p_sex_threshold`.
 
 # <div class="alert alert-block alert-info">
 # <b>Unique test set:</b>
