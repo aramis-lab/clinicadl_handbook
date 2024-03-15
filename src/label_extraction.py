@@ -203,7 +203,7 @@
 
 # Some biases may exist in our data, especially after the quality check in 
 # the preprocessing steps, which removed sessions from the dataset. Thus, it 
-# is crucial to check before going further.
+# is crucial to look for potential biases before going further.
 
 # ClinicaDL implements a tool to perform a demographic and clinical analysis of
 # the population:
