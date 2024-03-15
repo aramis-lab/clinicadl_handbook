@@ -272,7 +272,7 @@ display_table("data_adni/analysis.tsv")
 # 
 # ```{note}
 # If you were not able to run the previous cell to get the analysis, you 
-# can find the results in the `data` folder on GitHub to have an overview 
+# can find the results in the `data` folder on GitHub to have an overview
 # of what it should look like.
 # ```
 
@@ -283,8 +283,8 @@ display_table("data_adni/analysis.tsv")
 #     "young people are cognitively normal" and "old people are demented". <br />
 #     <br />
 #     To prevent such a bias to be learnt, sessions could be removed to balance the groups.
-#     However, there are few images in OASIS dataset, that's why we prefer to keep all
-#     of them and check that the network is not biased, for example by running a logistic
+#     However, there are few images in the OASIS dataset, that's why we prefer to keep all
+#     of them and check a posteriori that the network is not biased, for example by running a logistic
 #     regression after training between age and the predicted label to check if
 #     they are correlated.</p>
 # </div>
