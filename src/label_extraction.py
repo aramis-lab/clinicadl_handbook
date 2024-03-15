@@ -119,34 +119,30 @@
 # %% [markdown]
 # ## Prepare metadata with `clinicadl tsvtools` 
 
-# ```{note}
-# If you want to do the next experiment in proper conditions, you will have to
-# download the full data from [ADNI](https://adni.loni.usc.edu/) or
-# [OASIS](https://oasis-brains.org/). Indeed, it is not possible to separate a
-# set of 4 images without data leakage. You will need also to process the data,
-# as shown in the [previous notebook](./preprocessing.ipynb), in a BIDS and a
-# CAPS specification.
-#```
+# In this section we will work on a subset of 100 sessions of the OASIS dataset
+# (and a subset of 100 sessions of the ADNI dataset) and you only need the list
+# of the sessions, for now. 
 #
-# In this section we will work on a subset of 100 subjects of the OASIS dataset
-# (and a subset of 100 subjects of the ADNI dataset) and you only need the list
-# of subjects, for now. You can find this list of participants that have passed
-# the quality check in the data folder (`oasis_after_qc.tsv` and 
-# `adni_after_qc.tsv`).
-#
-# If you are not able to run the whole preprocessing process on the full
-# dataset, you can uncomment the next cell and download the necessary resources
-# (the `merged.tsv` file  and the `missing_mods` directory).
+# The whole preprocessing process has been run for you on these datasets. The
+# results of the [quality check procedure](./preprocessing.ipynb) have been used
+# to filter sessions. `data_oasis/oasis_after_qc.tsv` and `data_adni/adni_after_qc.tsv`
+# store the list of the sessions that have been accepted for each dataset.
+# 
+# You can run the next cell to download the necessary resources
+# (`merged.tsv` and `oasis_after_qc.tsv` - or `adni_after_qc.tsv` - files,
+# as well as the `missing_mods` directory).
 
 # %%
 #for OASIS-1 dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  -O data_oasis/oasis_after_qc.tsv
 
 # %%
 #for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  -O data_adni/adni_after_qc.tsv
 
 # %% [markdown]
 # ### Get the labels
@@ -194,8 +190,8 @@
 
 # <div class="alert alert-block alert-info">
 # <b>Restriction path:</b><p>
-#     At the end of the command line a restriction was given to extract the
-#     labels only from sessions in <code>data/oasis_after_qc.tsv</code>. This tsv
+#     At the end of the command line, a restriction was given to extract the
+#     labels only from sessions in <code>oasis_after_qc.tsv</code>. This tsv
 #     file corresponds to the output of the 
 #     [quality check procedure](./preprocessing.ipynb) that was manually
 #     cut to only keep the sessions passing the quality check. It depends on the
