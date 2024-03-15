@@ -201,11 +201,9 @@
 # %% [markdown]
 # ### Analyze the population
 
-# The age bias in OASIS is well known and this is why the youngest CN
-# participants were previously excluded. However, other biases may exist,
-# especially after the quality check of the preprocessing which removed sessions
-# from the dataset. Thus, it is crucial to check before going further if there
-# are other biases in the dataset.
+# Some biases may exist in our data, especially after the quality check in 
+# the preprocessing steps, which removed sessions from the dataset. Thus, it 
+# is crucial to check before going further.
 
 # ClinicaDL implements a tool to perform a demographic and clinical analysis of
 # the population:
@@ -274,23 +272,20 @@ display_table("data_adni/analysis.tsv")
 # 
 # ```{note}
 # If you were not able to run the previous cell to get the analysis, you 
-# can find the results in the `data` folder on GitHub to have an overview
+# can find the results in the `data` folder on GitHub to have an overview 
 # of what it should look like.
-
 # ```
-# %% [markdown]
-# There is no significant bias on age anymore, but do you notice any other
-# problems? 
 
 # <div class="alert alert-block alert-warning">
-# <b>Demographic bias:</b>
-#     <p>There is still a difference in the sex distribution and the network could
-#     learn a bias on sex such as "women are cognitively normal" and "men are
-#     demented". However, there are too few images in OASIS to continue removing
-#     sessions to balance the groups.</p>
-#     
-#     <p>To check that such bias is not learnt, it is possible to run a logistic
-#     regression after training between sex and the predicted label to check if
+# <b>Age bias:</b>
+#     <p>There is a clear difference in the age distribution between CN and AD in
+#     OASIS dataset. This could lead the network to learn a bias on age such as 
+#     "young people are cognitively normal" and "old people are demented". <br />
+#     <br />
+#     To prevent such a bias to be learnt, sessions could be removed to balance the groups.
+#     However, there are few images in OASIS dataset, that's why we prefer to keep all
+#     of them and check that the network is not biased, for example by running a logistic
+#     regression after training between age and the predicted label to check if
 #     they are correlated.</p>
 # </div>
 
