@@ -100,8 +100,8 @@
 # - `bids_directory` is the input folder of a BIDS compliant dataset.
 # - `output_directory` is the output folder.
 #
-# This pipeline does not have an option to give a list of subject/session so it 
-# checks the missing modalities for all of the datasets.
+# This pipeline does not have an option to give a list of subject/session, so it
+# checks the missing modalities for all the datasets.
 #
 # Execute the following command to find which sessions include a T1-MR image on
 # the example BIDS of OASIS:
@@ -169,7 +169,7 @@
 # The `bids_directory` argument is mandatory to run the `clinica iotools merge-tsv` 
 # and `clinica iotools check-missing-modalities` within this pipeline if it has not 
 # been done before. If you already have run these pipelines, the path is no longer 
-# mandatory and you can put anything, just add the options `--merged_tsv` and 
+# mandatory, and you can put anything, just add the options `--merged_tsv` and
 # `--missing_mods`, to avoid re-running these pipelines.
 
 # %% [markdown]
@@ -208,7 +208,7 @@
 # The age bias in OASIS is well known and this is why the youngest CN
 # participants were previously excluded. However, other biases may exist,
 # especially after the quality check of the preprocessing which removed sessions
-# from the dataset. Thus it is crucial to check before going further if there
+# from the dataset. Thus, it is crucial to check before going further if there
 # are other biases in the dataset.
 
 # ClinicaDL implements a tool to perform a demographic and clinical analysis of
@@ -265,7 +265,7 @@ display_table("data_adni/analysis.tsv")
 # 
 # ```{note}
 # If you were not able to run the previous cell to get the analysis, you 
-# can find the results in the `data` folder on github to have an overview 
+# can find the results in the `data` folder on GitHub to have an overview
 # of what it should look like.
 
 # ```
@@ -451,10 +451,10 @@ display_table("data_oasis/analysis_test.tsv")
 # ### Check the absence of data leakage
 #
 # In OASIS-1 there is no risk of data leakage due to the data split itself as
-# there is only one session per subject. Also there is no MCI patients, hence
+# there is only one session per subject. Also, there is no MCI patients, hence
 # there is no risk of data leakage during a transfer learning between a source
 # task involving the MCI set and a target task involving at least one of its
-# subsets (sMCI or pMCI). However for other datasets, it might be useful to
+# subsets (sMCI or pMCI). However, for other datasets, it might be useful to
 # check that there is no correlated data spread between the train and test sets.
 #
 # A script in `clinicadl` has been created to check that there was no data
