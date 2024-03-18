@@ -202,8 +202,8 @@
 # ### Analyze the population
 
 # You may have noticed that there is a bias on age in the OASIS dataset: the youngest AD
-# patient is 62 years old, whereas many CN patients are much younger. To correct this bias,
-# we will remove the youngest CN patients (i.e. who are less than 62 years old) from our data, 
+# participant is 62 years old, whereas many CN participants are much younger. To correct this bias,
+# we will exclude the youngest CN participants (i.e. who are less than 62 years old) from our data, 
 # thanks to the following Python script:
 
 # %%
