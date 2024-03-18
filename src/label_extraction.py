@@ -124,7 +124,7 @@
 # of the sessions, for now. 
 #
 # The whole preprocessing process has been run for you on these datasets. The
-# results of the [quality check procedure](./preprocessing.ipynb#quality-check-of-your-preprocessed-data) have been used
+# results of the [quality check procedure](./preprocessing.html#quality-check-of-your-preprocessed-data) have been used
 # to filter sessions. `data_oasis/oasis_after_qc.tsv` and `data_adni/adni_after_qc.tsv`
 # store the list of the sessions that have been accepted for each dataset.
 # 
@@ -136,13 +136,13 @@
 #for OASIS-1 dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
-!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  -O data_oasis/oasis_after_qc.tsv
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  --output data_oasis/oasis_after_qc.tsv
 
 # %%
 #for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
-!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  -O data_adni/adni_after_qc.tsv
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  --output data_adni/adni_after_qc.tsv
 
 # %% [markdown]
 # ### Get the labels
@@ -151,12 +151,12 @@
 # MCI) can be extracted with ClinicaDL using the command:
 #
 # ```bash
-# clinicadl tsvtools get-labels bids_directory results_tsv
+# clinicadl tsvtools get-labels <bids_directory> <results_tsv>
 # ```
 # where:
 # - `bids_directory` the input folder containing the dataset in a BIDS
 # hierarchy.
-# - `results_path` is the path to the tsv file.
+# - `results_tsv` is the path to the tsv file.
 
 # ```{tip}
 # You can increase the verbosity of the command by adding -v flag(s).
