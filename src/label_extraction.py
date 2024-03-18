@@ -213,7 +213,6 @@ def remove_youngest_cn(table_path: PathLike, minimum_age: int):
     """Remove youngest CN patients to correct age bias"""
     import pandas as pd
 
-    # remove participants
     table = pd.read_csv(table_path, sep='\t')
     new_table = table[(table['diagnosis'] == 'AD') | (table['age_bl'] >= minimum_age)]
 
