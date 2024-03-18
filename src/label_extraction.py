@@ -392,7 +392,7 @@ print(df_labels)
 
 # Let's create a test set including 20 subjects:
 # %% 
-!clinicadl tsvtools split data_oasis/labels.tsv --n_test 20 --subset_name test 
+!clinicadl tsvtools split data_oasis/labels.tsv --n_test 0.2 --subset_name test 
 
 # %% 
 # for Adni dataset
