@@ -201,11 +201,34 @@
 # %% [markdown]
 # ### Analyze the population
 
-# The age bias in OASIS is well known and this is why the youngest CN
-# participants were previously excluded. However, other biases may exist,
-# especially after the quality check of the preprocessing which removed sessions
-# from the dataset. Thus, it is crucial to check before going further if there
-# are other biases in the dataset.
+# You may have noticed that there is a bias on age in the OASIS dataset: the youngest AD
+# participant is 62 years old, whereas many CN participants are much younger. To correct this bias,
+# we will exclude the youngest CN participants (i.e. who are less than 62 years old) from our data, 
+# thanks to the following Python script:
+
+# %%
+from os import PathLike
+
+def remove_youngest_cn(table_path: PathLike, minimum_age: int):
+    """Remove youngest CN patients to correct age bias"""
+    import pandas as pd
+
+    table = pd.read_csv(table_path, sep='\t')
+    new_table = table[(table['diagnosis'] == 'AD') | (table['age_bl'] >= minimum_age)]
+
+    print(
+        f"These participants were excluded from the dataset ({len(table) - len(new_table)} participants): \n\n", 
+        table.loc[table.index.difference(new_table.index)]
+        )
+    
+    new_table.to_csv(table_path, sep='\t')
+# %%
+remove_youngest_cn('data_oasis/labels.tsv', minimum_age=62)
+
+# %% [markdown]
+# However, other biases may exist, especially after the quality check of the 
+# preprocessing which removed sessions from the dataset. Thus, it is crucial to 
+# check before going further if there are other biases in the dataset.
 
 # ClinicaDL implements a tool to perform a demographic and clinical analysis of
 # the population:
@@ -287,9 +310,9 @@ display_table("data_adni/analysis.tsv")
 #     <p>There is still a difference in the sex distribution and the network could
 #     learn a bias on sex such as "women are cognitively normal" and "men are
 #     demented". However, there are too few images in OASIS to continue removing
-#     sessions to balance the groups.</p>
-#     
-#     <p>To check that such bias is not learnt, it is possible to run a logistic
+#     sessions to balance the groups. <br />
+#     <br />
+#     To check that such bias is not learnt, it is possible to run a logistic
 #     regression after training between sex and the predicted label to check if
 #     they are correlated.</p>
 # </div>
