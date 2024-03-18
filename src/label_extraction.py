@@ -207,12 +207,24 @@
 # thanks to the following Python script:
 
 # %%
-def remove_youngest_cn(table_path, minimum_age):
-    """Remove younger CN patients to correct age bias"""
+from os import PathLike
+
+def remove_youngest_cn(table_path: PathLike, minimum_age: int):
+    """Remove youngest CN patients to correct age bias"""
     import pandas as pd
 
+    # remove participants
     table = pd.read_csv(table_path, sep='\t')
     new_table = table[(table['diagnosis'] == 'AD') | (table['age_bl'] >= minimum_age)]
+
+    # print info
+    number_excluded_subjects = len(table) - len(new_table)
+    print(
+        f"These participants were excluded from the dataset ({number_excluded_subjects} participants): \n\n", 
+        table.loc[table.index.difference(new_table.index)]
+        )
+    
+    # change the file 
     new_table.to_csv(table_path, sep='\t')
 # %%
 remove_youngest_cn('data_oasis/labels.tsv', minimum_age=62)
