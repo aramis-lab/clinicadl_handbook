@@ -437,7 +437,7 @@ display_table("data_oasis/analysis_test.tsv")
 # clinicadl tsvtool kfold <formatted_data_path>
 # ```
 #
-# where `formatted_data_path` is the output tsv file of `clinicadl tsvtool getlabels|split|kfold`.
+# where `formatted_data_path` is the output tsv file of `clinicadl tsvtool get-labels|split|kfold`.
 
 # In a similar way as for the test split, three tsv files are written
 # **per split** for each set:
