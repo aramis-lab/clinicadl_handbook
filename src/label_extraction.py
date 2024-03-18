@@ -451,11 +451,11 @@ display_table("data_oasis/analysis_test.tsv")
 # across the results of the 5 folds already reduces bias compared to a single
 # data split.
 # %%
-!clinicadl tsvtools kfold data_oasis/split/train.tsv --n_splits 4 --subset_name validation
+!clinicadl tsvtools kfold data_oasis/split/train.tsv --n_splits 5 --subset_name validation
 
 # %%
 # for ADNI dataset
-!clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 4 --subset_name validation
+!clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 5 --subset_name validation
 # %% [markdown]
 # ### Check the absence of data leakage
 #
