@@ -207,7 +207,9 @@
 # thanks to the following Python script:
 
 # %%
-def remove_youngest_cn(table_path, minimum_age):
+from os import PathLike
+
+def remove_youngest_cn(table_path: PathLike, minimum_age: int):
     """Remove younger CN patients to correct age bias"""
     import pandas as pd
 
