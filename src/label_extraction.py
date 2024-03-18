@@ -556,7 +556,7 @@ run_test_suite(Path("./data_oasis/split"), n_splits=0)
 # Run check for train / validation splits
 run_test_suite(Path("./data_oasis/split/5_fold"), n_splits=5)
 # %% [markdown]
-# If no Error was raised then none of the three conditions was broken. It is now
+# If no Error was raised, then none of the three conditions was broken. It is now
 # possible to use the train and the validation sets to perform a classification
 # task, and then to evaluate correctly the performance of the classifier on the
 # test set.
@@ -572,6 +572,6 @@ run_test_suite(Path("./data_oasis/split/5_fold"), n_splits=5)
 # </div>
 
 # %% [markdown]
-# Now that you have your train, test and validation split, you can train a 
+# Now that you have your train, test and validation splits, you can train a 
 # network for classification, regression or reconstruction with clinicaDL.
 # %%
