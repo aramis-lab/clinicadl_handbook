@@ -201,9 +201,26 @@
 # %% [markdown]
 # ### Analyze the population
 
-# Some biases may exist in our data, especially after the quality check in 
-# the preprocessing steps, which removed sessions from the dataset. Thus, it 
-# is crucial to look for potential biases before going further.
+# You may have noticed that there is a bias on age in the OASIS dataset: the youngest AD
+# patient is 62 years old, whereas many CN patients are much younger. To correct this bias,
+# we will remove the youngest CN patients (i.e. who are less than 62 years old) from our data, 
+# thanks to the following Python script:
+
+# %%
+def remove_youngest_cn(table_path, minimum_age):
+    """Remove younger CN patients to correct age bias"""
+    import pandas as pd
+
+    table = pd.read_csv(table_path, sep='\t')
+    new_table = table[(table['diagnosis'] == 'AD') | (table['age_bl'] >= minimum_age)]
+    new_table.to_csv(table_path, sep='\t')
+# %%
+remove_youngest_cn('data_oasis/labels.tsv', minimum_age=62)
+
+# %% [markdown]
+# However, other biases may exist, especially after the quality check of the 
+# preprocessing which removed sessions from the dataset. Thus, it is crucial to 
+# check before going further if there are other biases in the dataset.
 
 # ClinicaDL implements a tool to perform a demographic and clinical analysis of
 # the population:
@@ -274,18 +291,21 @@ display_table("data_adni/analysis.tsv")
 # If you were not able to run the previous cell to get the analysis, you 
 # can find the results in the `data` folder on GitHub to have an overview
 # of what it should look like.
+
 # ```
+# %% [markdown]
+# There is no significant bias on age anymore, but do you notice any other
+# problems? 
 
 # <div class="alert alert-block alert-warning">
-# <b>Age bias:</b>
-#     <p>There is a clear difference in the age distribution between CN and AD in
-#     OASIS dataset. This could lead the network to learn a bias on age such as 
-#     "young people are cognitively normal" and "old people are demented". <br />
+# <b>Demographic bias:</b>
+#     <p>There is still a difference in the sex distribution and the network could
+#     learn a bias on sex such as "women are cognitively normal" and "men are
+#     demented". However, there are too few images in OASIS to continue removing
+#     sessions to balance the groups. <br />
 #     <br />
-#     To prevent such a bias to be learnt, sessions could be removed to balance the groups.
-#     However, there are few images in the OASIS dataset, that's why we prefer to keep all
-#     of them and check a posteriori that the network is not biased, for example by running a logistic
-#     regression after training between age and the predicted label to check if
+#     <p>To check that such bias is not learnt, it is possible to run a logistic
+#     regression after training between sex and the predicted label to check if
 #     they are correlated.</p>
 # </div>
 
