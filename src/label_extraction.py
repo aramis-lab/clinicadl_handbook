@@ -318,8 +318,8 @@ display_table("data_adni/analysis.tsv")
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
 # ``` 
 # with :
-#  - `DATA_TSV` (str) is the TSV file containing the data (output of clinicadl
-#  tsvtools get-labels|split|kfold).
+#  - `DATA_TSV` (str) is the TSV file containing the data (output of `clinicadl
+#  tsvtools get-labels|split|kfold`).
 #  - `--time_horizon` (int) can be added: It is the time horizon in months that
 #  is used to assess the stability of the MCI subjects. Default value: 36.
 
@@ -376,7 +376,7 @@ print(df_labels)
 # ```
 # where:
 # - `data_tsv` is the TSV file with the data that are going to be split
-# (output of `clinicadl tsvtools getlabels|split|kfold`).
+# (output of `clinicadl tsvtools get-labels|split|kfold`).
 #
 # Each diagnosis label is split independently. Random splits are generated 
 # until the differences between age and sex distributions between the test 
