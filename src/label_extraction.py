@@ -520,7 +520,7 @@ def check_is_independent(train_path_baseline: Path, test_path_baseline: Path):
 
 
 def run_test_suite(data_tsv: Path, n_splits: int):
-    _run_test_suite_no_split(data_tsv) if n_splits == 0 else _run_test_suite_multiple_splits(data_tsv)
+    _run_test_suite_no_split(data_tsv) if n_splits == 0 else _run_test_suite_multiple_splits(data_tsv, n_splits)
 
 
 def _run_test_suite_no_split(data_tsv: Path):
@@ -535,7 +535,7 @@ def _run_test_suite_no_split(data_tsv: Path):
         check_is_independent(train_baseline_tsv, test_baseline_tsv)
 
 
-def _run_test_suite_multiple_splits(data_tsv: Path):
+def _run_test_suite_multiple_splits(data_tsv: Path, n_splits: int):
     for _ in range(n_splits):
         for folder, _, files in os.walk(data_tsv):
             folder = Path(folder)
@@ -554,7 +554,7 @@ def _run_test_suite_multiple_splits(data_tsv: Path):
 run_test_suite(Path("./data_oasis/split"), n_splits=0)
 
 # Run check for train / validation splits
-run_test_suite(Path("./data_oasis/split/4_fold"), n_splits=4)
+run_test_suite(Path("./data_oasis/split/5_fold"), n_splits=5)
 # %% [markdown]
 # If no Error was raised then none of the three conditions was broken. It is now
 # possible to use the train and the validation sets to perform a classification
