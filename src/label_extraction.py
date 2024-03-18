@@ -304,7 +304,7 @@ display_table("data_adni/analysis.tsv")
 #     demented". However, there are too few images in OASIS to continue removing
 #     sessions to balance the groups. <br />
 #     <br />
-#     <p>To check that such bias is not learnt, it is possible to run a logistic
+#     To check that such bias is not learnt, it is possible to run a logistic
 #     regression after training between sex and the predicted label to check if
 #     they are correlated.</p>
 # </div>
