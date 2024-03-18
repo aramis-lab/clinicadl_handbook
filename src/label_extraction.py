@@ -216,7 +216,6 @@ def remove_youngest_cn(table_path: PathLike, minimum_age: int):
     table = pd.read_csv(table_path, sep='\t')
     new_table = table[(table['diagnosis'] == 'AD') | (table['age_bl'] >= minimum_age)]
 
-    number_excluded_subjects = len(table) - len(new_table)
     print(
         f"These participants were excluded from the dataset ({number_excluded_subjects} participants): \n\n", 
         table.loc[table.index.difference(new_table.index)]
