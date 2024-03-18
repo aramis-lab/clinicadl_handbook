@@ -222,7 +222,6 @@ def remove_youngest_cn(table_path: PathLike, minimum_age: int):
         table.loc[table.index.difference(new_table.index)]
         )
     
-    # change the file 
     new_table.to_csv(table_path, sep='\t')
 # %%
 remove_youngest_cn('data_oasis/labels.tsv', minimum_age=62)
