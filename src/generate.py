@@ -98,7 +98,7 @@
 # folder as the BIDS folder.
 # %%
 !mkdir data/fake_bids
-!clinicadl tsvtools get-labels data/fake_bids --missing_mods data/synthetic/missing_mods --merged_tsv data/synthetic/data.tsv --modality synthetic
+!clinicadl tsvtools get-labels data/fake_bids data --missing_mods data/synthetic/missing_mods --merged_tsv data/synthetic/data.tsv --modality synthetic
 # %%
 # Split train and test data
 !clinicadl tsvtools split data/labels.tsv --n_test 0.25 --subset_name test
