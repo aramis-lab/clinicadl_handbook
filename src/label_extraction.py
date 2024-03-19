@@ -573,5 +573,5 @@ run_test_suite(Path("./data_oasis/split/5_fold"), n_splits=5)
 
 # %% [markdown]
 # Now that you have your train, test and validation splits, you can train a 
-# network for classification, regression or reconstruction with clinicaDL.
+# network for classification, regression or reconstruction with ClinicaDL.
 # %%
