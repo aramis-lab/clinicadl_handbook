@@ -67,7 +67,7 @@
 # ```
 # where:
 
-# - `caps_directory` is the output folder containing the results in a
+# - `caps_directory` is the output folder containing the results of `clinica run` in a
 # [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy,
 # - `output_directory` is the folder where the synthetic CAPS is stored,
 # - `n_subjects` is the number of subjects per label in the synthetic dataset.
