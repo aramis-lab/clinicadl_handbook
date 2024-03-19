@@ -55,10 +55,9 @@
 # <img src="../images/generate_trivial.png" alt="generate trivial" style="height: 350px; margin: 10px; text-align: center;">
 
 # ```{warning}
-# You need to execute the `clinica run` and `clinicadl prepare-data` pipelines
-# before running this task.  Moreover, the trivial option can synthesize at
-# most n images per label, where n is the total number of images in the 
-# input CAPS.
+# You need to execute the `clinica run` pipeline before running this task.  
+# Moreover, the trivial option can synthesize at most n images per label, 
+# where n is the total number of images in the input CAPS.
 # ```
 # ### Running the task
 #
