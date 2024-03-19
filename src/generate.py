@@ -165,18 +165,19 @@ display(metrics)
 # <img src="../images/generate_random.png" alt="generate random" style="height: 350px; margin: 10px; text-align: center;">
 
 # ```{warning}
-# You need to execute the `clinica run` and `clinicadl prepare-data` pipelines
-# prior to running this task.  Moreover, the random option can synthesize as
+# You need to execute the `clinica run` pipeline prior to running this task.  
+# Moreover, the random option can synthesize as
 # many images as wanted with only one input image.
 # ```
-# %% [markdown]
-# ###Running the task
+# ### Running the task
+#
 # ```bash
 # clinicadl generate random <caps_directory> <generated_caps_directory> 
 # ```
 # where:
 
-# - `caps_directory` is the output folder containing the results in a [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
+# - `caps_directory` is the output folder containing the results of `clinica run` in a
+# [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy,
 # - `generated_caps_directory` is the folder where the synthetic CAPS is stored.
 
 
@@ -201,7 +202,7 @@ display(metrics)
 # - **subtype 1**: Top region has its maximum size but Bottom is atrophied, 
 # - **subtype 2**: Bottom region has its maximum size but Top is atrophied.
 
-# <img src="../images/generate_shepplogan.png" alt="generate shepplogan" style="height: 350px; margin: 10px; text-align: center;">
+# <img src="../images/generate_shepplogan.png" alt="generate shepplogan" style="height: 250px; margin: 5px; text-align: center;">
 
 # These three subtypes are spread between two labels which mimic the binary
 # classification between Alzheimer's disease patients (AD) with heterogeneous
