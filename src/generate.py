@@ -105,26 +105,34 @@
 # %% [markdown]
 # ## Train a model on synthetic data
 
-# Once data was generated and split it is possible to train a model using
+# Once data was generated and split, it is possible to train a model using
 # `clinicadl train` and evaluate its performance with `clinicadl interpret`. For
 # more information on the following command lines please read the sections
 # [Classification with a CNN on 2D slice](./training_classification.ipynb) and
 # [Regression with 3D images](./training_regression.ipynb).
 #
-# The following command uses a pre-build architecture of ClinicaDL `Conv4_FC3`.
+# The following `clinicadl train` command uses a pre-build architecture of ClinicaDL `Conv4_FC3`.
 # You can also implement your own models by following the instructions of [this
 # section](./training_custom.ipynb).
 #
-# If you failed to generate a trivial dataset, please uncomment the next cell.
-# %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data/synthetic.tar.gz -o synthetic.tar.gz
-# !tar xf synthetic.tar.gz
-# %%
-# Prepare data (extraction of image tensors)
+# First, we need to run `prepare-data` to extract the tensors from the images:
+# %% 
 !clinicadl prepare-data image data/synthetic t1-linear --extract_json extract_T1linear_image
+# %% [markdown]
+# Then, we will train the network with the synthetic data. If you failed to generate a trivial dataset, 
+# please uncomment the next cell.
 # %%
-# Train a network with synthetic data
-!clinicadl train classification data/synthetic extract_T1linear_image data/split/3_fold data/synthetic_maps --architecture Conv4_FC3 --n_splits 3 --split 0 
+# # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data/synthetic.tar.gz -o synthetic.tar.gz
+# # !mkdir data
+# # !tar xf synthetic.tar.gz -C data
+# # !mkdir data/fake_bids
+# # !clinicadl tsvtools get-labels data/fake_bids data --missing_mods data/synthetic/missing_mods --merged_tsv data/synthetic/data.tsv --modality synthetic
+# # !clinicadl tsvtools split data/labels.tsv --n_test 0.25 --subset_name test
+# # !clinicadl tsvtools kfold data/split/train.tsv --n_splits 3
+# # no need to run prepare-data
+# %%
+# Train a network with synthetic data (remove --no-gpu option if you do have access to a gpu)
+!clinicadl train classification data/synthetic extract_T1linear_image data/split/3_fold data/synthetic_maps --architecture Conv4_FC3 --n_splits 3 --split 0 --no-gpu
 # %% [markdown]
 # As the number of images is very small (4 per class), we do not rely on the
 # accuracy to select the model. Instead we evaluate the model which obtained the
