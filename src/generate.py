@@ -94,8 +94,6 @@
 # have these, you can give an empty folder as argument and provide the paths 
 # to the required files separately as keyword arguments.
 
-# Be careful, the output of the command (`labels.tsv`) is saved in the same
-# folder as the BIDS folder.
 # %%
 !mkdir data/fake_bids
 !clinicadl tsvtools get-labels data/fake_bids data --missing_mods data/synthetic/missing_mods --merged_tsv data/synthetic/data.tsv --modality synthetic
