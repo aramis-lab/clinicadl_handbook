@@ -390,7 +390,7 @@ print(df_labels)
 # In OASIS there is no longitudinal follow-up, hence the last two TSV files are
 # identical.
 
-# Let's create a test set including 20 subjects:
+# Let's create a test set including 20% of the subjects:
 # %% 
 !clinicadl tsvtools split data_oasis/labels.tsv --n_test 0.2 --subset_name test 
 
@@ -520,7 +520,7 @@ def check_is_independent(train_path_baseline: Path, test_path_baseline: Path):
 
 
 def run_test_suite(data_tsv: Path, n_splits: int):
-    _run_test_suite_no_split(data_tsv) if n_splits == 0 else _run_test_suite_multiple_splits(data_tsv, n_splits)
+    _run_test_suite_no_split(data_tsv) if n_splits == 0 else _run_test_suite_multiple_splits(data_tsv)
 
 
 def _run_test_suite_no_split(data_tsv: Path):
@@ -535,18 +535,17 @@ def _run_test_suite_no_split(data_tsv: Path):
         check_is_independent(train_baseline_tsv, test_baseline_tsv)
 
 
-def _run_test_suite_multiple_splits(data_tsv: Path, n_splits: int):
-    for _ in range(n_splits):
-        for folder, _, files in os.walk(data_tsv):
-            folder = Path(folder)
-            for file in files:
-                if file[-3:] == "tsv":
-                    check_is_subject_unique(folder / file)
-            train_baseline_tsv = folder / "train_baseline.tsv"
-            test_baseline_tsv = folder / "validation_baseline.tsv"
-            if train_baseline_tsv.exists():
-                if test_baseline_tsv.exists():
-                    check_is_independent(train_baseline_tsv, test_baseline_tsv)
+def _run_test_suite_multiple_splits(data_tsv: Path):
+    for folder, _, files in os.walk(data_tsv):
+        folder = Path(folder)
+        for file in files:
+            if file[-3:] == "tsv":
+                check_is_subject_unique(folder / file)
+        train_baseline_tsv = folder / "train_baseline.tsv"
+        test_baseline_tsv = folder / "validation_baseline.tsv"
+        if train_baseline_tsv.exists():
+            if test_baseline_tsv.exists():
+                check_is_independent(train_baseline_tsv, test_baseline_tsv)
                 
 
 
