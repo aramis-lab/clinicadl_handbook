@@ -25,7 +25,6 @@
 # 1. **Organize** your neuroimaging data.
 # 2. **Preprocess** your neuroimaging data.
 # 3. Check the preprocessing **quality**.
-# 4. **Prepare data** by extracting tensors from your preprocessed data.
 
 # %% [markdown]
 # ## Organization of neuroimaging data: the Brain Imaging Data Structure (BIDS)
@@ -128,7 +127,6 @@
 # and especially before training a neural network with that data.
 # - **Registration** helps to standardize the neuroimaging data so that it is 
 # consistent across different subjects, scanners, and imaging modalities. This 
-
 # makes it easier for the deep neural network to learn patterns and make
 # accurate predictions. 
 # - Preprocessing techniques such as **motion correction** and **noise
@@ -171,17 +169,17 @@
 # %% [markdown]
 # This notebook presents three possible preprocessing steps using the [Clinica](https://www.clinica.run/doc/)
 # software: 
-# - `t1-linear`: Affine registration of T1w images to the MNI standard space
-# - `t1-volume`: Volume-based processing of T1-weighted MR images with SPM
+# - `t1-linear`: Affine registration of T1w images to the MNI standard space,
+# - `t1-volume`: Volume-based processing of T1w images with SPM,
 # - `pet-linear`: Spatial normalization to the MNI space and intensity
-# normalization of PET images
+# normalization of PET images.
 
 # %% [markdown]
 # <a id='preprocessing:t1-linear'></a>
 # ## Image preprocessing with the `t1-linear` pipeline
 # For this tutorial, we propose a "minimal preprocessing" (as described in [(Wen
 # et al., 2020)](https://doi.org/10.1016/j.media.2020.101694)) implemented in
-# the [`t1-linear` pipeline](http://www.clinica.run/doc/Pipelines/T1_Linear/)
+# the [`t1-linear` pipeline](https://aramislab.paris.inria.fr/clinica/docs/public/latest/Pipelines/T1_Linear/)
 # using the [ANTs](http://stnava.github.io/ANTs/) software package [(Avants et
 # al., 2014)](https://doi.org/10.3389/fninf.2014.00044). This preprocessing
 # includes:
@@ -212,9 +210,9 @@
 # where:
 
 # - `bids_directory` is the input folder containing the dataset in a
-# [BIDS](http://www.clinica.run/doc/BIDS/) hierarchy,
+# [BIDS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/BIDS/) hierarchy,
 # - `caps_directory` is the output folder containing the results in a
-# [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
+# [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy.
 
 # %% [markdown]
 # ```{note}
@@ -236,7 +234,7 @@
 # `_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.nii.gz`. 
 # %% [markdown]
 # (If you failed to obtain the preprocessing using the `t1-linear` pipeline,
-# please uncomment the next cell)
+# please uncomment the next cell).
 # %%
 # # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o CAPS_example.tar.gz
 # # !tar xf CAPS_example.tar.gz
@@ -298,9 +296,9 @@ plotting.show()
 # where:
 
 # - `bids_directory` is the input folder containing the dataset in a
-# [BIDS](http://www.clinica.run/doc/BIDS/) hierarchy;
+# [BIDS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/BIDS/) hierarchy;
 # - `caps_director` is the output folder containing the results in a
-# [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy;
+# [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy;
 # - `acq_label` is the label given to the PET acquisition, specifying the tracer
 # used (trc-<acq_label>). It can be for instance '18FFDG' for
 # 18F-fluorodeoxyglucose or '18FAV45' for 18F-florbetapir;
@@ -323,14 +321,8 @@ plotting.show()
 # ```
 # %% [markdown]
 # ### Run the pipeline
-# Start by downloading a dataset of PET images for 4 subjects from ADNI
-# database.  The dataset was converted to the BIDS specification using `clinica
-# convert adni-to-bids`.
-
-# %%[markdown]
 # Please uncomment the next cells to download a dataset of pet images of 4 
-# subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert 
-# adni-to-bids`)
+# subjects from ADNI in a BIDS format (convert to BIDS with `clinica convert adni-to-bids`).
 
 # %%
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o adniBids.tar.gz
@@ -403,11 +395,11 @@ plotting.show()
 # - `preprocessing` corresponds to the preprocessing pipeline whose outputs will
 # be checked (`t1-linear` or `pet-linear` or `t1-volume`),
 # - `caps_directory` is the folder containing the results of the preprocessing
-# pipeline in a [CAPS](http://www.clinica.run/doc/CAPS/Introduction/) hierarchy,
+# pipeline in a [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy,
 # - `output_path` is the path to the output TSV file (or directory for
 # `t1-volume`) containing QC results.
 
-##
+# %% [markdown]
 # ```{note}
 # Quality checks pipelines are all different and depend on the chosen
 # preprocessing. They should not be applied to other preprocessing procedures as

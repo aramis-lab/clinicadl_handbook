@@ -124,7 +124,7 @@
 # of the sessions, for now. 
 #
 # The whole preprocessing process has been run for you on these datasets. The
-# results of the [quality check procedure](./preprocessing.ipynb#quality-check-of-your-preprocessed-data) have been used
+# results of the [quality check procedure](./preprocessing.html#quality-check-of-your-preprocessed-data) have been used
 # to filter sessions. `data_oasis/oasis_after_qc.tsv` and `data_adni/adni_after_qc.tsv`
 # store the list of the sessions that have been accepted for each dataset.
 # 
@@ -136,13 +136,13 @@
 #for OASIS-1 dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
-!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  -O data_oasis/oasis_after_qc.tsv
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/oasis_after_qc.tsv  --output data_oasis/oasis_after_qc.tsv
 
 # %%
 #for the ADNI dataset
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/iotools_output.tar.gz -o iotools_output.tar.gz
 !tar xf iotools_output.tar.gz
-!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  -O data_adni/adni_after_qc.tsv
+!curl https://raw.githubusercontent.com/aramis-lab/clinicadl_handbook/main/data/adni_after_qc.tsv  --output data_adni/adni_after_qc.tsv
 
 # %% [markdown]
 # ### Get the labels
@@ -151,12 +151,12 @@
 # MCI) can be extracted with ClinicaDL using the command:
 #
 # ```bash
-# clinicadl tsvtools get-labels bids_directory results_tsv
+# clinicadl tsvtools get-labels <bids_directory> <results_tsv>
 # ```
 # where:
 # - `bids_directory` the input folder containing the dataset in a BIDS
 # hierarchy.
-# - `results_path` is the path to the tsv file.
+# - `results_tsv` is the path to the tsv file.
 
 # ```{tip}
 # You can increase the verbosity of the command by adding -v flag(s).
@@ -341,8 +341,8 @@ display_table("data_adni/analysis.tsv")
 #   clinicadl tsvtools get-progression [OPTIONS] DATA_TSV
 # ``` 
 # with :
-#  - `DATA_TSV` (str) is the TSV file containing the data (output of clinicadl
-#  tsvtools get-labels|split|kfold).
+#  - `DATA_TSV` (str) is the TSV file containing the data (output of `clinicadl
+#  tsvtools get-labels|split|kfold`).
 #  - `--time_horizon` (int) can be added: It is the time horizon in months that
 #  is used to assess the stability of the MCI subjects. Default value: 36.
 
@@ -399,7 +399,7 @@ print(df_labels)
 # ```
 # where:
 # - `data_tsv` is the TSV file with the data that are going to be split
-# (output of `clinicadl tsvtools getlabels|split|kfold`).
+# (output of `clinicadl tsvtools get-labels|split|kfold`).
 #
 # Each diagnosis label is split independently. Random splits are generated 
 # until the differences between age and sex distributions between the test 
@@ -413,9 +413,9 @@ print(df_labels)
 # In OASIS there is no longitudinal follow-up, hence the last two TSV files are
 # identical.
 
-# Let's create a test set including 20 subjects:
+# Let's create a test set including 20% of the subjects:
 # %% 
-!clinicadl tsvtools split data_oasis/labels.tsv --n_test 20 --subset_name test 
+!clinicadl tsvtools split data_oasis/labels.tsv --n_test 0.2 --subset_name test 
 
 # %% 
 # for Adni dataset
@@ -460,7 +460,7 @@ display_table("data_oasis/analysis_test.tsv")
 # clinicadl tsvtool kfold <formatted_data_path>
 # ```
 #
-# where `formatted_data_path` is the output tsv file of `clinicadl tsvtool getlabels|split|kfold`.
+# where `formatted_data_path` is the output tsv file of `clinicadl tsvtool get-labels|split|kfold`.
 
 # In a similar way as for the test split, three tsv files are written
 # **per split** for each set:
@@ -474,11 +474,11 @@ display_table("data_oasis/analysis_test.tsv")
 # across the results of the 5 folds already reduces bias compared to a single
 # data split.
 # %%
-!clinicadl tsvtools kfold data_oasis/split/train.tsv --n_splits 4 --subset_name validation
+!clinicadl tsvtools kfold data_oasis/split/train.tsv --n_splits 5 --subset_name validation
 
 # %%
 # for ADNI dataset
-!clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 4 --subset_name validation
+!clinicadl tsvtools kfold data_adni/split/train.tsv --n_splits 5 --subset_name validation
 # %% [markdown]
 # ### Check the absence of data leakage
 #
@@ -559,17 +559,16 @@ def _run_test_suite_no_split(data_tsv: Path):
 
 
 def _run_test_suite_multiple_splits(data_tsv: Path):
-    for _ in range(n_splits):
-        for folder, _, files in os.walk(data_tsv):
-            folder = Path(folder)
-            for file in files:
-                if file[-3:] == "tsv":
-                    check_is_subject_unique(folder / file)
-            train_baseline_tsv = folder / "train_baseline.tsv"
-            test_baseline_tsv = folder / "validation_baseline.tsv"
-            if train_baseline_tsv.exists():
-                if test_baseline_tsv.exists():
-                    check_is_independent(train_baseline_tsv, test_baseline_tsv)
+    for folder, _, files in os.walk(data_tsv):
+        folder = Path(folder)
+        for file in files:
+            if file[-3:] == "tsv":
+                check_is_subject_unique(folder / file)
+        train_baseline_tsv = folder / "train_baseline.tsv"
+        test_baseline_tsv = folder / "validation_baseline.tsv"
+        if train_baseline_tsv.exists():
+            if test_baseline_tsv.exists():
+                check_is_independent(train_baseline_tsv, test_baseline_tsv)
                 
 
 
@@ -577,9 +576,9 @@ def _run_test_suite_multiple_splits(data_tsv: Path):
 run_test_suite(Path("./data_oasis/split"), n_splits=0)
 
 # Run check for train / validation splits
-run_test_suite(Path("./data_oasis/split/4_fold"), n_splits=4)
+run_test_suite(Path("./data_oasis/split/5_fold"), n_splits=5)
 # %% [markdown]
-# If no Error was raised then none of the three conditions was broken. It is now
+# If no Error was raised, then none of the three conditions was broken. It is now
 # possible to use the train and the validation sets to perform a classification
 # task, and then to evaluate correctly the performance of the classifier on the
 # test set.
@@ -595,6 +594,6 @@ run_test_suite(Path("./data_oasis/split/4_fold"), n_splits=4)
 # </div>
 
 # %% [markdown]
-# Now that you have your train, test and validation split, you can train a 
-# network for classification, regression or reconstruction with clinicaDL.
+# Now that you have your train, test and validation splits, you can train a 
+# network for classification, regression or reconstruction with ClinicaDL.
 # %%

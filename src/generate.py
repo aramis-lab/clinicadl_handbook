@@ -20,22 +20,22 @@
 # # Generate a synthetic dataset
 
 #
-# When looking for new networks architecture to improve the performance of the
-# deep learning tasks implies to tests different sets of hyperparameters. This
-# takes a lot of time and frequently we finish with networks that don't
+# Looking for new network architectures to improve performance on a
+# deep learning task implies testing different sets of hyperparameters. This
+# takes a lot of time and we often end up with networks that don't
 # converge.  To avoid this pitfall, it is often advised to simplify the problem:
-# focus on a subset of data / classification task that is more tractable than
+# focus on a subset of data or a task that is more tractable than
 # the one that is currently explored. This is the purpose of `clinicadl
 # generate` which creates synthetic, tractable data from real data to
 # check that developed networks are working on this simple case before going
 # further.
 #
-# With Clinicadl, you can generate three types of synthetic data sets for a
-# binary classification depending on the option chosen: trivial, random or
-# shepplogan.
+# With ClinicaDL, you can generate three types of synthetic data sets for a
+# binary classification task depending on the option chosen: `trivial`, `random` or
+# `shepplogan`.
 #
 # If you ran the previous notebook, you must have a folder called
-# `CAPS_example` in the data_oasis directory (otherwise uncomment the next cell
+# `CAPS_example` in the `data_oasis` directory (otherwise uncomment the next cell
 # to download a local version of the necessary folders).
 # %%
 # !curl -k https://aramislab.paris.inria.fr/clinicadl/files/data/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
@@ -68,8 +68,8 @@
 # where:
 
 # - `caps_directory` is the output folder containing the results in a
-# [CAPS](http://www.clinica.run/doc/CAPS/) hierarchy.
-# - `output_directory` is the folder where the synthetic CAPS is stored.
+# [CAPS](https://aramislab.paris.inria.fr/clinica/docs/public/latest/CAPS/Introduction/) hierarchy,
+# - `output_directory` is the folder where the synthetic CAPS is stored,
 # - `n_subjects` is the number of subjects per label in the synthetic dataset.
 # Default value: 300.
 
