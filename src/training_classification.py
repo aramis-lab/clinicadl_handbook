@@ -316,7 +316,7 @@ print('GPU is available: ', torch.cuda.is_available())
 !clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_multi --n_splits 4 --architecture resnet18 --multi_network
 
 # %% [markdown]
-# The `clinicadl train command outputs` a MAPS structure in which there are only
+# The `clinicadl train` command outputs a MAPS structure in which there are only
 # two data groups: train and validation. 
 # A MAPS folder contains all the elements obtained during the training and other
 # post-processing procedures applied to a particular deep learning framework.
