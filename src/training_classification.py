@@ -75,7 +75,7 @@
 # want to get a tensor from a custom filename.
 #
 # When using patch or slice extraction, default values were set according to
-# [Wen et al., 2020](https://doi.org/10.1016/j.media.2020.101694)
+# [Wen et al., 2020](https://doi.org/10.1016/j.media.2020.101694).
 
 # %% [markdown]
 # Output files are stored into a new folder (inside the CAPS) and follows a
