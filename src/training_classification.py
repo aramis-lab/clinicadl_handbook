@@ -164,7 +164,7 @@
 # next cell.
 
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example_prepared.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %%
 !tree -L 3 data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M000/deeplearning_prepare_data/
