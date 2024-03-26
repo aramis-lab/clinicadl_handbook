@@ -17,9 +17,9 @@
 # !pip install clinicadl==1.3.0
 
 # %% [markdown]
-# # Classification with a CNN on 2D slice.
+# # Classification with a CNN on 2D slice
 #
-# The objective of the *classification* task is to attribute a class to input
+# The objective of the `classification` task is to attribute a class to input
 # images. A CNN takes as input an image and outputs a vector of size `C`,
 # corresponding to the number of different labels existing in the dataset.  More
 # precisely, this vector contains a value for each class that is often
@@ -28,7 +28,7 @@
 # given image corresponds to the class with the highest probability in the
 # output vector.
 #
-# The cross-entropy loss between the ground truth and the network output is used
+# The `cross-entropy` loss between the ground truth and the network output is used
 # to quantify the error made by the network during the training process, which
 # becomes null if the network outputs 100% probability for the true class.
 #
@@ -37,7 +37,7 @@
 # as pooling, batch normalization, dropout and fully-connected layers are also
 # used.  The default CNN used for classification in ClinicaDL is `Conv5_FC3`
 # which is a convolutional neural network with 5 convolution and 3
-# fully-connected layer but in this notebook we will use the `resnet18`: 
+# fully-connected layer, but in this notebook we will use the `resnet18`: 
 
 # <figure>
 #   <img src="../images/resnet18.png" alt="resnet18 architecture" style="height: 300px; margin: 10px; text-align: center;">
@@ -61,19 +61,17 @@
 # for each patch.
 
 # %% [markdown]
-# Here, as you will use slice-level, you simply need to type the following
-# command line:
+# You need to run the following command line:
 
 # ```bash
 # clinicadl prepare-data {image/patch/roi/slice} <caps_directory> <modality>
 # ```
 # where:
 
-# - `caps_directory` is the folder containing the results of the [`t1-linear`
-# pipeline](#preprocessing:t1-linear) and the output of the present command,
-# both in a CAPS hierarchy.
+# - `caps_directory` is the folder in a CAPS hierarchy containing the images 
+# corresponding to the `modality` asked, 
 # - `modality` is the name of the preprocessing performed on the original
-# images. It can be `t1-linear` or `pet-linear`. You can choose custom if you
+# images (e.g. `t1-linear`). You can choose custom if you
 # want to get a tensor from a custom filename.
 #
 # When using patch or slice extraction, default values were set according to
@@ -87,29 +85,29 @@
 # deeplearning_prepare_data
 # ├── image_based
 # │   └── t1_linear
-# │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
+# │       └── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
 # ├── slice_based
 # │   └── t1_linear
-# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-0_T1w.pt
-# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-1_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-0_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-1_T1w.pt
 # │       ├── ...
-# │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-N_T1w.pt
+# │       └── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_slice-N_T1w.pt
 # ├── patch_based
 # │   └── pet-linear
-# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-0_T1w.pt
-# │       ├── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-1_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-0_T1w.pt
+# │       ├── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-1_T1w.pt
 # │       ├── ...
-# │       └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-N_T1w.pt
+# │       └── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_axis-axi_channel-rgb_patch-N_T1w.pt
 # └── roi_based
 #     └── t1_linear
-#         └── sub-<participant_label>_ses-<session_label>_T1w_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
+#         └── sub-<participant_label>_ses-<session_label>_space-MNI152NLin2009cSym_desc-Crop_res-1x1x1_T1w.pt
 # ```
 
 # %% [markdown]
 # In short, there is a folder for each feature (**image**, **slice**, **roi** or **patch**)
 # and inside the numbered tensor files with the corresponding feature. 
-# Files are saved with the .pt extension and contains tensors in PyTorch format.
-# A JSON file is also stored in the CAPS hierarchy under the tensor_extraction
+# Files are saved with the **.pt** extension and contains tensors in PyTorch format.
+# A JSON file is also stored in the CAPS hierarchy under the `tensor_extraction`
 # folder:
 
 # ```text
@@ -117,15 +115,15 @@
 # └── tensor_extraction
 #         └── <extract_json>.json
 #```
-# These files are compulsory to run the train command. They provide all the
-# details of the processing performed by the prepare-data command that will be
+# This file is compulsory to run the train command. It provides all the
+# details of the processing performed by the `prepare-data` command that will be
 # necessary when reading the tensors.
 
 # %% [markdown]
 # ```{warning}
-# The default behavior of the pipeline is to only extract images even if another
+# The default behavior of the pipeline is to only extract images, even if another
 # extraction method is specified.  However, all the options will be saved in the
-# preprocessing JSON file and then the extraction is done when data is loaded
+# preprocessing JSON file and then, the extraction is done when data is loaded
 # during the training. If you want to save the extracted method tensors in the
 # CAPS, you have to add the `--save-features` flag.
 # ```
@@ -144,14 +142,14 @@
 # %% [markdown]
 # ## Before starting
 # If you failed to obtain the preprocessing using the `t1-linear` pipeline,
-# please uncomment the next cell. You can extract tensors from this CAPS but
+# please uncomment the next cell. You can extract tensors from this CAPS, but
 # for the training part you will need a bigger dataset.
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example_prepared.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 
 # %% [markdown]
-# If you have already download the full dataset and converted it to
+# If you have already downloaded the full dataset and converted it to
 # CAPS, you can give the path to the dataset directory by changing
 # the CAPS path. If not, just run it as written but the results will 
 # not be relevant.
@@ -166,7 +164,7 @@
 # next cell.
 
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_extracted.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example_prepared.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %%
 !tree -L 3 data_oasis/CAPS_example/subjects/sub-OASIS10*/ses-M000/deeplearning_prepare_data/
@@ -180,10 +178,9 @@
 # ```
 
 # If you already know the models implemented in `clinicadl`, you can directly
-# jump to the `train custom` to implement your own custom experiment!
+# jump to [this section](./training_custom.ipynb) to implement your own custom experiment!
 
 # %%
-from pyrsistent import v
 import torch
 
 # Check if a GPU is available
@@ -191,26 +188,25 @@ print('GPU is available: ', torch.cuda.is_available())
 
 # %% [markdown]
 
-# ### Data used for training.
+# ### Data used for training
 #
 # Because they are time-costly, the preprocessing steps presented in the
 # beginning of this tutorial were only executed on a subset of OASIS-1, but
 # obviously two participants are insufficient to train a network! To obtain more
 # meaningful results, you should retrieve the whole <a
 # href="https://www.oasis-brains.org/">OASIS-1</a> dataset and run the training
-# based on the labels and splits performed in the previous section.  Of course,
-# you can use another dataset, but then you will have to perform again
-# "./label_extraction.ipynb" the extraction of labels and data splits on this
-# dataset.
+# based on the labels and splits obtained in the [previous section](./label_extraction.ipynb).  
+# Of course, you can use another dataset, on which you will also have to perform
+# labels extraction and data splitting.
 
 # %% [markdown]
-# ## `train CLASSIFICATION` 
+# ## `train classification` 
 
 # This functionality mainly relies on the PyTorch deep learning library
 # [[Paszke et al., 2019](https://papers.nips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library)].
 #
 # Different tasks can be learnt by a network: `classification`, `reconstruction`
-# and `regression`, in this notebook, we focus on the `classification` task. 
+# and `regression`. In this notebook, we focus on the `classification` task. 
 
 
 # %% [markdown]
@@ -223,7 +219,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # and used in a transfer learning fashion. Other advantages are the increased
 # number of training samples as many slices can be extracted from a single 3D
 # image, and a lower memory usage compared to using the full MR image as
-# input.This paradigm can be divided into two different frameworks:
+# input. This paradigm can be divided into two different frameworks:
 
 # - **single-CNN**: one CNN is trained on all slice locations.
 # - **multi-CNN**: one CNN is trained per slice location.
@@ -232,7 +228,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # framework), however the CNNs may be more accurate as they are specialized for
 # one slice location.
 #
-# During training, the gradients update are done based on the loss computed at
+# During training, gradient updates are done based on the loss computed at
 # the slice level. Final performance metric are computed at the subject level by
 # combining the outputs of the slices of the same subject.
 # %% [markdown]
@@ -260,7 +256,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # This will be used to load the correct tensor inputs with the wanted
 # preprocessing.
 # - `TSV_DIRECTORY` (Path) is the input folder of a TSV file tree generated by
-# `clinicadl tsvtool {split|kfold}`.
+# `clinicadl tsvtools {split|kfold}`.
 # In case of multi-cohort training, must be a path to a TSV file.
 # - `OUTPUT_MAPS_DIRECTORY` (Path) is the folder where the results are stored.
 #
@@ -288,7 +284,7 @@ print('GPU is available: ', torch.cuda.is_available())
 # soft-voting. It is only taken into account if several images are extracted
 # from the same original 3D image (i.e. `num_networks` > 1). Default: `0`.
 # - `--loss` (str) is the name of the loss used to optimize the classification
-# task.  Must correspond to a Pytorch class. Default: `CrossEntropyLoss`.
+# task.  Must correspond to a PyTorch class. Default: `CrossEntropyLoss`.
 
 # %% [markdown] 
 # ```{note}
@@ -320,14 +316,14 @@ print('GPU is available: ', torch.cuda.is_available())
 !clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_multi --n_splits 4 --architecture resnet18 --multi_network
 
 # %% [markdown]
-# The clinicadl train command outputs a MAPS structure in which there are only
+# The `clinicadl train` command outputs a MAPS structure in which there are only
 # two data groups: train and validation. 
 # A MAPS folder contains all the elements obtained during the training and other
 # post-processing procedures applied to a particular deep learning framework.
 # The hierarchy is organized according to the fold, selection metric and data
 # group used.
 
-# An example of a MAPS structure is given below
+# An example of a MAPS structure is given below:
 #```text
 # <maps_directory>
 # ├── environment.txt
