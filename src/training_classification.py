@@ -195,7 +195,7 @@ print('GPU is available: ', torch.cuda.is_available())
 #
 # The purpose of this notebook is not to fully train a network, but rather to understand
 # how ClinicaDL works. Therefore, we will keep working with a subset of OASIS-1. This new
-# subset contains 10 T1w images, pre-processed with the pipeline `t1-linear`of Clinia. The
+# subset contains 10 T1w images, pre-processed with the pipeline `t1-linear`of Clinica. The
 # `prepare-data` pipeline has already been performed on the dataset.
 #
 # You can remove your old `data_oasis` folder and download the new one:
