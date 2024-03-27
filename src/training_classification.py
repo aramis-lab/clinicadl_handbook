@@ -318,9 +318,10 @@ print('GPU is available: ', torch.cuda.is_available())
 # 2D-slice single-CNN training
 !clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_resnet18 --n_splits 4 --architecture resnet18 --batch_size 8 --epochs 5
 # %% [markdown]
-# Then, let's train a **multi-CNN** (i.e.one CNN is trained per slice location).
-# 168 models will be trained, so this command may take a while. If you don't want 
-# to run it, the results can be downloaded a few lines further on.
+# Then, let's train a **multi-CNN** (i.e. one CNN is trained per slice location).
+# We will train the models only for the first split, but still there are 168 models, 
+# so this command may take a while. If you don't want to run it, the results can 
+# be downloaded a few lines further on.
 # %%
 # 2D-slice multi-CNN training
 !clinicadl train classification data_oasis/CAPS_example slice_classification_t1 data_oasis/split/4_fold/ data_oasis/maps_classification_2D_slice_multi --n_splits 4 --split 0 --architecture resnet18 --batch_size 2 --epochs 1 --multi_network
@@ -378,11 +379,13 @@ print('GPU is available: ', torch.cuda.is_available())
 # %% [markdown]
 # # Inference using pretrained models
 #
-# If you failed to train the model please uncomment the next cells:
+# If you failed to train the model please uncomment the next cell:
 # %%
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/maps_classification_2D_slice_multi.tar.gz -o maps_classification_2D_slice_multi.tar.gz
 !tar xf maps_classification_2D_slice_multi.tar.gz
-
+# %% [markdown]
+# For the multi-CNN, to reduce download time, you can only access
+# the results of the models trained on the first 5 slices:
 # %%
 !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/maps_classification_2D_slice_resnet.tar.gz -o maps_classification_2D_slice_resnet.tar.gz
 !tar xf maps_classification_2D_slice_resnet.tar.gz
