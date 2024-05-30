@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.3.0
+# !pip install clinicadl==1.6.1
 
 # %% [markdown]
 # # Generate a synthetic dataset
@@ -38,7 +38,7 @@
 # `CAPS_example` in the `data_oasis` directory (otherwise uncomment the next cell
 # to download a local version of the necessary folders).
 # %%
-# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/data/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
+# !curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/CAPS_example.tar.gz -o oasisCaps.tar.gz
 # !tar xf oasisCaps.tar.gz
 # %% [markdown]
 # ## Generate trivial data
