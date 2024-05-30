@@ -13,7 +13,7 @@
 # ---
 # %%
 # Uncomment the next lines if running in Google Colab
-# !pip install clinicadl==1.3.0
+# !pip install clinicadl==1.6.1
 
 # %% [markdown]
 # # Define your population
@@ -43,12 +43,12 @@
 
 # %%
 # #OASIS BIDS
-!curl -k https://aramislab.paris.inria.fr/files/data/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_oasis/BIDS_example.tar.gz -o BIDS_example.tar.gz
 !tar xf BIDS_example.tar.gz 
 
 # %%
 # #ADNI BIDS
-!curl -k https://aramislab.paris.inria.fr/files/data/handbook_2023/data_adni/BIDS_example.tar.gz -o BIDS_example.tar.gz
+!curl -k https://aramislab.paris.inria.fr/clinicadl/files/handbook_2023/data_adni/BIDS_example.tar.gz -o BIDS_example.tar.gz
 !tar xf BIDS_example.tar.gz 
 
 

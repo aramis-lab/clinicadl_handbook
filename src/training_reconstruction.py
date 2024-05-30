@@ -14,7 +14,7 @@
 
 # %%
 # Uncomment this cell if running in Google Colab
-# !pip install clinicadl==1.3.0
+# !pip install clinicadl==1.6.1
 
 # %% [markdown]
 # # Training for reconstruction
