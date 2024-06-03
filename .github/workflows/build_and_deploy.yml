@@ -16,6 +16,7 @@ concurrency:
 env:
   POETRY_VERSION: '1.6.1'
   PYTHON_VERSION: '3.10'
+  CACHE_NUMBER: 0  # increase to reset cache manually
 
 jobs:
   build-and-deploy:
@@ -29,11 +30,20 @@ jobs:
         with:
           version: ${{ env.POETRY_VERSION }}
           virtualenvs-create: false
+      - uses: actions/cache@v2
+        with:
+          path: /local2/ci/miniconda3/envs/clinicadl_handbook
+          key: ${{ env.CACHE_NUMBER }}-conda-${{ hashFiles('environment.yml') }}
+        id: cache
+      - name: Update environment
+        run: |
+          source ~/miniconda3/etc/profile.d/conda.sh
+          conda env update -n clinicadl_handbook -f environment.yml
+        if: steps.cache.outputs.cache-hits != 'true'
       - name: Build documentation
         run: |
-          make env.conda
           source ~/miniconda3/etc/profile.d/conda.sh
-          conda activate "${{ github.workspace }}"/env
+          conda activate clinicadl_handbook
           make install
           make build.notebooks
           make build.book
