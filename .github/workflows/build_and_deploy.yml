@@ -41,5 +41,5 @@ jobs:
       - name: Deploy documentation
         run: |
           ls jupyter-book/_build/html
-          scp -r jupyter-book/_build/html/* aramislab:/srv/local/clinicadl/tutoriel/2023/html
+          scp -r jupyter-book/_build/html aramislab:/srv/local/clinicadl/tutoriel/2023/
 
