@@ -30,16 +30,16 @@ jobs:
         with:
           version: ${{ env.POETRY_VERSION }}
           virtualenvs-create: false
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: /local2/ci/miniconda3/envs/clinicadl_handbook
           key: ${{ env.CACHE_NUMBER }}-conda-${{ hashFiles('environment.yml') }}
         id: cache
-      - name: Update environment
+      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        name: Update environment
         run: |
           source ~/miniconda3/etc/profile.d/conda.sh
           conda env update -n clinicadl_handbook -f environment.yml
-        if: steps.cache.outputs.cache-hits != 'true'
       - name: Build documentation
         run: |
           source ~/miniconda3/etc/profile.d/conda.sh
