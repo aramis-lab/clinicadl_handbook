@@ -1,0 +1,45 @@
+name: Build and Deloy Handbook
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+env:
+  POETRY_VERSION: '1.6.1'
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  build-and-deploy:
+    runs-on:
+      - self-hosted
+      - Linux
+      - gpu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: snok/install-poetry@v1
+        with:
+          version: ${{ env.POETRY_VERSION }}
+          virtualenvs-create: false
+      - name: Build documentation
+        run: |
+          source ~/miniconda3/etc/profile.d/conda.sh
+          conda env update -n clinicadl_handbook -f environment.yml
+          conda activate clinicadl_handbook
+          make install
+          make build.notebooks
+          make build.book
+          sed -i 's+github/aramis-lab/clinicadl_handbook/blob/main/jupyter-book/notebooks+github/aramis-lab/clinicadl_handbook/blob/main/notebooks+g' ./jupyter-book/_build/html/notebooks/*.html
+      - name: Deploy documentation
+        run: |
+          ls jupyter-book/_build/html
+          scp -r jupyter-book/_build/html aramislab:/srv/local/clinicadl/tutoriel/2023/
+

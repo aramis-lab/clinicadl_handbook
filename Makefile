@@ -11,18 +11,13 @@ help: Makefile
 	@echo "Commands to use ClinicaDL Makefile:"
 	@sed -n 's/^##//p' $<
 
-## env             : Bootstrap an environment
-.PHONY: env
-env: env.dev
-
 ## env.conda       : Create a Conda environment
 .PHONY: env.conda
 env.conda:
 	@$(CONDA) env create -f environment.yml -p $(CONDA_ENV)
 
-## env.dev         : Install with Poetry
-.PHONY: env.dev
-env.dev:
+.PHONY: install
+install:
 	@$(POETRY) install
 
 ## build.notebooks : Build notebooks from source using jupytext
